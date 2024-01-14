@@ -7,12 +7,12 @@ import phone from "../assets/header/phone_icon.svg";
 import logo from "../assets/header/logo.png";
 import cart from "../assets/header/cart.svg";
 import moto from "../assets/header/moto.png";
-import { FontAwesomeIcon, FontAwesomeIconProps } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 
-interface IconProps extends FontAwesomeIconProps {
-  show?: boolean;
-}
+// interface IconProps extends FontAwesomeIconProps {
+//   show?: boolean;
+// }
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
 
@@ -117,6 +117,10 @@ const TopHader = styled.div`
   @media (max-width: 795px) {
     padding: 8px 50px;
   }
+  @media (max-width: 480px) {
+    flex-direction: column;
+    text-align: center;
+  }
   a {
     font-size: 12px;
     font-style: normal;
@@ -124,6 +128,9 @@ const TopHader = styled.div`
     line-height: normal;
     color: ${defaultTheme.colors.floralwhite};
     text-decoration: none;
+    @media (max-width: 480px) {
+      padding-top: 20px;
+    }
   }
 `;
 const Information = styled.div`
@@ -252,7 +259,7 @@ const Icons = styled.div`
   justify-content: center;
   margin-right: 20px;
 `;
-const BurgerIcon = styled(FontAwesomeIcon)<IconProps>`
+const BurgerIcon = styled(FontAwesomeIcon)`
   display: none;
 
   @media (max-width: 1150px) {
@@ -260,7 +267,7 @@ const BurgerIcon = styled(FontAwesomeIcon)<IconProps>`
   }
 `;
 
-const XmarkIcon = styled(FontAwesomeIcon)<IconProps>`
+const XmarkIcon = styled(FontAwesomeIcon)`
   display: none;
 
   @media (max-width: 1150px) {
