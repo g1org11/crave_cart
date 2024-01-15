@@ -7,12 +7,12 @@ import phone from "../assets/header/phone_icon.svg";
 import logo from "../assets/header/logo.png";
 import cart from "../assets/header/cart.svg";
 import moto from "../assets/header/moto.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon, FontAwesomeIconProps } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 
-// interface IconProps extends FontAwesomeIconProps {
-//   show?: boolean;
-// }
+interface IconProps extends FontAwesomeIconProps {
+  show?: boolean;
+}
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
 
@@ -259,7 +259,7 @@ const Icons = styled.div`
   justify-content: center;
   margin-right: 20px;
 `;
-const BurgerIcon = styled(FontAwesomeIcon)`
+const BurgerIcon = styled(FontAwesomeIcon)<IconProps>`
   display: none;
 
   @media (max-width: 1150px) {
@@ -267,7 +267,7 @@ const BurgerIcon = styled(FontAwesomeIcon)`
   }
 `;
 
-const XmarkIcon = styled(FontAwesomeIcon)`
+const XmarkIcon = styled(FontAwesomeIcon)<IconProps>`
   display: none;
 
   @media (max-width: 1150px) {

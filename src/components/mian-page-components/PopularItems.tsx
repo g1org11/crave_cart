@@ -9,25 +9,32 @@ import dish5 from "../../assets/mainpage/dish5.png";
 
 const PopularIntems = () => {
   return (
-    <Container>
-      <p>Food Items</p>
-      <h2>Popular Dishes</h2>
-      <ImageContainer>
-        <img src={dish1} alt="dish1" />
-        <img src={dish2} alt="dish2" />
-        <img src={dish3} alt="dish3" />
-        <img src={dish4} alt="dish4" />
-        <img src={dish5} alt="dish5" />
-      </ImageContainer>
-    </Container>
+    <div>
+      <Container>
+        <p>Food Items</p>
+        <h2>Popular Dishes</h2>
+        <div>
+          <ImageContainer>
+            <img src={dish1} alt="dish1" />
+            <img src={dish2} alt="dish2" />
+            <img src={dish3} alt="dish3" />
+            <img src={dish4} alt="dish4" />
+            <img src={dish5} alt="dish5" />
+          </ImageContainer>
+        </div>
+      </Container>
+    </div>
   );
 };
 export default PopularIntems;
 
 const Container = styled.div`
+  text-align: center;
   margin-top: 60px;
   padding: 0 100px;
-  text-align: center;
+  @media (max-width: 795px) {
+    padding: 0px 50px;
+  }
   p {
     font-size: 20px;
     font-style: normal;
@@ -45,10 +52,17 @@ const Container = styled.div`
   }
 `;
 
+// const ImgWrapper = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// `;
 const ImageContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  row-gap: 25px;
   flex-wrap: wrap;
   margin-top: 25px;
 `;

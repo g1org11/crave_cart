@@ -34,10 +34,20 @@ const HeroWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  @media (max-width: 1500px) {
+    flex-direction: column;
+    img {
+      position: absolute;
+      top: 40%;
+    }
+  }
 `;
 
 const RightParts = styled.div`
   margin-right: 150px;
+  @media (max-width: 1500px) {
+    margin-right: 0;
+  }
   p {
     font-size: 20px;
     font-style: italic;
@@ -61,6 +71,9 @@ const RightParts = styled.div`
 const OrderPart = styled.div`
   margin-top: 60px;
   transform: translateX(150px);
+  @media (max-width: 1500px) {
+    transform: translateX(0);
+  }
   button {
     border: 0;
     font-size: 35px;
@@ -79,5 +92,8 @@ const OrderPart = styled.div`
     font-weight: 400;
     line-height: normal;
     color: ${defaultTheme.colors.blue};
+  }
+  @media (max-width: 1500px) {
+    margin-top: 280px;
   }
 `;
