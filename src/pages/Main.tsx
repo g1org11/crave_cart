@@ -1,6 +1,7 @@
 // import React from "react";
 import Header from "../components/Header";
 import MainHero from "../components/mian-page-components/MainHero";
+import MainPageBlog from "../components/mian-page-components/MainPageBlog";
 import PopularIntems from "../components/mian-page-components/PopularItems";
 // import styled from "styled-components";
 
@@ -10,6 +11,7 @@ const Main = () => {
       <Header />
       <MainHero />
       <PopularIntems />
+      <MainPageBlog />
     </div>
   );
 };
