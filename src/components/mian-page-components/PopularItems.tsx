@@ -31,6 +31,7 @@ export default PopularIntems;
 const Container = styled.div`
   text-align: center;
   margin-top: 60px;
+  margin-bottom: 50px;
   padding: 0 100px;
   @media (max-width: 795px) {
     padding: 0px 50px;
@@ -65,4 +66,10 @@ const ImageContainer = styled.div`
   row-gap: 25px;
   flex-wrap: wrap;
   margin-top: 25px;
+  @media (max-width: 580px) {
+    flex-direction: column;
+    img {
+      width: 350px;
+    }
+  }
 `;

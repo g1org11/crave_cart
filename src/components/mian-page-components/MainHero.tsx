@@ -29,6 +29,7 @@ const HeroContainer = styled.div`
   align-items: baseline;
   justify-content: center;
   margin-top: 25px;
+  padding: 0 50px;
 `;
 const HeroWrapper = styled.div`
   display: flex;
@@ -41,6 +42,12 @@ const HeroWrapper = styled.div`
       top: 40%;
     }
   }
+  @media (max-width: 550px) {
+    img {
+      position: absolute;
+      top: 37%;
+    }
+  }
 `;
 
 const RightParts = styled.div`
@@ -48,6 +55,7 @@ const RightParts = styled.div`
   @media (max-width: 1500px) {
     margin-right: 0;
   }
+
   p {
     font-size: 20px;
     font-style: italic;
@@ -55,9 +63,12 @@ const RightParts = styled.div`
     line-height: normal;
     color: ${defaultTheme.colors.red};
     margin-bottom: 11px;
+    @media (max-width: 550px) {
+      font-size: 18px;
+    }
   }
   h2 {
-    width: 500px;
+    max-width: 500px;
     font-size: 50px;
     font-style: italic;
     font-weight: 500;
@@ -65,6 +76,10 @@ const RightParts = styled.div`
     color: ${defaultTheme.colors.blue};
     span {
       color: ${defaultTheme.colors.red};
+    }
+    @media (max-width: 550px) {
+      max-width: 500px;
+      font-size: 34px;
     }
   }
 `;
@@ -85,6 +100,9 @@ const OrderPart = styled.div`
     background-color: ${defaultTheme.colors.red};
     border-radius: 10px;
     margin-right: 30px;
+    @media (max-width: 550px) {
+      font-size: 26px;
+    }
   }
   span {
     font-size: 25px;
@@ -92,8 +110,11 @@ const OrderPart = styled.div`
     font-weight: 400;
     line-height: normal;
     color: ${defaultTheme.colors.blue};
+    @media (max-width: 550px) {
+      font-size: 22px;
+    }
   }
   @media (max-width: 1500px) {
-    margin-top: 280px;
+    margin-top: 250px;
   }
 `;
