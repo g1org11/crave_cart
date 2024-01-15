@@ -32,6 +32,9 @@ const MainPageBlog = () => {
               </li>
             </ul>
           </div>
+          <ButtonDiv>
+            <button>Reade More</button>
+          </ButtonDiv>
         </Infos>
         <BlogImgTwo src={blogimg2} alt="blog img 2" />
       </BlogInfo>
@@ -88,8 +91,23 @@ const Infos = styled.div`
     margin-bottom: 30px;
     list-style-type: none;
   }
-  ul {
+  button {
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    padding: 10px 55px;
+    border: 0;
+    border-radius: 20px;
+    color: ${defaultTheme.colors.floralwhite};
+    background-color: ${defaultTheme.colors.red};
+    margin-top: 109px;
   }
+`;
+const ButtonDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 const BlogImgTwo = styled.img`
   width: 359px;
