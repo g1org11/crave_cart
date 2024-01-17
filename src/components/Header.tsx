@@ -7,12 +7,10 @@ import phone from "../assets/header/phone_icon.svg";
 import logo from "../assets/header/logo.png";
 import cart from "../assets/header/cart.svg";
 import moto from "../assets/header/moto.png";
-import { FontAwesomeIcon, FontAwesomeIconProps } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { IconProps } from "./interface";
 
-interface IconProps extends FontAwesomeIconProps {
-  show?: boolean;
-}
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
 
