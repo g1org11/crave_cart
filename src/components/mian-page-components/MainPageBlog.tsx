@@ -9,7 +9,7 @@ const MainPageBlog = () => {
     <BlogContainer>
       <Title>RICH & HEALTHY</Title>
       <BlogInfo>
-        <img src={blogimg1} alt="blogimg1" />
+        <BlogImgOne src={blogimg1} alt="blogimg1" />
         <Infos>
           <h2>Highest quality artisangrains, proteins & seasonal ingredients</h2>
           <p>
@@ -49,11 +49,24 @@ const BlogContainer = styled.div`
   flex-direction: column;
   padding: 0 100px;
   margin-bottom: 50px;
+  @media (max-width: 795px) {
+    padding: 0px 50px;
+  }
 `;
 
 const BlogInfo = styled.div`
+  width: 100%;
   display: flex;
   align-items: top;
+  justify-content: space-evenly;
+  position: relative;
+  @media (max-width: 1300px) {
+    justify-content: space-between;
+  }
+  @media (max-width: 720px) {
+    flex-direction: column;
+    row-gap: 20px;
+  }
 `;
 
 const Title = styled.h2`
@@ -74,6 +87,9 @@ const Infos = styled.div`
     line-height: normal;
     color: ${defaultTheme.colors.red};
     margin-bottom: 30px;
+    @media (max-width: 1110px) {
+      font-size: 28px;
+    }
   }
   p {
     max-width: 801px;
@@ -82,6 +98,9 @@ const Infos = styled.div`
     font-weight: 400;
     line-height: normal;
     margin-bottom: 40px;
+    @media (max-width: 1110px) {
+      font-size: 18px;
+    }
   }
   li {
     display: flex;
@@ -102,15 +121,33 @@ const Infos = styled.div`
     color: ${defaultTheme.colors.floralwhite};
     background-color: ${defaultTheme.colors.red};
     margin-top: 109px;
+    @media (max-width: 1110px) {
+      font-size: 28px;
+    }
   }
 `;
 const ButtonDiv = styled.div`
-  display: flex;
+  /* display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
+`;
+const BlogImgOne = styled.img`
+  width: 361px;
+  height: 600px;
+  @media (max-width: 920px) {
+    width: 280px;
+  }
+  @media (max-width: 720px) {
+    width: 100%;
+  }
 `;
 const BlogImgTwo = styled.img`
   width: 359px;
   height: 377px;
-  transform: translateY(222.5px);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  @media (max-width: 1300px) {
+    display: none;
+  }
 `;
