@@ -28,7 +28,7 @@ const OfferContainer = styled.div`
   justify-content: center;
   padding: 0 100px;
   margin-bottom: 50px;
-  /* overflow: hidden; */
+  overflow: hidden;
   @media (max-width: 795px) {
     padding: 0px 50px;
   }
@@ -37,6 +37,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  text-align: center;
   h1 {
     font-size: 50px;
     font-style: italic;
@@ -53,16 +54,31 @@ const Wrapper = styled.div`
     color: ${defaultTheme.colors.blue};
     margin-bottom: 24px;
   }
-  img {
-    width: 560px;
-    height: 200px;
-  }
 `;
 
 const ImgDiv = styled.div`
   display: flex;
   align-items: center;
-  flex-flow: nowrap;
-  flex-shrink: 1;
   gap: 25px;
+
+  @media (max-width: 1000px) {
+    flex-wrap: wrap;
+    justify-content: center;
+
+    img {
+      width: 100%;
+      max-width: 500px; /* Adjust the max-width as needed */
+    }
+  }
+  @media (max-width: 550px) {
+    img {
+      width: 100%;
+      max-width: 400px; /* Adjust the max-width as needed */
+    }
+  }
+
+  img {
+    width: 560px;
+    height: 200px;
+  }
 `;
