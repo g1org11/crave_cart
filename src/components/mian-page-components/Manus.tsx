@@ -172,9 +172,39 @@ const Manus = () => {
     BEVERAGES: [
       { img: "img" },
       {
-        meal: "Chicken Satay Skewers",
-        ingredients: "Chicken skewers, peanut sauce, soy sauce, ginger, and garlic.",
-        price: "$16",
+        meal: "Classic Mojito",
+        ingredients: "White rum, fresh lime juice, mint leaves, simple syrup, and soda water.",
+        price: "$8",
+      },
+      {
+        meal: "Mango Lassi",
+        ingredients: "Mango, yogurt, milk, sugar, and a pinch of cardamom.",
+        price: "$5",
+      },
+      {
+        meal: "Iced Matcha Latte",
+        ingredients: "Matcha powder, milk, ice, and sweetener (optional).",
+        price: "$4",
+      },
+      {
+        meal: "Virgin Pina Colada",
+        ingredients: "Pineapple juice, coconut cream, crushed ice, and pineapple garnish.",
+        price: "$10",
+      },
+      {
+        meal: "Espresso Martini",
+        ingredients: "Vodka, coffee liqueur, freshly brewed espresso, and simple syrup.",
+        price: "$15",
+      },
+      {
+        meal: "Freshly Squeezed Orange Juice",
+        ingredients: "Oranges.",
+        price: "$3",
+      },
+      {
+        meal: "Cucumber Mint Cooler",
+        ingredients: "Cucumber, mint leaves, lime juice, simple syrup, and soda water.",
+        price: "$9",
       },
     ],
   };
