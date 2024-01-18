@@ -206,6 +206,11 @@ const Manus = () => {
         ingredients: "Cucumber, mint leaves, lime juice, simple syrup, and soda water.",
         price: "$9",
       },
+      {
+        meal: "Cucumber Mint Cooler",
+        ingredients: "Cucumber, mint leaves, lime juice, simple syrup, and soda water.",
+        price: "$9",
+      },
     ],
   };
 
