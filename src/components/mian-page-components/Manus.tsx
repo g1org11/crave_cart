@@ -134,8 +134,47 @@ const Manus = () => {
       {
         meal: "Caprese Salad",
         ingredients:
-          " Fresh tomatoes, mozzarella cheese, basil, balsamic glaze, olive oil, salt, and pepper.",
+          "Fresh tomatoes, mozzarella cheese, basil, balsamic glaze, olive oil, salt, and pepper.",
         price: "$8",
+      },
+      {
+        meal: "Spinach and Artichoke Dip",
+        ingredients:
+          "Spinach, artichokes, cream cheese, sour cream, mayonnaise, garlic, and Parmesan cheese.",
+        price: "$15",
+      },
+      {
+        meal: "Bruschetta",
+        ingredients: "Tomatoes, garlic, basil, olive oil, balsamic vinegar, and baguette slices.",
+        price: "$12",
+      },
+      {
+        meal: "Stuffed Mushrooms",
+        ingredients: "Mushrooms, cream cheese, breadcrumbs, garlic, parsley, and Parmesan cheese.",
+        price: "$15",
+      },
+      {
+        meal: "Shrimp Cocktail",
+        ingredients: "Shrimp, cocktail sauce, lemon wedges, and parsley for garnish.",
+        price: "$18",
+      },
+      {
+        meal: "Crispy Calamari",
+        ingredients: "Calamari rings, flour, cornmeal, spices, and a side of marinara sauce.",
+        price: "$18",
+      },
+      {
+        meal: "Chicken Satay Skewers",
+        ingredients: "Chicken skewers, peanut sauce, soy sauce, ginger, and garlic.",
+        price: "$16",
+      },
+    ],
+    BEVERAGES: [
+      { img: "img" },
+      {
+        meal: "Chicken Satay Skewers",
+        ingredients: "Chicken skewers, peanut sauce, soy sauce, ginger, and garlic.",
+        price: "$16",
       },
     ],
   };
