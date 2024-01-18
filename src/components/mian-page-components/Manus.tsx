@@ -14,38 +14,79 @@ const Manus = () => {
       { img: "img" },
       {
         meal: "Gazpacho Garlic",
-        material: "Chilled tomato, cucumber, garlic, red pepper soup.",
+        ingredients: "Chilled tomato, cucumber, garlic, redpepper soup.",
         price: "$55",
       },
       {
         meal: "Pan Con Berenjina Frita",
-        material: "Marinated seabass with sour sauce, dill & coriander on bread.",
+        ingredients: "Marinated seabass with sour sauce, dill & coriander on bread.",
         price: "$40",
       },
       {
         meal: "New Lubina Marinada",
-        material: "Fried aubergine with almond on bread (2 pieces).",
+        ingredients: "Fried aubergine with almond on bread (2 pieces).",
         price: "$45",
       },
       {
         meal: "Gazpacho",
-        material: "Atlantic cod fillet, chips, salad, tartare, lemon.",
+        ingredients: "Atlantic cod fillet, chips, salad, tartare, lemon.",
         price: "$35",
       },
       {
         meal: "Coconut Chia Bowl",
-        material: "Marinated seabass with sour saucel & coriander on bread.",
+        ingredients: "Marinated seabass with sour saucel & coriander on bread.",
         price: "$95",
       },
       {
         meal: "New Lubina Marinada",
-        material: "Atlantic cod fillet, chips, salad, tartare, lemon.",
+        ingredients: "Atlantic cod fillet, chips, salad, tartare, lemon.",
         price: "$120",
       },
       {
         meal: "Gazpacho Garlic",
-        material: "Chilled tomato, cucumber, garlic, red pepper soup.",
+        ingredients: "Chilled tomato, cucumber, garlic, redpepper soup.",
         price: "$29",
+      },
+    ],
+    LUNCH: [
+      { img: "img" },
+      {
+        meal: "Spaghetti Bolognese",
+        ingredients:
+          "Ground beef, onions, garlic, tomatoes,  Italian herbs, Parmesan cheese, and pasta",
+        price: "$20",
+      },
+      {
+        meal: "Chicken Pad Thai",
+        ingredients: "Rice noodles, chicken, bean sprouts, peanuts, lime, and Pad Thai sauce.",
+        price: "$25",
+      },
+      {
+        meal: "Margherita Pizza",
+        ingredients: "Pizza dough, tomatoes, fresh mozzarella, basil, olive oil, ",
+        price: "$28",
+      },
+      {
+        meal: "Chicken Alfredo Pasta",
+        ingredients:
+          " Fettuccine pasta, chicken breast, heavy cream, butter, Parmesan cheese, and garlic",
+        price: "$30",
+      },
+      {
+        meal: "Vegetable Stir-Fry",
+        ingredients: " Mixed vegetables, tofu or chicken, soy sauce, ginger, and garlic.",
+        price: "$12",
+      },
+      {
+        meal: "Sushi Roll (California Roll)",
+        ingredients:
+          " Nori, sushi rice, imitation crab or real crab, avocado, cucumber, and soy sauce.",
+        price: "$15",
+      },
+      {
+        meal: "BBQ Pulled Pork Sandwich",
+        ingredients: " Pulled pork, barbecue sauce, coleslaw, and a bun",
+        price: "$15",
       },
     ],
   };
