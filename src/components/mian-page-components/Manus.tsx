@@ -2,16 +2,18 @@ import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import { useState } from "react";
+import manucardimg1 from "../../assets/mainpage/manucardimg1.png";
+import ManuCards from "./Manucards";
 
 const Manus = () => {
   const [activeManu, setActiveManu] = useState("BREAKFAST");
 
   const handleHeaderClick = (manu) => {
-    setActiveRegion(manu);
+    setActiveManu(manu);
   };
-  const ManuCards = {
+  const ManuCard = {
     BREAKFAST: [
-      { img: "img" },
+      { img: manucardimg1 },
       {
         meal: "Gazpacho Garlic",
         ingredients: "Chilled tomato, cucumber, garlic, redpepper soup.",
@@ -49,7 +51,7 @@ const Manus = () => {
       },
     ],
     LUNCH: [
-      { img: "img" },
+      { img: manucardimg1 },
       {
         meal: "Spaghetti Bolognese",
         ingredients:
@@ -58,12 +60,12 @@ const Manus = () => {
       },
       {
         meal: "Chicken Pad Thai",
-        ingredients: "Rice noodles, chicken, bean sprouts, peanuts, lime, and Pad Thai sauce.",
+        ingredients: "Rice noodles, chicken, bean sprouts, peanuts, and Pad Thai sauce.",
         price: "$25",
       },
       {
         meal: "Margherita Pizza",
-        ingredients: "Pizza dough, tomatoes, fresh mozzarella, basil, olive oil, ",
+        ingredients: "Pizza dough, tomatoes, fresh mozzarella, basil, oliveoil, ",
         price: "$28",
       },
       {
@@ -90,10 +92,10 @@ const Manus = () => {
       },
     ],
     DINNER: [
-      { img: "img" },
+      { img: manucardimg1 },
       {
         meal: "Grilled Salmon with Lemon-Dill Sauce",
-        ingredients: "Salmon fillets, lemon, dill, olive oil, garlic, salt, and pepper.",
+        ingredients: "Salmon fillets, lemon, dill, oliveoil, garlic, salt, and pepper.",
         price: "$25",
       },
       {
@@ -119,7 +121,7 @@ const Manus = () => {
       },
       {
         meal: "Shrimp Scampi",
-        ingredients: "Shrimp, garlic, white wine, lemon, parsley, butter, and linguine.",
+        ingredients: "Shrimp, garlic, whitewine, lemon, parsley, butter, and linguine.",
         price: "$28",
       },
       {
@@ -130,11 +132,11 @@ const Manus = () => {
       },
     ],
     STARTERS: [
-      { img: "img" },
+      { img: manucardimg1 },
       {
         meal: "Caprese Salad",
         ingredients:
-          "Fresh tomatoes, mozzarella cheese, basil, balsamic glaze, olive oil, salt, and pepper.",
+          "Fresh tomatoes, mozzarella cheese, basil, balsamic glaze, oliveoil, salt, and pepper.",
         price: "$8",
       },
       {
@@ -145,7 +147,7 @@ const Manus = () => {
       },
       {
         meal: "Bruschetta",
-        ingredients: "Tomatoes, garlic, basil, olive oil, balsamic vinegar, and baguette slices.",
+        ingredients: "Tomatoes, garlic, basil, oliveoil, balsamic vinegar, and baguette slices.",
         price: "$12",
       },
       {
@@ -170,7 +172,7 @@ const Manus = () => {
       },
     ],
     BEVERAGES: [
-      { img: "img" },
+      { img: manucardimg1 },
       {
         meal: "Classic Mojito",
         ingredients: "White rum, fresh lime juice, mint leaves, simple syrup, and soda water.",
@@ -203,45 +205,62 @@ const Manus = () => {
       },
       {
         meal: "Cucumber Mint Cooler",
-        ingredients: "Cucumber, mint leaves, lime juice, simple syrup, and soda water.",
-        price: "$9",
-      },
-      {
-        meal: "Cucumber Mint Cooler",
-        ingredients: "Cucumber, mint leaves, lime juice, simple syrup, and soda water.",
+        ingredients: "Cucumber, mint leaves, limejuice, simple syrup, and soda water.",
         price: "$9",
       },
     ],
   };
-
+  const getCardsForManu = () => {
+    return ManuCard[activeManu] || [];
+  };
   return (
-    <ManuContainer>
-      <Wrapper>
-        <h2>SPECIALS</h2>
-        <h1>Check out our menu</h1>
-        <p>
-          Demoralized by the charms of pleasure of the moment so blinded except to some advantage.
-        </p>
-      </Wrapper>{" "}
-      <div>
-        <Navigation>
-          <p>BREAKFAST</p>
-          <p>LUNCH</p>
-          <p>DINNER</p>
-          <p>STARTERS</p>
-          <p>BEVERAGES</p>
-        </Navigation>
-        <div></div>
-      </div>
-    </ManuContainer>
+    <ManuWrapper>
+      <ManuContainer>
+        <Wrapper>
+          <h2>SPECIALS</h2>
+          <h1>Check out our menu</h1>
+          <p>
+            Demoralized by the charms of pleasure of the moment so blinded except to some advantage.
+          </p>
+        </Wrapper>{" "}
+        <div>
+          <Header>
+            {Object.keys(ManuCard).map((manu, index) => (
+              <HeaderItem
+                key={index}
+                active={activeManu === manu}
+                onClick={() => handleHeaderClick(manu)}
+              >
+                {manu}
+              </HeaderItem>
+            ))}
+          </Header>
+          <div>
+            {getCardsForManu().map((card, index) => (
+              <ManuCards
+                key={`${activeManu}-${index}`} // Using a unique key
+                img={card.img}
+                meal={card.meal}
+                ingredients={card.ingredients}
+                price={card.price}
+              />
+            ))}
+          </div>
+        </div>
+      </ManuContainer>
+    </ManuWrapper>
   );
 };
 export default Manus;
 
-const ManuContainer = styled.div`
+const ManuWrapper = styled.div`
   display: flex;
   align-items: center;
-  flex-direction: column;
+  justify-content: center;
+`;
+
+const ManuContainer = styled.div`
+  /* flex-direction: column; */
 `;
 const Wrapper = styled.div`
   text-align: center;
@@ -271,21 +290,49 @@ const Wrapper = styled.div`
   }
 `;
 
-const Navigation = styled.div`
+// const Navigation = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   p {
+//     width: 300px;
+//     height: 88px;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     font-size: 25px;
+//     font-style: normal;
+//     font-weight: 400;
+//     line-height: normal;
+//     color: ${defaultTheme.colors.red};
+//     cursor: pointer;
+//   }
+// `;
+
+const Header = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  p {
-    width: 300px;
-    height: 88px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 25px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    color: ${defaultTheme.colors.red};
-    cursor: pointer;
-  }
+  justify-content: center;
+`;
+
+const HeaderItem = styled.p<HeaderItem>`
+  width: 300px;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  border: 2px solid #c4c4c4;
+  cursor: pointer;
+
+  ${(props) =>
+    props.active
+      ? `
+        background-color:${defaultTheme.colors.red};
+        color: ${defaultTheme.colors.floralwhite};
+      `
+      : ""};
 `;
