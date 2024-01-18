@@ -89,6 +89,55 @@ const Manus = () => {
         price: "$15",
       },
     ],
+    DINNER: [
+      { img: "img" },
+      {
+        meal: "Grilled Salmon with Lemon-Dill Sauce",
+        ingredients: "Salmon fillets, lemon, dill, olive oil, garlic, salt, and pepper.",
+        price: "$25",
+      },
+      {
+        meal: "Beef Stroganoff",
+        ingredients:
+          "Beef sirloin, mushrooms, onion, garlic, sour cream, beef broth, and egg noodles.",
+        price: "$30",
+      },
+      {
+        meal: "Vegetarian Lasagna",
+        ingredients: "Lasagna noodles, mozzarella cheese, marinara sauce, spinach, and mushrooms.",
+        price: "$30",
+      },
+      {
+        meal: "Teriyaki Chicken Bowl",
+        ingredients: "Chicken thighs, soy sauce, honey, ginger, garlic, rice, and vegetables.",
+        price: "$19",
+      },
+      {
+        meal: "Eggplant Parmesan",
+        ingredients: "Eggplant, breadcrumbs, marinara sauce,Parmesan cheese, and basil.",
+        price: "$14",
+      },
+      {
+        meal: "Shrimp Scampi",
+        ingredients: "Shrimp, garlic, white wine, lemon, parsley, butter, and linguine.",
+        price: "$28",
+      },
+      {
+        meal: "Chicken Fajitas",
+        ingredients:
+          " Chicken breasts, bell peppers, onions, tortillas, sour cream, and Mexican spices.",
+        price: "$33",
+      },
+    ],
+    STARTERS: [
+      { img: "img" },
+      {
+        meal: "Caprese Salad",
+        ingredients:
+          " Fresh tomatoes, mozzarella cheese, basil, balsamic glaze, olive oil, salt, and pepper.",
+        price: "$8",
+      },
+    ],
   };
 
   return (
