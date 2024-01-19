@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-// import { defaultTheme } from "../../defaultTheme";
+import { defaultTheme } from "../../defaultTheme";
 
 const ManuImages = ({ img }) => {
   return (
     <ImageContainer>
-      <div>
+      <Wrapper>
         <img src={img} alt="poster" />
         <a href="/">
           VIEW ALL MENU
@@ -22,7 +22,7 @@ const ManuImages = ({ img }) => {
             />
           </svg>
         </a>
-      </div>
+      </Wrapper>
     </ImageContainer>
   );
 };
@@ -36,5 +36,28 @@ const ImageContainer = styled.div`
   img {
     width: 489px;
     height: 620px;
+  }
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  /* align-items: center; */
+  flex-direction: column;
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    background-color: ${defaultTheme.colors.red};
+    color: ${defaultTheme.colors.floralwhite};
+    padding: 7px 0;
+    width: 100%;
+    svg {
+      margin-left: 30px;
+    }
   }
 `;

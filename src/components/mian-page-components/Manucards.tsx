@@ -5,43 +5,39 @@ import { CardProps } from "../interface";
 
 const MenuCards: React.FC<CardProps> = ({ meal, ingredients, price }) => {
   return (
-    <Container>
-      {/* <img src={img} alt="" /> */}
-      <Infos>
-        <Information>
-          <div>
-            <h3>{meal}</h3>
-            <Ingredients>{ingredients}</Ingredients>
-          </div>
-          <Price>{price}</Price>
-        </Information>
-      </Infos>
-    </Container>
+    <Infos>
+      <Information>
+        <div>
+          <h3>{meal}</h3>
+          <Ingredients>{ingredients}</Ingredients>
+        </div>
+        <Price>{price}</Price>
+      </Information>
+    </Infos>
   );
 };
 
 export default MenuCards;
 
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 const Infos = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: auto 0;
 `;
 const Information = styled.div`
+  width: 650px;
   display: flex;
   align-items: center;
-  justify-content: left;
+  justify-content: space-between;
+  border-bottom: 1px dashed ${defaultTheme.colors.red};
   h3 {
     font-size: 25px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
     color: ${defaultTheme.colors.red};
+    margin-bottom: auto;
   }
 `;
 const Ingredients = styled.p`
@@ -50,6 +46,7 @@ const Ingredients = styled.p`
   font-weight: 400;
   line-height: normal;
   color: ${defaultTheme.colors.blue};
+  padding-bottom: 10px;
 `;
 
 const Price = styled.p`

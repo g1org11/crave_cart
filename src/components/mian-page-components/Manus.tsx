@@ -257,7 +257,7 @@ const Manus = () => {
                 <ManuImages key={`${activeManu}-${index}`} img={card.img} />
               ))}
             </div>
-            <div>
+            <Dishes>
               {getCardsForManu().map((card, index) => (
                 <ManuCards
                   key={`${activeManu}-${index}`} // Using a unique key
@@ -267,7 +267,7 @@ const Manus = () => {
                   price={card.price}
                 />
               ))}
-            </div>
+            </Dishes>
           </Div>
         </div>
       </ManuContainer>
@@ -289,10 +289,16 @@ const ManuContainer = styled.div`
 
 const Div = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: top;
+  justify-content: space-around;
   margin-top: 20px;
 `;
+const Dishes = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+`;
+
 const Wrapper = styled.div`
   text-align: center;
   h2 {
@@ -344,6 +350,7 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
 `;
 
 const HeaderItem = styled.p<HeaderItem>`
@@ -356,14 +363,17 @@ const HeaderItem = styled.p<HeaderItem>`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  border: 2px solid #c4c4c4;
+  border-right: 1px solid ${defaultTheme.colors.blue};
+  color: ${(props) => (props.active ? defaultTheme.colors.floralwhite : defaultTheme.colors.red)};
   cursor: pointer;
-
+  &:last-child {
+    border-right: none;
+  }
   ${(props) =>
     props.active
       ? `
         background-color:${defaultTheme.colors.red};
-        color: ${defaultTheme.colors.floralwhite};
+        
       `
       : ""};
 `;
