@@ -3,7 +3,12 @@ import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import { useState } from "react";
 import manucardimg1 from "../../assets/mainpage/manucardimg1.png";
+import lunch from "../../assets/mainpage/lounch1.jpg";
+import dinner from "../../assets/mainpage/dinner.jpg";
+import starter from "../../assets/mainpage/starter.jpg";
+import bavengares from "../../assets/mainpage/baveranges.jpg";
 import ManuCards from "./Manucards";
+import ManuImages from "./ManuImages";
 
 const Manus = () => {
   const [activeManu, setActiveManu] = useState("BREAKFAST");
@@ -11,9 +16,17 @@ const Manus = () => {
   const handleHeaderClick = (manu) => {
     setActiveManu(manu);
   };
+
+  const ImagesCard = {
+    BREAKFAST: [{ img: manucardimg1 }],
+    LUNCH: [{ img: lunch }],
+    DINNER: [{ img: dinner }],
+    STARTERS: [{ img: starter }],
+    BEVERAGES: [{ img: bavengares }],
+  };
   const ManuCard = {
     BREAKFAST: [
-      { img: manucardimg1 },
+      // { img: manucardimg1 },
       {
         meal: "Gazpacho Garlic",
         ingredients: "Chilled tomato, cucumber, garlic, redpepper soup.",
@@ -51,7 +64,7 @@ const Manus = () => {
       },
     ],
     LUNCH: [
-      { img: manucardimg1 },
+      // { img: manucardimg1 },
       {
         meal: "Spaghetti Bolognese",
         ingredients:
@@ -92,7 +105,7 @@ const Manus = () => {
       },
     ],
     DINNER: [
-      { img: manucardimg1 },
+      // { img: manucardimg1 },
       {
         meal: "Grilled Salmon with Lemon-Dill Sauce",
         ingredients: "Salmon fillets, lemon, dill, oliveoil, garlic, salt, and pepper.",
@@ -127,12 +140,12 @@ const Manus = () => {
       {
         meal: "Chicken Fajitas",
         ingredients:
-          " Chicken breasts, bell peppers, onions, tortillas, sour cream, and Mexican spices.",
+          "Chicken breasts, bell peppers, onions, tortillas, sour cream, and Mexican spices.",
         price: "$33",
       },
     ],
     STARTERS: [
-      { img: manucardimg1 },
+      // { img: manucardimg1 },
       {
         meal: "Caprese Salad",
         ingredients:
@@ -172,7 +185,7 @@ const Manus = () => {
       },
     ],
     BEVERAGES: [
-      { img: manucardimg1 },
+      // { img: manucardimg1 },
       {
         meal: "Classic Mojito",
         ingredients: "White rum, fresh lime juice, mint leaves, simple syrup, and soda water.",
@@ -213,6 +226,9 @@ const Manus = () => {
   const getCardsForManu = () => {
     return ManuCard[activeManu] || [];
   };
+  const getImagesCard = () => {
+    return ImagesCard[activeManu] || [];
+  };
   return (
     <ManuWrapper>
       <ManuContainer>
@@ -235,17 +251,24 @@ const Manus = () => {
               </HeaderItem>
             ))}
           </Header>
-          <div>
-            {getCardsForManu().map((card, index) => (
-              <ManuCards
-                key={`${activeManu}-${index}`} // Using a unique key
-                img={card.img}
-                meal={card.meal}
-                ingredients={card.ingredients}
-                price={card.price}
-              />
-            ))}
-          </div>
+          <Div>
+            <div>
+              {getImagesCard().map((card, index) => (
+                <ManuImages key={`${activeManu}-${index}`} img={card.img} />
+              ))}
+            </div>
+            <div>
+              {getCardsForManu().map((card, index) => (
+                <ManuCards
+                  key={`${activeManu}-${index}`} // Using a unique key
+                  // img={card.img}
+                  meal={card.meal}
+                  ingredients={card.ingredients}
+                  price={card.price}
+                />
+              ))}
+            </div>
+          </Div>
         </div>
       </ManuContainer>
     </ManuWrapper>
@@ -257,10 +280,18 @@ const ManuWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 100px;
 `;
 
 const ManuContainer = styled.div`
   /* flex-direction: column; */
+`;
+
+const Div = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
 `;
 const Wrapper = styled.div`
   text-align: center;
