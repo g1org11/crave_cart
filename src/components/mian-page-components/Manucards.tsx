@@ -1,7 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
-import { CardProps } from "../interface";
+// import { CardProps } from "../interface";
+interface CardProps {
+  meal: string;
+  ingredients: string;
+  price: string;
+}
 
 const MenuCards: React.FC<CardProps> = ({ meal, ingredients, price }) => {
   return (
@@ -31,6 +36,9 @@ const Information = styled.div`
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px dashed ${defaultTheme.colors.red};
+  @media (max-width: 875px) {
+    width: 450px;
+  }
   h3 {
     font-size: 25px;
     font-style: normal;

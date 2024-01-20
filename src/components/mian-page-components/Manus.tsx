@@ -10,21 +10,32 @@ import bavengares from "../../assets/mainpage/baveranges.jpg";
 import ManuCards from "./Manucards";
 import ManuImages from "./ManuImages";
 
+interface MenuType {
+  [key: string]: { meal: string; ingredients: string; price: string }[];
+}
+interface HeaderItemProps {
+  active?: boolean;
+  onClick: () => void;
+  // Add other props as needed
+}
+interface ImagesCardType {
+  [key: string]: { img: string }[];
+}
 const Manus = () => {
   const [activeManu, setActiveManu] = useState("BREAKFAST");
 
-  const handleHeaderClick = (manu) => {
+  const handleHeaderClick = (manu: React.SetStateAction<string>) => {
     setActiveManu(manu);
   };
 
-  const ImagesCard = {
+  const ImagesCard: ImagesCardType = {
     BREAKFAST: [{ img: manucardimg1 }],
     LUNCH: [{ img: lunch }],
     DINNER: [{ img: dinner }],
     STARTERS: [{ img: starter }],
     BEVERAGES: [{ img: bavengares }],
   };
-  const ManuCard = {
+  const ManuCard: MenuType = {
     BREAKFAST: [
       // { img: manucardimg1 },
       {
@@ -239,9 +250,9 @@ const Manus = () => {
             Demoralized by the charms of pleasure of the moment so blinded except to some advantage.
           </p>
         </Wrapper>{" "}
-        <div>
+        <ManuSider>
           <Header>
-            {Object.keys(ManuCard).map((manu, index) => (
+            {Object.keys(ManuCard).map((manu: string, index: number) => (
               <HeaderItem
                 key={index}
                 active={activeManu === manu}
@@ -252,24 +263,26 @@ const Manus = () => {
             ))}
           </Header>
           <Div>
-            <div>
-              {getImagesCard().map((card, index) => (
+            <Images>
+              {getImagesCard().map((card: { img: string }, index: number) => (
                 <ManuImages key={`${activeManu}-${index}`} img={card.img} />
               ))}
-            </div>
+            </Images>
             <Dishes>
-              {getCardsForManu().map((card, index) => (
-                <ManuCards
-                  key={`${activeManu}-${index}`} // Using a unique key
-                  // img={card.img}
-                  meal={card.meal}
-                  ingredients={card.ingredients}
-                  price={card.price}
-                />
-              ))}
+              {getCardsForManu().map(
+                (card: { meal: string; ingredients: string; price: string }, index: number) => (
+                  <ManuCards
+                    key={`${activeManu}-${index}`} // Using a unique key
+                    // img={card.img}
+                    meal={card.meal}
+                    ingredients={card.ingredients}
+                    price={card.price}
+                  />
+                )
+              )}
             </Dishes>
           </Div>
-        </div>
+        </ManuSider>
       </ManuContainer>
     </ManuWrapper>
   );
@@ -281,17 +294,33 @@ const ManuWrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding: 0 100px;
+  @media (max-width: 795px) {
+    padding: 8px 50px;
+  }
 `;
 
 const ManuContainer = styled.div`
   /* flex-direction: column; */
 `;
 
+const ManuSider = styled.div`
+  @media (max-width: 1400px) {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+`;
 const Div = styled.div`
   display: flex;
   align-items: top;
   justify-content: space-around;
   margin-top: 20px;
+`;
+const Images = styled.div`
+  @media (max-width: 1400px) {
+    display: none;
+  }
 `;
 const Dishes = styled.div`
   display: flex;
@@ -327,33 +356,19 @@ const Wrapper = styled.div`
   }
 `;
 
-// const Navigation = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   p {
-//     width: 300px;
-//     height: 88px;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     font-size: 25px;
-//     font-style: normal;
-//     font-weight: 400;
-//     line-height: normal;
-//     color: ${defaultTheme.colors.red};
-//     cursor: pointer;
-//   }
-// `;
-
 const Header = styled.div`
   display: flex;
-  align-items: center;
+  align-items: top;
   justify-content: center;
+  flex-wrap: wrap;
   width: 100%;
+  @media (max-width: 1400px) {
+    flex-direction: column;
+    margin-right: 25px;
+  }
 `;
 
-const HeaderItem = styled.p<HeaderItem>`
+const HeaderItem = styled.p<HeaderItemProps>`
   width: 300px;
   height: 88px;
   display: flex;
@@ -376,4 +391,14 @@ const HeaderItem = styled.p<HeaderItem>`
         
       `
       : ""};
+
+  @media (max-width: 1400px) {
+    border: none;
+    /* border-top: 1px solid ${defaultTheme.colors.blue}; */
+    border-bottom: 1px solid ${defaultTheme.colors.blue};
+    margin: auto 0;
+  }
+  @media (max-width: 1200px) {
+    width: 150px;
+  }
 `;
