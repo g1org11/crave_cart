@@ -5,8 +5,12 @@ export interface IconProps extends FontAwesomeIconProps {
 }
 
 export interface CardProps {
-  // img: any;
   meal: string;
   ingredients: string;
   price: string;
+}
+
+export interface SpecialManuCardsProps {
+  img: string;
+  text: string;
 }

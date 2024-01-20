@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
+// import { SpecialManuCardsProps } from "../interface";
 
 interface SpecialManuCardsProps {
   img: string;
@@ -24,7 +25,6 @@ const CardsContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: top;
-  justify-content: space-between;
   margin-top: 31px;
   text-align: center;
   p {
