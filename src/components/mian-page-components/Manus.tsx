@@ -310,6 +310,9 @@ const ManuSider = styled.div`
     align-items: center;
     justify-content: space-between;
   }
+  @media (max-width: 680px) {
+    flex-direction: column;
+  }
 `;
 const Div = styled.div`
   display: flex;
@@ -358,13 +361,16 @@ const Wrapper = styled.div`
 
 const Header = styled.div`
   display: flex;
-  align-items: top;
+  align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   width: 100%;
   @media (max-width: 1400px) {
     flex-direction: column;
     margin-right: 25px;
+  }
+  @media (max-width: 680px) {
+    flex-direction: row;
   }
 `;
 
@@ -400,5 +406,9 @@ const HeaderItem = styled.p<HeaderItemProps>`
   }
   @media (max-width: 1200px) {
     width: 150px;
+  }
+  @media (max-width: 500px) {
+    width: 120px;
+    font-size: 20px;
   }
 `;
