@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import SpecialManucards from "./SpecialManuCards";
@@ -63,11 +63,11 @@ const CardsWrapper = styled.div`
   align-items: top;
   flex-wrap: wrap;
   text-align: center;
-  gap: 120px;
+  column-gap: 120px;
   @media (max-width: 1300px) {
-    gap: 80px;
+    column-gap: 80px;
   }
   @media (max-width: 1300px) {
-    gap: 50px;
+    column-gap: 50px;
   }
 `;

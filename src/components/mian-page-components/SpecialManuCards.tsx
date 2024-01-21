@@ -11,10 +11,10 @@ interface SpecialManuCardsProps {
 const SpecialManucards: React.FC<SpecialManuCardsProps> = ({ img, text }) => {
   return (
     <CardsContainer>
-      <div>
+      <CardsContent>
         <img src={img} alt="img" />
         <p>{text}</p>
-      </div>
+      </CardsContent>
     </CardsContainer>
   );
 };
@@ -23,13 +23,26 @@ export default SpecialManucards;
 
 const CardsContainer = styled.div`
   margin-top: 31px;
+  padding: 5px;
+  &:hover {
+    background-color: ${defaultTheme.colors.red};
+    border-radius: 20px;
+    p {
+      color: ${defaultTheme.colors.floralwhite};
+    }
+  }
 
   p {
-    width: 120px;
+    width: 170px;
     font-size: 25px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
     color: ${defaultTheme.colors.red};
   }
+  img {
+    border-radius: 10px;
+  }
 `;
+
+const CardsContent = styled.div``;
