@@ -2,16 +2,42 @@ import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import { useState } from "react";
+import manucardimg1 from "../../assets/mainpage/manucardimg1.png";
+import lunch from "../../assets/mainpage/lounch1.jpg";
+import dinner from "../../assets/mainpage/dinner.jpg";
+import starter from "../../assets/mainpage/starter.jpg";
+import bavengares from "../../assets/mainpage/baveranges.jpg";
+import ManuCards from "./Manucards";
+import ManuImages from "./ManuImages";
 
+interface MenuType {
+  [key: string]: { meal: string; ingredients: string; price: string }[];
+}
+interface HeaderItemProps {
+  active?: boolean;
+  onClick: () => void;
+  // Add other props as needed
+}
+interface ImagesCardType {
+  [key: string]: { img: string }[];
+}
 const Manus = () => {
   const [activeManu, setActiveManu] = useState("BREAKFAST");
 
-  const handleHeaderClick = (manu) => {
-    setActiveRegion(manu);
+  const handleHeaderClick = (manu: React.SetStateAction<string>) => {
+    setActiveManu(manu);
   };
-  const ManuCards = {
+
+  const ImagesCard: ImagesCardType = {
+    BREAKFAST: [{ img: manucardimg1 }],
+    LUNCH: [{ img: lunch }],
+    DINNER: [{ img: dinner }],
+    STARTERS: [{ img: starter }],
+    BEVERAGES: [{ img: bavengares }],
+  };
+  const ManuCard: MenuType = {
     BREAKFAST: [
-      { img: "img" },
+      // { img: manucardimg1 },
       {
         meal: "Gazpacho Garlic",
         ingredients: "Chilled tomato, cucumber, garlic, redpepper soup.",
@@ -49,7 +75,7 @@ const Manus = () => {
       },
     ],
     LUNCH: [
-      { img: "img" },
+      // { img: manucardimg1 },
       {
         meal: "Spaghetti Bolognese",
         ingredients:
@@ -58,12 +84,12 @@ const Manus = () => {
       },
       {
         meal: "Chicken Pad Thai",
-        ingredients: "Rice noodles, chicken, bean sprouts, peanuts, lime, and Pad Thai sauce.",
+        ingredients: "Rice noodles, chicken, bean sprouts, peanuts, and Pad Thai sauce.",
         price: "$25",
       },
       {
         meal: "Margherita Pizza",
-        ingredients: "Pizza dough, tomatoes, fresh mozzarella, basil, olive oil, ",
+        ingredients: "Pizza dough, tomatoes, fresh mozzarella, basil, oliveoil, ",
         price: "$28",
       },
       {
@@ -90,10 +116,10 @@ const Manus = () => {
       },
     ],
     DINNER: [
-      { img: "img" },
+      // { img: manucardimg1 },
       {
         meal: "Grilled Salmon with Lemon-Dill Sauce",
-        ingredients: "Salmon fillets, lemon, dill, olive oil, garlic, salt, and pepper.",
+        ingredients: "Salmon fillets, lemon, dill, oliveoil, garlic, salt, and pepper.",
         price: "$25",
       },
       {
@@ -119,22 +145,22 @@ const Manus = () => {
       },
       {
         meal: "Shrimp Scampi",
-        ingredients: "Shrimp, garlic, white wine, lemon, parsley, butter, and linguine.",
+        ingredients: "Shrimp, garlic, whitewine, lemon, parsley, butter, and linguine.",
         price: "$28",
       },
       {
         meal: "Chicken Fajitas",
         ingredients:
-          " Chicken breasts, bell peppers, onions, tortillas, sour cream, and Mexican spices.",
+          "Chicken breasts, bell peppers, onions, tortillas, sour cream, and Mexican spices.",
         price: "$33",
       },
     ],
     STARTERS: [
-      { img: "img" },
+      // { img: manucardimg1 },
       {
         meal: "Caprese Salad",
         ingredients:
-          "Fresh tomatoes, mozzarella cheese, basil, balsamic glaze, olive oil, salt, and pepper.",
+          "Fresh tomatoes, mozzarella cheese, basil, balsamic glaze, oliveoil, salt, and pepper.",
         price: "$8",
       },
       {
@@ -145,7 +171,7 @@ const Manus = () => {
       },
       {
         meal: "Bruschetta",
-        ingredients: "Tomatoes, garlic, basil, olive oil, balsamic vinegar, and baguette slices.",
+        ingredients: "Tomatoes, garlic, basil, oliveoil, balsamic vinegar, and baguette slices.",
         price: "$12",
       },
       {
@@ -170,44 +196,141 @@ const Manus = () => {
       },
     ],
     BEVERAGES: [
-      { img: "img" },
+      // { img: manucardimg1 },
       {
-        meal: "Chicken Satay Skewers",
-        ingredients: "Chicken skewers, peanut sauce, soy sauce, ginger, and garlic.",
-        price: "$16",
+        meal: "Classic Mojito",
+        ingredients: "White rum, fresh lime juice, mint leaves, simple syrup, and soda water.",
+        price: "$8",
+      },
+      {
+        meal: "Mango Lassi",
+        ingredients: "Mango, yogurt, milk, sugar, and a pinch of cardamom.",
+        price: "$5",
+      },
+      {
+        meal: "Iced Matcha Latte",
+        ingredients: "Matcha powder, milk, ice, and sweetener (optional).",
+        price: "$4",
+      },
+      {
+        meal: "Virgin Pina Colada",
+        ingredients: "Pineapple juice, coconut cream, crushed ice, and pineapple garnish.",
+        price: "$10",
+      },
+      {
+        meal: "Espresso Martini",
+        ingredients: "Vodka, coffee liqueur, freshly brewed espresso, and simple syrup.",
+        price: "$15",
+      },
+      {
+        meal: "Freshly Squeezed Orange Juice",
+        ingredients: "Oranges.",
+        price: "$3",
+      },
+      {
+        meal: "Cucumber Mint Cooler",
+        ingredients: "Cucumber, mint leaves, limejuice, simple syrup, and soda water.",
+        price: "$9",
       },
     ],
   };
-
+  const getCardsForManu = () => {
+    return ManuCard[activeManu] || [];
+  };
+  const getImagesCard = () => {
+    return ImagesCard[activeManu] || [];
+  };
   return (
-    <ManuContainer>
-      <Wrapper>
-        <h2>SPECIALS</h2>
-        <h1>Check out our menu</h1>
-        <p>
-          Demoralized by the charms of pleasure of the moment so blinded except to some advantage.
-        </p>
-      </Wrapper>{" "}
-      <div>
-        <Navigation>
-          <p>BREAKFAST</p>
-          <p>LUNCH</p>
-          <p>DINNER</p>
-          <p>STARTERS</p>
-          <p>BEVERAGES</p>
-        </Navigation>
-        <div></div>
-      </div>
-    </ManuContainer>
+    <ManuWrapper>
+      <ManuContainer>
+        <Wrapper>
+          <h2>SPECIALS</h2>
+          <h1>Check out our menu</h1>
+          <p>
+            Demoralized by the charms of pleasure of the moment so blinded except to some advantage.
+          </p>
+        </Wrapper>{" "}
+        <ManuSider>
+          <Header>
+            {Object.keys(ManuCard).map((manu: string, index: number) => (
+              <HeaderItem
+                key={index}
+                active={activeManu === manu}
+                onClick={() => handleHeaderClick(manu)}
+              >
+                {manu}
+              </HeaderItem>
+            ))}
+          </Header>
+          <Div>
+            <Images>
+              {getImagesCard().map((card: { img: string }, index: number) => (
+                <ManuImages key={`${activeManu}-${index}`} img={card.img} />
+              ))}
+            </Images>
+            <Dishes>
+              {getCardsForManu().map(
+                (card: { meal: string; ingredients: string; price: string }, index: number) => (
+                  <ManuCards
+                    key={`${activeManu}-${index}`} // Using a unique key
+                    // img={card.img}
+                    meal={card.meal}
+                    ingredients={card.ingredients}
+                    price={card.price}
+                  />
+                )
+              )}
+            </Dishes>
+          </Div>
+        </ManuSider>
+      </ManuContainer>
+    </ManuWrapper>
   );
 };
 export default Manus;
 
-const ManuContainer = styled.div`
+const ManuWrapper = styled.div`
   display: flex;
   align-items: center;
-  flex-direction: column;
+  justify-content: center;
+  padding: 0 100px;
+  @media (max-width: 795px) {
+    padding: 8px 50px;
+  }
 `;
+
+const ManuContainer = styled.div`
+  /* flex-direction: column; */
+`;
+
+const ManuSider = styled.div`
+  @media (max-width: 1400px) {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  @media (max-width: 680px) {
+    flex-direction: column;
+  }
+`;
+const Div = styled.div`
+  display: flex;
+  align-items: top;
+  justify-content: space-around;
+  margin-top: 20px;
+`;
+const Images = styled.div`
+  @media (max-width: 1400px) {
+    display: none;
+  }
+`;
+const Dishes = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+`;
+
 const Wrapper = styled.div`
   text-align: center;
   h2 {
@@ -236,21 +359,56 @@ const Wrapper = styled.div`
   }
 `;
 
-const Navigation = styled.div`
+const Header = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  p {
-    width: 300px;
-    height: 88px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 25px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    color: ${defaultTheme.colors.red};
-    cursor: pointer;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  @media (max-width: 1400px) {
+    flex-direction: column;
+    margin-right: 25px;
+  }
+  @media (max-width: 680px) {
+    flex-direction: row;
+  }
+`;
+
+const HeaderItem = styled.p<HeaderItemProps>`
+  width: 300px;
+  height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  border-right: 1px solid ${defaultTheme.colors.blue};
+  color: ${(props) => (props.active ? defaultTheme.colors.floralwhite : defaultTheme.colors.red)};
+  cursor: pointer;
+  &:last-child {
+    border-right: none;
+  }
+  ${(props) =>
+    props.active
+      ? `
+        background-color:${defaultTheme.colors.red};
+        
+      `
+      : ""};
+
+  @media (max-width: 1400px) {
+    border: none;
+    /* border-top: 1px solid ${defaultTheme.colors.blue}; */
+    border-bottom: 1px solid ${defaultTheme.colors.blue};
+    margin: auto 0;
+  }
+  @media (max-width: 1200px) {
+    width: 150px;
+  }
+  @media (max-width: 500px) {
+    width: 120px;
+    font-size: 20px;
   }
 `;
