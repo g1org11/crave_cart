@@ -19,6 +19,7 @@ const SpecialManu = () => {
       <div>
         <h1>SPECIALS MANU FOR ALL TIME</h1>
       </div>
+
       <CardsWrapper>
         <SpecialManucards img={burger} text={"Burger"} />
         <SpecialManucards img={chicken} text={"Fried chicken"} />
@@ -57,20 +58,16 @@ const Container = styled.div`
 
 const CardsWrapper = styled.div`
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  display: flex;
   justify-content: center;
   align-items: top;
-  @media (max-width: 1000px) {
-    grid-template-columns: repeat(5, 1fr);
+  flex-wrap: wrap;
+  text-align: center;
+  gap: 120px;
+  @media (max-width: 1300px) {
+    gap: 80px;
   }
-  @media (max-width: 750px) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  @media (max-width: 500px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  @media (max-width: 400px) {
-    grid-template-columns: repeat(2, 1fr);
+  @media (max-width: 1300px) {
+    gap: 50px;
   }
 `;

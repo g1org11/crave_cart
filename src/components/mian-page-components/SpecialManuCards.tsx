@@ -22,11 +22,8 @@ const SpecialManucards: React.FC<SpecialManuCardsProps> = ({ img, text }) => {
 export default SpecialManucards;
 
 const CardsContainer = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: top;
   margin-top: 31px;
-  text-align: center;
+
   p {
     width: 120px;
     font-size: 25px;
