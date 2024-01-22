@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import heroimg from "../../assets/mainpage/MainHero.png";

@@ -6,6 +6,8 @@ module.exports = {
     "plugin:plugin:@typescript-eslint/recommended-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
     "plugin:react-hooks/recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
   ],
   parserOptions: {
     ecmaVersion: "latest",
@@ -18,5 +20,10 @@ module.exports = {
   plugins: ["react-refresh"],
   rules: {
     "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
+  },
+  settings: {
+    react: {
+      version: "detect", // Automatically detect the React version
+    },
   },
 };
