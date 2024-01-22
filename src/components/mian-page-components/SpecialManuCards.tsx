@@ -23,7 +23,8 @@ export default SpecialManucards;
 
 const CardsContainer = styled.div`
   margin-top: 31px;
-  padding: 5px;
+
+  padding: 10px 5px 5px 5px;
   &:hover {
     background-color: ${defaultTheme.colors.red};
     border-radius: 20px;
