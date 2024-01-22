@@ -1,5 +1,3 @@
-import React from "react";
-
 import restorantimg1 from "../../assets/mainpage/Ourrestorant1.png";
 import restorantimg2 from "../../assets/mainpage/Ourrestorant2.png";
 import restorantimg3 from "../../assets/mainpage/Ourrestorant3.png";
@@ -8,6 +6,7 @@ import restorantIcon1 from "../../assets/mainpage/OurrestorantIcon1.png";
 import restorantIcon2 from "../../assets/mainpage/OurrestorantIcon-2.png";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
+import React from "react";
 
 const OurRestorant = () => {
   return (
@@ -89,7 +88,7 @@ const RestorantWrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 `;
 
 const RestorantInfo = styled.div`
@@ -116,7 +115,7 @@ const Information = styled.div`
   display: flex;
   /* align-items: center; */
   flex-direction: column;
-  gap: 25px;
+  gap: 20px;
   margin-top: 49px;
 `;
 
@@ -134,7 +133,7 @@ const RestorantContent = styled.div`
   }
   p {
     width: 563px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
   }
 
   button {

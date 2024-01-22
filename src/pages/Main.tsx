@@ -1,5 +1,6 @@
 // import React from "react";
 import Header from "../components/Header";
+import Delivery from "../components/mian-page-components/Delivery";
 import MainHero from "../components/mian-page-components/MainHero";
 import MainPageBlog from "../components/mian-page-components/MainPageBlog";
 import Manus from "../components/mian-page-components/Manus";
@@ -20,6 +21,7 @@ const Main = () => {
       <Manus />
       <SpecialManu />
       <OurRestorant />
+      <Delivery />
     </div>
   );
 };
