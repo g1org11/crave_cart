@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import offer1 from "../../assets/mainpage/offer1.png";
