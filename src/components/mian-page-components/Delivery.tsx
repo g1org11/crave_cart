@@ -30,7 +30,7 @@ const Delivery = () => {
             <button>Order Now</button>
           </InfoFooter>
         </div>
-        <img src={delivery} alt="delivery" />
+        <MainImg src={delivery} alt="delivery" />
       </Wrapper>
     </Container>
   );
@@ -89,7 +89,7 @@ const Wrapper = styled.div`
     }
   }
 `;
-const mainImg = styled.img`
+const MainImg = styled.img`
   @media (max-width: 500px) {
     max-width: 400px;
   }

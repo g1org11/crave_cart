@@ -107,7 +107,6 @@ const Header = () => {
 };
 export default Header;
 
-const TopHaderDiv = styled.div``;
 const TopHader = styled.div`
   display: flex;
   align-items: center;
