@@ -6,7 +6,6 @@ import restorantIcon1 from "../../assets/mainpage/OurrestorantIcon1.png";
 import restorantIcon2 from "../../assets/mainpage/OurrestorantIcon-2.png";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
-import React from "react";
 
 const OurRestorant = () => {
   return (

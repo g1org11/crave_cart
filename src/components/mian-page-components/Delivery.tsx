@@ -30,7 +30,7 @@ const Delivery = () => {
             <button>Order Now</button>
           </InfoFooter>
         </div>
-        <img src={delivery} alt="delivery" />
+        <MainImg src={delivery} alt="delivery" />
       </Wrapper>
     </Container>
   );
@@ -65,6 +65,9 @@ const Wrapper = styled.div`
     p {
       color: ${defaultTheme.colors.red};
     }
+    @media (max-width: 500px) {
+      font-size: 30px;
+    }
   }
   button {
     font-size: 25px;
@@ -81,9 +84,16 @@ const Wrapper = styled.div`
       color: ${defaultTheme.colors.floralwhite};
       border-radius: 10px;
     }
+    @media (max-width: 500px) {
+      font-size: 18px;
+    }
   }
 `;
-
+const MainImg = styled.img`
+  @media (max-width: 500px) {
+    max-width: 400px;
+  }
+`;
 const MainTitle = styled.h1`
   font-size: 20px;
   font-style: normal;
@@ -97,6 +107,9 @@ const Maintext = styled.p`
   margin-top: 29px;
   margin-bottom: 69px;
   color: ${defaultTheme.colors.blue};
+  @media (max-width: 500px) {
+    font-size: 16px;
+  }
 `;
 const InfoFooter = styled.div`
   display: flex;
