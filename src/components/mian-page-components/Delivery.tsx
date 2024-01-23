@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import moto from "../../assets/header/moto.png";
@@ -12,7 +12,7 @@ const Delivery = () => {
         <div>
           <h2>
             A Moments Of
-            <h2>Delivered On Right Time & Place</h2>{" "}
+            <p>Delivered On Right Time & Place</p>{" "}
           </h2>
           <Maintext>
             Food Khan is a restaurant, bar and coffee roastery located on a busy corner site in
@@ -51,14 +51,14 @@ const Wrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   h2 {
     font-size: 35px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
     color: ${defaultTheme.colors.blue};
-    h2 {
+    p {
       color: ${defaultTheme.colors.red};
     }
   }

@@ -32,6 +32,7 @@ const Header = () => {
         </Information>
         <a href="">REGISTER</a>
       </TopHader>
+
       <MainHeader>
         <a href="/">
           <img src={logo} alt="logo" />
@@ -106,6 +107,7 @@ const Header = () => {
 };
 export default Header;
 
+const TopHaderDiv = styled.div``;
 const TopHader = styled.div`
   display: flex;
   align-items: center;
