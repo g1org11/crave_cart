@@ -14,11 +14,11 @@ const OurRestorant = () => {
       <MainTitle>OUR RESTAURANT</MainTitle>
       <RestorantWrapper>
         <div>
-          <div>
+          <ImagesDiv>
             <img src={restorantimg1} alt="resimg 1" />
             <img src={restorantimg2} alt="restorant 2" />
-          </div>
-          <img src={restorantimg3} alt=" restorant 3" />
+          </ImagesDiv>
+          <MainImg src={restorantimg3} alt=" restorant 3" />
         </div>
         <RestorantInfo>
           <h2>For every specialoccasion there’s heritaste</h2>
@@ -89,6 +89,10 @@ const RestorantWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
+  gap: 20px;
+  @media (max-width: 1000px) {
+    flex-direction: column;
+  }
 `;
 
 const RestorantInfo = styled.div`
@@ -100,14 +104,20 @@ const RestorantInfo = styled.div`
     line-height: normal;
     color: ${defaultTheme.colors.blue};
     margin-bottom: 16px;
+    @media (max-width: 500px) {
+      font-size: 30px;
+    }
   }
   p {
-    width: 679px;
+    max-width: 679px;
     font-size: 18px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
     color: ${defaultTheme.colors.blue};
+    @media (max-width: 500px) {
+      font-size: 16px;
+    }
     /* margin-bottom: 49px; */
   }
 `;
@@ -118,7 +128,18 @@ const Information = styled.div`
   gap: 20px;
   margin-top: 49px;
 `;
-
+const ImagesDiv = styled.div`
+  @media (max-width: 500px) {
+    img {
+      width: 200px;
+    }
+  }
+`;
+const MainImg = styled.img`
+  @media (max-width: 500px) {
+    width: 400px;
+  }
+`;
 const RestorantContent = styled.div`
   display: flex;
   align-items: top;
@@ -130,9 +151,12 @@ const RestorantContent = styled.div`
     line-height: normal;
     color: ${defaultTheme.colors.red};
     margin-bottom: 10px;
+    @media (max-width: 500px) {
+      font-size: 30px;
+    }
   }
   p {
-    width: 563px;
+    max-width: 563px;
     margin-bottom: 10px;
   }
 
@@ -144,6 +168,9 @@ const RestorantContent = styled.div`
     font-weight: 700;
     line-height: normal;
     color: ${defaultTheme.colors.red};
+    @media (max-width: 500px) {
+      font-size: 18px;
+    }
   }
 `;
 const InfoImg = styled.img`

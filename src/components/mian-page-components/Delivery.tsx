@@ -52,6 +52,10 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
+  gap: 20px;
+  @media (max-width: 1000px) {
+    flex-direction: column;
+  }
   h2 {
     font-size: 35px;
     font-style: normal;
@@ -89,7 +93,7 @@ const MainTitle = styled.h1`
   margin-bottom: 25px;
 `;
 const Maintext = styled.p`
-  width: 520px;
+  max-width: 520px;
   margin-top: 29px;
   margin-bottom: 69px;
   color: ${defaultTheme.colors.blue};
