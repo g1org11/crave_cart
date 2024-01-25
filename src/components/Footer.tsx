@@ -85,6 +85,14 @@ const Information = styled.div`
   justify-content: space-between;
   padding: 37px 100px 17px 100px;
   background-color: ${defaultTheme.colors.red};
+  @media (max-width: 795px) {
+    padding: 8px 50px;
+  }
+  @media (max-width: 1200px) {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+  }
 `;
 
 const Cards = styled.div`
@@ -138,9 +146,13 @@ const CopyDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
   padding: 45px 100px 32px 100px;
   width: 100%;
   background-color: ${defaultTheme.colors.blue};
+  @media (max-width: 795px) {
+    padding: 8px 50px;
+  }
 `;
 const CopyRight = styled.p`
   font-size: 20px;
