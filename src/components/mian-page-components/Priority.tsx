@@ -42,5 +42,10 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   margin-top: 33px;
+  @media (max-width: 1300px) {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 `;
