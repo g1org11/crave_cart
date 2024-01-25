@@ -37,6 +37,7 @@ const Container = styled.div`
     line-height: normal;
     color: ${defaultTheme.colors.blue};
     margin-bottom: 40px;
+    text-align: justify;
     @media (max-width: 1100px) {
       margin-bottom: 20px;
     }
@@ -47,6 +48,7 @@ const Container = styled.div`
     font-weight: 400;
     line-height: normal;
     color: ${defaultTheme.colors.blue};
+    text-align: justify;
   }
   img {
     @media (max-width: 650px) {
