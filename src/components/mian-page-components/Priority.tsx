@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import styled from "styled-components";
 import priority1 from "../../assets/mainpage/priprity1.png";
 import priority2 from "../../assets/mainpage/priority2.png";
@@ -42,5 +42,10 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   margin-top: 33px;
+  @media (max-width: 1300px) {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 `;

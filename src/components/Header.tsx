@@ -10,6 +10,7 @@ import moto from "../assets/header/moto.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { IconProps } from "./interface";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -41,19 +42,16 @@ const Header = () => {
         <NavAndInfo>
           <Ul>
             <li>
-              <a href="">HOME</a>
+              <Link to="/">HOME</Link>
             </li>
             <li>
-              <a href="">ABOUT</a>
+              <Link to="/about">ABOUT</Link>
             </li>
             <li>
-              <a href="">ITEMS</a>
+              <Link to="/items">ITEMS</Link>
             </li>
             <li>
-              <a href="">PAGES</a>
-            </li>
-            <li>
-              <a href="">CONTACT</a>
+              <Link to="/contact">CONTACT</Link>
             </li>
           </Ul>
           <CartPart>
@@ -79,19 +77,16 @@ const Header = () => {
                 <div>
                   <ModalUl>
                     <li>
-                      <a href="">HOME</a>
+                      <Link to="/">HOME</Link>
                     </li>
                     <li>
-                      <a href="">ABOUT</a>
+                      <Link to="/about">ABOUT</Link>
                     </li>
                     <li>
-                      <a href="">ITEMS</a>
+                      <Link to="/items">ITEMS</Link>
                     </li>
                     <li>
-                      <a href="">PAGES</a>
-                    </li>
-                    <li>
-                      <a href="">CONTACT</a>
+                      <Link to="/contact">CONTACT</Link>
                     </li>
                   </ModalUl>
                 </div>
