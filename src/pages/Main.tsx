@@ -1,5 +1,5 @@
 // import React from "react";
-import Header from "../components/Header";
+// import Header from "../components/Header";
 import Delivery from "../components/mian-page-components/Delivery";
 import MainHero from "../components/mian-page-components/MainHero";
 import MainPageBlog from "../components/mian-page-components/MainPageBlog";
@@ -14,7 +14,7 @@ import SpecialManu from "../components/mian-page-components/SpecialManu";
 const Main = () => {
   return (
     <div>
-      <Header />
+      {/* <Header /> */}
       <MainHero />
       <PopularIntems />
       <MainPageBlog />
