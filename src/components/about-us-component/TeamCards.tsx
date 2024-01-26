@@ -9,7 +9,11 @@ import {
   faLinkedinIn,
 } from "@fortawesome/free-brands-svg-icons";
 
-const TeamCards = ({ img, title }) => {
+interface TeamCardsProps {
+  img: string;
+  title: string;
+}
+const TeamCards: React.FC<TeamCardsProps> = ({ img, title }) => {
   return (
     <div>
       <Information>

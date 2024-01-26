@@ -53,4 +53,9 @@ const CardsWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
+  @media (max-width: 1150px) {
+    column-gap: 50px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 `;
