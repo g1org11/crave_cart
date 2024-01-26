@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import Blog from "../../assets/about-us/blog.png";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
