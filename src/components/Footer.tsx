@@ -67,7 +67,7 @@ const FooterContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-top: 85px;
+
   h1 {
     font-size: 35px;
     font-style: normal;
