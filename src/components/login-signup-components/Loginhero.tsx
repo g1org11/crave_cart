@@ -1,24 +1,18 @@
-// import React from "react";
-import hero from "../../assets/contact/image_contact_bg.png";
+import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
+import hero from "../../assets/login/loginhero.png";
 
-const ContactHero = () => {
+const LoginHero = () => {
   return (
     <Container>
       <div>
-        <h1>CONTACT US</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eius mod tempor incididunt
-          ut labore et dolore magna.
-        </p>
+        <h1>My Account</h1>
       </div>
     </Container>
   );
 };
-
-export default ContactHero;
-
+export default LoginHero;
 const Container = styled.div`
   width: 100%;
   height: 280px;
@@ -37,23 +31,12 @@ const Container = styled.div`
     font-weight: 700;
     line-height: normal;
     color: ${defaultTheme.colors.floralwhite};
-    margin-bottom: 10px;
   }
-  p {
-    max-width: 500px;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    color: ${defaultTheme.colors.floralwhite};
-  }
+
   @media (max-width: 768px) {
     padding: 0 50px;
     h1 {
       font-size: 30px;
-    }
-    p {
-      font-size: 16px;
     }
   }
 `;

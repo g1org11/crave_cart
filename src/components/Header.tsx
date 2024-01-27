@@ -94,7 +94,9 @@ const Header = () => {
             )}
           </Icons>
 
-          <Login href="">LOGIN</Login>
+          <Login>
+            <Link to="Login-SignUp">LOGIN</Link>
+          </Login>
         </NavAndInfo>
       </MainHeader>
     </div>
@@ -235,17 +237,19 @@ const Cart = styled.div`
     color: ${defaultTheme.colors.floralwhite};
   }
 `;
-const Login = styled.a`
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  padding: 9px 19px;
-  background-color: ${defaultTheme.colors.red};
-  color: ${defaultTheme.colors.floralwhite};
-  border-radius: 10px;
-  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.25);
-  text-decoration: none;
+const Login = styled.div`
+  a {
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    padding: 9px 19px;
+    background-color: ${defaultTheme.colors.red};
+    color: ${defaultTheme.colors.floralwhite};
+    border-radius: 10px;
+    box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.25);
+    text-decoration: none;
+  }
 `;
 const Icons = styled.div`
   display: flex;
