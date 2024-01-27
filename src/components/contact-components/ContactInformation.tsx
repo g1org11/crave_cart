@@ -17,9 +17,9 @@ const ContactInformation = () => {
   return (
     <Container>
       <div>
-        <div>
+        <Addrees>
           <h1>ADDRESS</h1>
-          <div>
+          <AddressInfo>
             <div>
               <img src={location} alt="location" />
               <span>28 Seventh Avenue, Neew York, 10014</span>
@@ -32,15 +32,15 @@ const ContactInformation = () => {
               <img src={email} alt="phone" />
               <span>resturents@gmail.com</span>
             </div>
-          </div>
-        </div>
-        <div>
+          </AddressInfo>
+        </Addrees>
+        <WorkingHours>
           <h1>WORKING HOURS</h1>
           <div>
             <img src={whatch} alt="watch" />
             <span>7:30 am to 9:30pm on Weekdays</span>
           </div>
-        </div>
+        </WorkingHours>
         <div>
           <h1>FOLLOW US</h1>
           <Icons>
@@ -60,7 +60,7 @@ const ContactInformation = () => {
           </Icons>
         </div>
       </div>
-      <div>
+      <IframeDiv>
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23642.491047820058!2d42.17797255257476!3d42.207789145495724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x405c540482872587%3A0xb63670b21d6a34b1!2sAbasha!5e0!3m2!1sen!2sge!4v1706288662964!5m2!1sen!2sge"
           width="600"
@@ -70,7 +70,7 @@ const ContactInformation = () => {
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
         ></iframe>
-      </div>
+      </IframeDiv>
     </Container>
   );
 };
@@ -83,6 +83,8 @@ const Container = styled.div`
   justify-content: space-around;
   gap: 30px;
   margin-top: 30px;
+  margin-bottom: 100px;
+  padding: 0 100px;
   h1 {
     font-size: 35px;
     font-style: normal;
@@ -90,15 +92,78 @@ const Container = styled.div`
     line-height: normal;
     color: ${defaultTheme.colors.red};
   }
+  span {
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: ${defaultTheme.colors.blue};
+    &:hover {
+      color: ${defaultTheme.colors.red};
+    }
+  }
+  img {
+    margin-right: 8px;
+  }
+  @media (max-width: 1150px) {
+    flex-direction: column;
+  }
+  @media (max-width: 950px) {
+    text-align: center;
+  }
+  @media (max-width: 768px) {
+    padding: 0 50px;
+  }
+`;
+const Addrees = styled.div`
+  margin-bottom: 44px;
+`;
+const AddressInfo = styled.div`
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 17px;
+  margin-top: 11px;
+  margin-left: 17px;
+  @media (max-width: 950px) {
+    align-items: center;
+  }
+`;
+const WorkingHours = styled.div`
+  margin-bottom: 36px;
+  div {
+    margin-top: 15px;
+    margin-left: 17px;
+  }
 `;
 const Icons = styled.div`
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
-  gap: 33px;
-  margin-top: 42px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: left;
+  gap: 40px;
+  margin-top: 16px;
 
   svg {
     color: ${defaultTheme.colors.red};
+  }
+  @media (max-width: 950px) {
+    align-items: center;
+    justify-content: center;
+  }
+`;
+const IframeDiv = styled.div`
+  iframe {
+    @media (max-width: 1150px) {
+      width: 400px;
+    }
+    @media (max-width: 950px) {
+      width: 600px;
+    }
+    @media (max-width: 650px) {
+      width: 500px;
+    }
+    @media (max-width: 530px) {
+      width: 400px;
+    }
   }
 `;
