@@ -9,9 +9,9 @@ const Login = () => {
         <Card>
           <h1>Login</h1>
           <p>Username or email address *</p>
-          <input type="text" />
+          <Input type="text" />
           <p>Password *</p>
-          <input type="password" />
+          <Input type="password" />
 
           <button>Log in</button>
 
@@ -22,9 +22,12 @@ const Login = () => {
         <Card>
           <h1>Register</h1>
           <p>Email address *</p>
-          <input type="email" />
+          <Input type="email" />
           <p>Password *</p>
-          <input type="password" />
+          <Input type="password" />
+          <CheckBox>
+            <input type="checkbox" /> <p>Admin</p>
+          </CheckBox>
           <button>Register</button>
         </Card>
       </Cards>
@@ -74,13 +77,7 @@ const Cards = styled.div`
     color: ${defaultTheme.colors.red};
     margin-bottom: 10px;
   }
-  input {
-    width: 300px;
-    height: 50px;
-    border-radius: 10px;
-    border: 2px solid ${defaultTheme.colors.red};
-    margin-bottom: 15px;
-  }
+
   button {
     width: 150px;
     font-size: 25px;
@@ -101,5 +98,30 @@ const Cards = styled.div`
     color: ${defaultTheme.colors.green};
     text-decoration: none;
     margin-top: 15px;
+  }
+`;
+const Input = styled.input`
+  width: 300px;
+  height: 50px;
+  border-radius: 10px;
+  border: 2px solid ${defaultTheme.colors.red};
+  margin-bottom: 15px;
+`;
+const CheckBox = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: left;
+  margin-bottom: 15px;
+
+  input {
+    width: 50px;
+  }
+  p {
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: ${defaultTheme.colors.red};
+    margin-bottom: 10px;
   }
 `;
