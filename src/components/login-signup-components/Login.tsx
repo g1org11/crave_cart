@@ -1,62 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 
 const Login = () => {
+  // State for login form
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
+  // Update state for login form
+  const handleLoginEmailChange = (e: { target: { value: React.SetStateAction<string> } }) => {
+    setLoginEmail(e.target.value);
+  };
+
+  const handleLoginPasswordChange = (e: { target: { value: React.SetStateAction<string> } }) => {
+    setLoginPassword(e.target.value);
+  };
+
+  // Handle login button click
+  const handleLogin = () => {
+    // Implement logic to send login request to the server
+    console.log("Logging in with:", loginEmail, loginPassword);
+    // Call your authentication API here
+  };
+
   return (
-    <Container>
-      <Cards>
-        <Card>
-          <h1>Login</h1>
-          <p>Username or email address *</p>
-          <Input type="text" />
-          <p>Password *</p>
-          <Input type="password" />
+    <Cards>
+      <Card>
+        <h1>Login</h1>
+        <p>Username or email address *</p>
+        <Input type="email" value={loginEmail} onChange={handleLoginEmailChange} />
+        <p>Password *</p>
+        <Input type="password" value={loginPassword} onChange={handleLoginPasswordChange} />
 
-          <button>Log in</button>
+        <button onClick={handleLogin}>Log in</button>
 
-          <a href="">Lost your password?</a>
-        </Card>
-      </Cards>
-      <Cards>
-        <Card>
-          <h1>Register</h1>
-          <p>Email address *</p>
-          <Input type="email" />
-          <p>Password *</p>
-          <Input type="password" />
-          <CheckBox>
-            <input type="checkbox" /> <p>Admin</p>
-          </CheckBox>
-          <button>Register</button>
-        </Card>
-      </Cards>
-    </Container>
+        <a href="/forgot-password">Lost your password?</a>
+      </Card>
+    </Cards>
   );
 };
 
 export default Login;
 
-const Container = styled.div`
-  display: flex;
-  align-items: top;
-  justify-content: space-around;
-  gap: 30px;
-  margin-top: 35px;
-  margin-bottom: 75px;
-  padding: 0 100px;
-  @media (max-width: 768px) {
-    flex-direction: column-reverse;
-    align-items: center;
-    padding: 0 50px;
-  }
-`;
+// Styled components remain unchanged
+
 const Card = styled.div`
   display: flex;
   align-items: top;
   flex-direction: column;
 `;
-const Cards = styled.div`
+const Cards = styled.form`
   display: flex;
   align-items: top;
   justify-content: left;
@@ -106,22 +99,15 @@ const Input = styled.input`
   border-radius: 10px;
   border: 2px solid ${defaultTheme.colors.red};
   margin-bottom: 15px;
-`;
-const CheckBox = styled.div`
-  display: flex;
-  align-items: baseline;
-  justify-content: left;
-  margin-bottom: 15px;
 
-  input {
-    width: 50px;
-  }
-  p {
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    color: ${defaultTheme.colors.red};
-    margin-bottom: 10px;
+  /* Remove spinners for number inputs */
+  -moz-appearance: textfield;
+  appearance: textfield;
+
+  /* Webkit browsers like Chrome and Safari */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 `;
