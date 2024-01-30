@@ -3,10 +3,14 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+
+const JWT_SECRET =
+  "sdnn88^%$fwufnwiwmifnA8NUSNFn82828idwjndwindiwndBYGvyV781ybYGBbniNIN!!@#$HG%%45181818";
 
 const mongourl =
   "mongodb+srv://khoshtariagiorgi1:restaurant-12345@cluster0.karxje0.mongodb.net/restaurant";
@@ -35,6 +39,27 @@ app.post("/SignUp", async (req, res) => {
     res.send({ status: "ok" });
   } catch (error) {
     res.send({ status: "error" });
+  }
+});
+
+app.post("/Login-user", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const existingUser = await user.findOne({ email }); // Use the 'user' model, not 'User'
+    if (!existingUser) {
+      return res.json({ error: "User Not Found" });
+    }
+
+    if (await bcrypt.compare(password, existingUser.password)) {
+      const token = jwt.sign({}, JWT_SECRET);
+      res.json({ status: "ok", data: token });
+    } else {
+      res.json({ status: "error", error: "Invalid password" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.json({ status: "error", error: "Internal server error" });
   }
 });
 

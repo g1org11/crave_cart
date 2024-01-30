@@ -22,13 +22,13 @@ const Login = () => {
     setLoginPassword("");
   };
   // Handle login button click
-  const handleLogin = (e) => {
+  const handleLogin = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     // Implement logic to send login request to the server
     console.log("Logging in with:", loginEmail, loginPassword);
 
     // Assume there is a server endpoint for login (replace with your actual API endpoint)
-    fetch("http://localhost:5000/Login", {
+    fetch("http://localhost:5000/Login-user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,19 +42,7 @@ const Login = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.success) {
-          // Successful login
-          setLoginError("");
-          console.log("Login successful!");
-        } else {
-          // Failed login
-          setLoginError("Invalid email or password");
-          console.log("Login failed");
-        }
-      })
-      .catch((error) => {
-        console.error("Error during login:", error);
-        setLoginError("Server error");
+        console.log(data, "userregister");
       });
 
     handlereset();
