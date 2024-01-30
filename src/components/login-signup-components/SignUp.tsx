@@ -8,26 +8,68 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
+
+  // State for validation errors
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+
   // Update state for registration form
   const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+
+    // Email validation using a regular expression
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    setEmailError(emailRegex.test(newEmail) ? "" : "Invalid email address");
   };
 
-  function handlePhoneNumberChange(e) {
-    setPhone(e.target.value);
-  }
+  const handlePhoneNumberChange = (e) => {
+    const newPhone = e.target.value;
+
+    // Remove non-numeric characters from the input
+    const numericPhone = newPhone.replace(/\D/g, ""); // \D matches non-digit characters
+
+    setPhone(numericPhone);
+
+    // Phone number validation using a regular expression
+    const phoneRegex = /^[0-9]{10}$/;
+
+    setPhoneError(phoneRegex.test(numericPhone) ? "" : "Invalid phone number");
+  };
 
   const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+
+    // Password validation
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
+    setPasswordError(passwordRegex.test(newPassword) ? "" : "Invalid password");
   };
 
   const handleAdminChange = (e) => {
     setIsAdmin(e.target.checked);
   };
 
+  const handleReset = () => {
+    setEmail("");
+    setIsAdmin(false);
+    setPassword("");
+    setPhone("");
+    setEmailError("");
+    setPasswordError("");
+    setPhoneError("");
+  };
+
   // Handle registration button click
   const handleRegister = (e) => {
     e.preventDefault(); // Prevent default form submission
+
+    if (!email || !password || !phone) {
+      alert("Please fill in all required fields");
+      return;
+    }
+
     // Implement logic to send registration request to the server
     console.log("Registering with:", email, password, phone, isAdmin);
     // Call your registration API
@@ -50,17 +92,39 @@ const SignUp = () => {
       .then((data) => {
         console.log(data, "userRegister");
       });
+
+    handleReset();
   };
+
   return (
     <Cards onSubmit={handleRegister}>
       <Card>
         <h1>Register</h1>
         <p>Email address *</p>
-        <Input type="email" value={email} onChange={handleEmailChange} />
+        <Input
+          type="email"
+          value={email}
+          onChange={handleEmailChange}
+          className={emailError ? "error" : ""}
+        />
+
+        {emailError && <ErrorMessage> {emailError}</ErrorMessage>}
         <p>Password *</p>
-        <Input type="password" value={password} onChange={handlePasswordChange} />
+        <Input
+          type="password"
+          value={password}
+          onChange={handlePasswordChange}
+          className={passwordError ? "error" : ""}
+        />
+        {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
         <p>Phone Number *</p>
-        <Input type="number" value={phone} onChange={handlePhoneNumberChange} />
+        <Input
+          type="tel"
+          value={phone}
+          onChange={handlePhoneNumberChange}
+          className={phoneError ? "error" : ""}
+        />
+        {phoneError && <ErrorMessage>{phoneError}</ErrorMessage>}
         <CheckBox>
           <input type="checkbox" checked={isAdmin} onChange={handleAdminChange} /> <p>Admin</p>
         </CheckBox>
@@ -71,11 +135,13 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
 const Card = styled.div`
   display: flex;
   align-items: top;
   flex-direction: column;
 `;
+
 const Cards = styled.form`
   display: flex;
   align-items: top;
@@ -89,7 +155,7 @@ const Cards = styled.form`
     color: ${defaultTheme.colors.red};
     margin-bottom: 15px;
   }
-  P {
+  p {
     font-size: 18px;
     font-style: normal;
     font-weight: 400;
@@ -120,6 +186,7 @@ const Cards = styled.form`
     margin-top: 15px;
   }
 `;
+
 const Input = styled.input`
   width: 300px;
   height: 50px;
@@ -136,6 +203,10 @@ const Input = styled.input`
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+
+  &.error {
+    border-color: ${defaultTheme.colors.red};
   }
 `;
 
@@ -156,4 +227,11 @@ const CheckBox = styled.div`
     color: ${defaultTheme.colors.red};
     margin-bottom: 10px;
   }
+`;
+
+const ErrorMessage = styled.div`
+  font-size: 14px;
+  color: ${defaultTheme.colors.red};
+  margin-top: -10px;
+  margin-bottom: 10px;
 `;
