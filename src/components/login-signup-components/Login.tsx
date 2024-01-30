@@ -6,6 +6,7 @@ const Login = () => {
   // State for login form
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [loginError, setLoginError] = useState("");
 
   // Update state for login form
   const handleLoginEmailChange = (e: { target: { value: React.SetStateAction<string> } }) => {
@@ -16,11 +17,47 @@ const Login = () => {
     setLoginPassword(e.target.value);
   };
 
+  const handlereset = () => {
+    setLoginEmail("");
+    setLoginPassword("");
+  };
   // Handle login button click
-  const handleLogin = () => {
+  const handleLogin = (e) => {
+    e.preventDefault();
     // Implement logic to send login request to the server
     console.log("Logging in with:", loginEmail, loginPassword);
-    // Call your authentication API here
+
+    // Assume there is a server endpoint for login (replace with your actual API endpoint)
+    fetch("http://localhost:5000/Login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        email: loginEmail,
+        password: loginPassword,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          // Successful login
+          setLoginError("");
+          console.log("Login successful!");
+        } else {
+          // Failed login
+          setLoginError("Invalid email or password");
+          console.log("Login failed");
+        }
+      })
+      .catch((error) => {
+        console.error("Error during login:", error);
+        setLoginError("Server error");
+      });
+
+    handlereset();
   };
 
   return (

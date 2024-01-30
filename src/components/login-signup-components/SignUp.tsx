@@ -19,9 +19,9 @@ const SignUp = () => {
     const newEmail = e.target.value;
     setEmail(newEmail);
 
-    // Email validation using a regular expression
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    setEmailError(emailRegex.test(newEmail) ? "" : "Invalid email address");
+    // // Email validation using a regular expression
+    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // setEmailError(emailRegex.test(newEmail) ? "" : "Invalid email address");
   };
 
   const handlePhoneNumberChange = (e) => {
@@ -32,19 +32,19 @@ const SignUp = () => {
 
     setPhone(numericPhone);
 
-    // Phone number validation using a regular expression
-    const phoneRegex = /^[0-9]{10}$/;
+    // // Phone number validation using a regular expression
+    // const phoneRegex = /^[0-9]{10}$/;
 
-    setPhoneError(phoneRegex.test(numericPhone) ? "" : "Invalid phone number");
+    // setPhoneError(phoneRegex.test(numericPhone) ? "" : "Invalid phone number");
   };
 
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
 
-    // Password validation
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
-    setPasswordError(passwordRegex.test(newPassword) ? "" : "Invalid password");
+    // // Password validation
+    // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
+    // setPasswordError(passwordRegex.test(newPassword) ? "" : "Invalid password");
   };
 
   const handleAdminChange = (e) => {

@@ -2,7 +2,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-
+const bcrypt = require("bcrypt");
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -18,10 +18,17 @@ const user = mongoose.model("registration");
 app.post("/SignUp", async (req, res) => {
   console.log("Received registration request:", req.body);
   const { email, password, phone, isAdmin } = req.body;
+
+  const encryptedpassword = await bcrypt.hash(password, 10);
   try {
+    const oldUser = await user.findOne({ email }).exec();
+    if (oldUser) {
+      return res.json({ error: "User Exists" });
+    }
+
     await user.create({
       email,
-      password,
+      password: encryptedpassword, // Store the encrypted password
       phone,
       isAdmin,
     });
@@ -30,6 +37,7 @@ app.post("/SignUp", async (req, res) => {
     res.send({ status: "error" });
   }
 });
+
 app.listen(5000, () => {
   console.log("server started");
 });
