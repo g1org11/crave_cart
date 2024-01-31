@@ -11,6 +11,7 @@ import Items from "./pages/Items";
 import Contact from "./pages/Contact";
 import LoginSignUp from "./pages/LoginSignup";
 import { AuthProvider } from "./components/login-signup-components/AuthContext";
+import ForgotPassword from "./pages/ForgotPassword";
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
             <Route path="/items" element={<Items />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/Login-SignUp" element={<LoginSignUp />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/Login_SignUp" element={<LoginSignUp />} />
           </Routes>
           <Footer />
         </Router>
