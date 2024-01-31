@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
+import { useAuth } from "./AuthContext";
 
 const Login = () => {
   // State for login form
@@ -8,22 +9,33 @@ const Login = () => {
   const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState("");
 
+  const { login } = useAuth();
+
   // Update state for login form
-  const handleLoginEmailChange = (e: { target: { value: React.SetStateAction<string> } }) => {
+  const handleLoginEmailChange = (e) => {
     setLoginEmail(e.target.value);
   };
 
-  const handleLoginPasswordChange = (e: { target: { value: React.SetStateAction<string> } }) => {
+  const handleLoginPasswordChange = (e) => {
     setLoginPassword(e.target.value);
   };
 
   const handlereset = () => {
     setLoginEmail("");
     setLoginPassword("");
+    setLoginError(""); // Reset the login error message
   };
+
   // Handle login button click
-  const handleLogin = (e: { preventDefault: () => void }) => {
+  const handleLogin = (e) => {
     e.preventDefault();
+
+    // Check if email and password are not empty
+    if (!loginEmail.trim() || !loginPassword.trim()) {
+      setLoginError("Please enter both email and password");
+      return;
+    }
+
     // Implement logic to send login request to the server
     console.log("Logging in with:", loginEmail, loginPassword);
 
@@ -45,6 +57,10 @@ const Login = () => {
         console.log(data, "userregister");
       });
 
+    // Perform login only if fields are not empty
+    login();
+
+    // Reset form fields
     handlereset();
   };
 
@@ -58,6 +74,8 @@ const Login = () => {
         <Input type="password" value={loginPassword} onChange={handleLoginPasswordChange} />
 
         <button onClick={handleLogin}>Log in</button>
+
+        {loginError && <ErrorText>{loginError}</ErrorText>}
 
         <a href="/forgot-password">Lost your password?</a>
       </Card>
@@ -74,6 +92,7 @@ const Card = styled.div`
   align-items: top;
   flex-direction: column;
 `;
+
 const Cards = styled.form`
   display: flex;
   align-items: top;
@@ -118,6 +137,7 @@ const Cards = styled.form`
     margin-top: 15px;
   }
 `;
+
 const Input = styled.input`
   width: 300px;
   height: 50px;
@@ -135,4 +155,10 @@ const Input = styled.input`
     -webkit-appearance: none;
     margin: 0;
   }
+`;
+
+const ErrorText = styled.p`
+  color: ${defaultTheme.colors.red};
+  margin-top: 10px;
+  font-size: 16px;
 `;

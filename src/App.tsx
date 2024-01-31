@@ -10,22 +10,25 @@ import About from "./pages/About";
 import Items from "./pages/Items";
 import Contact from "./pages/Contact";
 import LoginSignUp from "./pages/LoginSignup";
+import { AuthProvider } from "./components/login-signup-components/AuthContext";
 
 function App() {
   return (
     <div>
-      <Router>
-        <GlobalStyles />
-        <Header />
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/items" element={<Items />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/Login-SignUp" element={<LoginSignUp />} />
-        </Routes>
-        <Footer />
-      </Router>
+      <AuthProvider>
+        <Router>
+          <GlobalStyles />
+          <Header />
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/items" element={<Items />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/Login-SignUp" element={<LoginSignUp />} />
+          </Routes>
+          <Footer />
+        </Router>
+      </AuthProvider>
     </div>
   );
 }
