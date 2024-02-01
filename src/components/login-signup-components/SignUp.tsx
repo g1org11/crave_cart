@@ -14,6 +14,7 @@ const SignUp = () => {
   const [passwordError, setPasswordError] = useState("");
   const [phoneError, setPhoneError] = useState("");
 
+  const [showPassword, setShowPassword] = useState(false);
   // Update state for registration form
   const handleEmailChange = (e) => {
     const newEmail = e.target.value;
@@ -50,7 +51,9 @@ const SignUp = () => {
   const handleAdminChange = (e) => {
     setIsAdmin(e.target.checked);
   };
-
+  const handleShowPasswordToggle = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
   const handleReset = () => {
     setEmail("");
     setIsAdmin(false);
@@ -111,11 +114,15 @@ const SignUp = () => {
         {emailError && <ErrorMessage> {emailError}</ErrorMessage>}
         <p>Password *</p>
         <Input
-          type="password"
+          type={showPassword ? "text" : "password"}
           value={password}
           onChange={handlePasswordChange}
           className={passwordError ? "error" : ""}
         />
+        <ShowPassword>
+          <input type="checkbox" onChange={handleShowPasswordToggle} />
+          <p>Show Password</p>
+        </ShowPassword>
         {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
         <p>Phone Number *</p>
         <Input
@@ -234,4 +241,12 @@ const ErrorMessage = styled.div`
   color: ${defaultTheme.colors.red};
   margin-top: -10px;
   margin-bottom: 10px;
+`;
+
+const ShowPassword = styled.div`
+  display: flex;
+  align-items: baseline;
+  p {
+    margin-left: 10px;
+  }
 `;

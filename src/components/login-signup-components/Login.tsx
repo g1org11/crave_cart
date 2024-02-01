@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import { useAuth } from "./AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   // State for login form
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const { login } = useAuth();
-
+  const navigate = useNavigate();
   // Update state for login form
   const handleLoginEmailChange = (e: { target: { value: React.SetStateAction<string> } }) => {
     setLoginEmail(e.target.value);
@@ -20,7 +21,9 @@ const Login = () => {
   const handleLoginPasswordChange = (e: { target: { value: React.SetStateAction<string> } }) => {
     setLoginPassword(e.target.value);
   };
-
+  const handleShowPasswordToggle = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
   const handlereset = () => {
     setLoginEmail("");
     setLoginPassword("");
@@ -29,7 +32,7 @@ const Login = () => {
   const handleLogin = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     // Implement logic to send login request to the server
-    console.log("Logging in with:", loginEmail, loginPassword);
+    console.log("Logging in with:", loginEmail, showPassword ? loginPassword : "********");
 
     // Assume there is a server endpoint for login (replace with your actual API endpoint)
     fetch("http://localhost:5000/Login-user", {
@@ -52,6 +55,7 @@ const Login = () => {
     login();
 
     handlereset();
+    navigate("/");
   };
 
   return (
@@ -61,7 +65,15 @@ const Login = () => {
         <p>Username or email address *</p>
         <Input type="email" value={loginEmail} onChange={handleLoginEmailChange} />
         <p>Password *</p>
-        <Input type="password" value={loginPassword} onChange={handleLoginPasswordChange} />
+        <Input
+          type={showPassword ? "text" : "password"}
+          value={loginPassword}
+          onChange={handleLoginPasswordChange}
+        />
+        <ShowPassword>
+          <input type="checkbox" onChange={handleShowPasswordToggle} />
+          <p>Show Password</p>
+        </ShowPassword>
 
         <button onClick={handleLogin}>Log in</button>
 
@@ -146,4 +158,12 @@ const ErrorText = styled.p`
   color: ${defaultTheme.colors.red};
   margin-top: 10px;
   font-size: 16px;
+`;
+
+const ShowPassword = styled.div`
+  display: flex;
+  align-items: baseline;
+  p {
+    margin-left: 10px;
+  }
 `;
