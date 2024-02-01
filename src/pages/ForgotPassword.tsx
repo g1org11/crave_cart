@@ -1,23 +1,122 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../defaultTheme";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
+  const [email, setEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const handleShowPasswordToggle = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
+  const reset = () => {
+    setEmail("");
+    setNewPassword("");
+    setRepeatPassword("");
+    setShowPassword("");
+  };
+  const handlePasswordChange = async () => {
+    try {
+      // Validate email
+      if (!email) {
+        alert("Please enter your email.");
+        return;
+      }
+
+      // Validate new password
+      if (!newPassword || newPassword.length < 8) {
+        alert("Please enter a new password with at least 8 characters.");
+        return;
+      }
+
+      // Validate repeat password
+      if (newPassword !== repeatPassword) {
+        alert("Passwords do not match.");
+        return;
+      }
+      console.log("reset with ", email, newPassword, repeatPassword);
+      // Send reset password request to the server
+      const response = await fetch("http://localhost:5000/reset-password-request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Email sent successfully
+        alert("Password reset email sent. Check your email for further instructions.");
+        const resetToken = data.resetToken; // Assuming the server returns the reset token
+
+        // Now, send the reset token and the new password to update the password
+        const updateResponse = await fetch("http://localhost:5000/reset-password", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ resetToken, newPassword, repeatPassword }),
+        });
+
+        const updateData = await updateResponse.json();
+
+        if (updateResponse.ok) {
+          // Password updated successfully
+          alert("Password updated successfully.");
+        } else {
+          // Display an error message
+          alert(`Error updating password: ${updateData.error}`);
+        }
+      } else {
+        // Display an error message
+        alert(`Error: ${data.error}`);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred. Please try again later.");
+    }
+
+    reset();
+    navigate("/Login_SignUp");
+  };
+
   return (
     <Container>
       <div>
         <h1>Change Password</h1>
+
+        <p>Email Password</p>
+        <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         <p>New password</p>
-        <input type="password" />
+        <Input
+          type={showPassword ? "text" : "password"}
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+        />
+
         <p>Repeat password</p>
-        <input type="password" />
-        <button>Change</button>
-        <Link to="/Login_SignUp"> Go Back</Link>
+        <Input
+          type={showPassword ? "text" : "password"}
+          value={repeatPassword}
+          onChange={(e) => setRepeatPassword(e.target.value)}
+        />
+        <ShowPassword>
+          <input type="checkbox" onChange={handleShowPasswordToggle} />
+          <p>Show Password</p>
+        </ShowPassword>
+        <button onClick={handlePasswordChange}>Change</button>
+        <Link to="/Login_SignUp">Go Back</Link>
       </div>
     </Container>
   );
 };
+
 export default ForgotPassword;
 const Container = styled.div`
   display: flex;
@@ -57,24 +156,7 @@ const Container = styled.div`
     border: 0;
     border-radius: 10px;
   }
-  input {
-    width: 300px;
-    height: 50px;
-    border-radius: 10px;
-    border: 2px solid ${defaultTheme.colors.red};
-    margin-bottom: 15px;
 
-    /* Remove spinners for number inputs */
-    -moz-appearance: textfield;
-    appearance: textfield;
-
-    /* Webkit browsers like Chrome and Safari */
-    &::-webkit-outer-spin-button,
-    &::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-  }
   a {
     font-size: 25px;
     font-style: normal;
@@ -83,5 +165,31 @@ const Container = styled.div`
     color: ${defaultTheme.colors.green};
     text-decoration: none;
     margin-top: 15px;
+  }
+`;
+const Input = styled.input`
+  width: 300px;
+  height: 50px;
+  border-radius: 10px;
+  border: 2px solid ${defaultTheme.colors.red};
+  margin-bottom: 15px;
+
+  /* Remove spinners for number inputs */
+  -moz-appearance: textfield;
+  appearance: textfield;
+
+  /* Webkit browsers like Chrome and Safari */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+`;
+const ShowPassword = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  p {
+    margin-left: 10px;
   }
 `;

@@ -29,12 +29,17 @@ const Login = () => {
     setLoginPassword("");
   };
   // Handle login button click
-  const handleLogin = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    // Implement logic to send login request to the server
-    console.log("Logging in with:", loginEmail, showPassword ? loginPassword : "********");
 
-    // Assume there is a server endpoint for login (replace with your actual API endpoint)
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    // Log the data being sent in the fetch request
+    console.log(
+      "Sending login request with:",
+      loginEmail,
+      showPassword ? loginPassword : "********"
+    );
+
     fetch("http://localhost:5000/Login-user", {
       method: "POST",
       headers: {
@@ -49,20 +54,30 @@ const Login = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        // Log the data received from the server
         console.log(data, "userregister");
+
+        if (data.status === "ok") {
+          // Login successful
+          login();
+          handlereset();
+          navigate("/");
+        } else {
+          // Login failed, handle the error (display error message, etc.)
+          alert("Invalid email or password");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred. Please try again later.");
       });
-
-    login();
-
-    handlereset();
-    navigate("/");
   };
 
   return (
     <Cards>
       <Card>
         <h1>Login</h1>
-        <p>Username or email address *</p>
+        <p>Email address *</p>
         <Input type="email" value={loginEmail} onChange={handleLoginEmailChange} />
         <p>Password *</p>
         <Input
