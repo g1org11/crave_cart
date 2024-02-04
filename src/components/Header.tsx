@@ -1,6 +1,6 @@
 // import React from "react";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { defaultTheme } from "../defaultTheme";
 import watch from "../assets/header/watch_icon.svg";
 import phone from "../assets/header/phone_icon.svg";
@@ -14,6 +14,7 @@ import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons/faArrowRightFromBracket";
 import { IconProps } from "./interface";
 import { Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { useAuth } from "./login-signup-components/AuthContext";
 
@@ -22,11 +23,26 @@ const Header = () => {
   const [showProfile, setShowProfile] = useState(false);
   const { isAuthenticated, logout } = useAuth();
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    setShowProfile(false);
+    setShowMenu(false);
+    localStorage.setItem("showProfile", JSON.stringify(false));
+    localStorage.setItem("showMenu", JSON.stringify(false));
+  }, [location.pathname]);
+
   const toggleMenu = () => {
-    setShowMenu(!showMenu);
+    const newShowMenu = !showMenu;
+    setShowMenu(newShowMenu);
+    localStorage.setItem("showMenu", JSON.stringify(newShowMenu));
   };
+
   const toggleProfile = () => {
-    setShowProfile(!showProfile);
+    const newShowProfile = !showProfile;
+    setShowProfile(newShowProfile);
+    localStorage.setItem("showProfile", JSON.stringify(newShowProfile));
   };
   return (
     <div>
@@ -113,7 +129,7 @@ const Header = () => {
                 <ProfielModal>
                   <div>
                     <FontAwesomeIcon icon={faUser} size="xl" />
-                    <a href="#">Profile</a>
+                    <Link to={"/profile"}>Profile</Link>
                   </div>
                   <div>
                     <FontAwesomeIcon icon={faHeart} size="xl" />

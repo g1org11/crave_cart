@@ -17,7 +17,7 @@ const ForgotPassword = () => {
     setEmail("");
     setNewPassword("");
     setRepeatPassword("");
-    setShowPassword("");
+    setShowPassword(false);
   };
   const handlePasswordChange = async () => {
     try {

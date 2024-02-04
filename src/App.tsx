@@ -12,6 +12,7 @@ import Contact from "./pages/Contact";
 import LoginSignUp from "./pages/LoginSignup";
 import { AuthProvider } from "./components/login-signup-components/AuthContext";
 import ForgotPassword from "./pages/ForgotPassword";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="/Login-SignUp" element={<LoginSignUp />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/Login_SignUp" element={<LoginSignUp />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
           <Footer />
         </Router>
