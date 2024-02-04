@@ -82,7 +82,8 @@ app.post("/reset-password-request", async (req, res) => {
       return res.json({ status: "error", error: "User Not Found" });
     }
 
-    const resetToken = jwt.sign({}, JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ userId: existingUser._id, email: existingUser.email }, JWT_SECRET);
+    res.json({ status: "ok", data: token });
 
     userModel.resetToken = resetToken;
     userModel.resetTokenExpiration = new Date() + 3600000; // 1 hour
@@ -96,31 +97,32 @@ app.post("/reset-password-request", async (req, res) => {
 });
 
 app.post("/reset-password", async (req, res) => {
-  const { resetToken, newPassword, repeatPassword } = req.body;
+  const { resetToken, newPassword } = req.body;
 
   try {
-    const userModel = await user.findOne({
+    const userDocument = await user.findOne({
       resetToken,
       resetTokenExpiration: { $gt: new Date() },
     });
 
-    if (!userModel) {
+    if (!userDocument) {
       return res.json({ status: "error", error: "Invalid or expired token" });
     }
 
-    if (newPassword !== repeatPassword) {
-      return res.json({ status: "error", error: "Passwords do not match" });
-    }
+    // Update the password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    userModel.password = await bcrypt.hash(newPassword, 10);
-    userModel.resetToken = undefined;
-    userModel.resetTokenExpiration = undefined;
+    // Update the document
+    userDocument.password = hashedPassword;
+    userDocument.resetToken = null;
+    userDocument.resetTokenExpiration = null;
 
-    await userModel.save();
+    await userDocument.save();
 
+    console.log("Password updated successfully");
     res.json({ status: "ok" });
   } catch (error) {
-    console.error(error);
+    console.error("Error:", error);
     res.json({ status: "error", error: "Internal server error" });
   }
 });

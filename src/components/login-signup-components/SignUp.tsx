@@ -16,7 +16,7 @@ const SignUp = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   // Update state for registration form
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e: { target: { value: any } }) => {
     const newEmail = e.target.value;
     setEmail(newEmail);
 
@@ -25,7 +25,7 @@ const SignUp = () => {
     // setEmailError(emailRegex.test(newEmail) ? "" : "Invalid email address");
   };
 
-  const handlePhoneNumberChange = (e) => {
+  const handlePhoneNumberChange = (e: { target: { value: any } }) => {
     const newPhone = e.target.value;
 
     // Remove non-numeric characters from the input
@@ -39,7 +39,7 @@ const SignUp = () => {
     // setPhoneError(phoneRegex.test(numericPhone) ? "" : "Invalid phone number");
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e: { target: { value: any } }) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
 
@@ -48,7 +48,9 @@ const SignUp = () => {
     // setPasswordError(passwordRegex.test(newPassword) ? "" : "Invalid password");
   };
 
-  const handleAdminChange = (e) => {
+  const handleAdminChange = (e: {
+    target: { checked: boolean | ((prevState: boolean) => boolean) };
+  }) => {
     setIsAdmin(e.target.checked);
   };
   const handleShowPasswordToggle = () => {
@@ -65,7 +67,7 @@ const SignUp = () => {
   };
 
   // Handle registration button click
-  const handleRegister = (e) => {
+  const handleRegister = (e: { preventDefault: () => void }) => {
     e.preventDefault(); // Prevent default form submission
 
     if (!email || !password || !phone) {

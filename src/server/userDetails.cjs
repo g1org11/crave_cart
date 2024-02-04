@@ -20,6 +20,8 @@ const UserDetailsSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
     },
+    resetToken: String,
+    resetTokenExpiration: Date,
   },
   {
     collection: "registration",

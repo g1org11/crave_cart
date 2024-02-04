@@ -30,15 +30,13 @@ const Login = () => {
   };
   // Handle login button click
 
-  const handleLogin = (e) => {
+  // Inside the handleLogin function in the Login component
+  // Inside the handleLogin function in the Login component
+  const handleLogin = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    // Log the data being sent in the fetch request
-    console.log(
-      "Sending login request with:",
-      loginEmail,
-      showPassword ? loginPassword : "********"
-    );
+    // Log the password before sending the request
+    console.log("Sending login request with:", loginEmail, loginPassword);
 
     fetch("http://localhost:5000/Login-user", {
       method: "POST",
@@ -54,17 +52,14 @@ const Login = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        // Log the data received from the server
         console.log(data, "userregister");
 
         if (data.status === "ok") {
-          // Login successful
           login();
           handlereset();
           navigate("/");
         } else {
-          // Login failed, handle the error (display error message, etc.)
-          alert("Invalid email or password");
+          alert(`Login failed: ${data.error}`);
         }
       })
       .catch((error) => {

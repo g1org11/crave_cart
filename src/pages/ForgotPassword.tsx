@@ -39,11 +39,12 @@ const ForgotPassword = () => {
         return;
       }
       console.log("reset with ", email, newPassword, repeatPassword);
-      // Send reset password request to the server
       const response = await fetch("http://localhost:5000/reset-password-request", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({ email }),
       });
@@ -51,30 +52,27 @@ const ForgotPassword = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Email sent successfully
         alert("Password reset email sent. Check your email for further instructions.");
-        const resetToken = data.resetToken; // Assuming the server returns the reset token
+        const resetToken = data.resetToken;
 
-        // Now, send the reset token and the new password to update the password
         const updateResponse = await fetch("http://localhost:5000/reset-password", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
           },
-          body: JSON.stringify({ resetToken, newPassword, repeatPassword }),
+          body: JSON.stringify({ resetToken, newPassword }),
         });
 
         const updateData = await updateResponse.json();
 
         if (updateResponse.ok) {
-          // Password updated successfully
           alert("Password updated successfully.");
         } else {
-          // Display an error message
           alert(`Error updating password: ${updateData.error}`);
         }
       } else {
-        // Display an error message
         alert(`Error: ${data.error}`);
       }
     } catch (error) {
