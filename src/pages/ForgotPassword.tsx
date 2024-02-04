@@ -171,7 +171,10 @@ const Input = styled.input`
   border-radius: 10px;
   border: 2px solid ${defaultTheme.colors.red};
   margin-bottom: 15px;
-
+  font-size: 25px;
+  line-height: 29px;
+  padding-left: 15px;
+  color: ${defaultTheme.colors.blue};
   /* Remove spinners for number inputs */
   -moz-appearance: textfield;
   appearance: textfield;
