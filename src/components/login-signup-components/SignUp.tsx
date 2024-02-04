@@ -14,8 +14,9 @@ const SignUp = () => {
   const [passwordError, setPasswordError] = useState("");
   const [phoneError, setPhoneError] = useState("");
 
+  const [showPassword, setShowPassword] = useState(false);
   // Update state for registration form
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e: { target: { value: any } }) => {
     const newEmail = e.target.value;
     setEmail(newEmail);
 
@@ -24,7 +25,7 @@ const SignUp = () => {
     // setEmailError(emailRegex.test(newEmail) ? "" : "Invalid email address");
   };
 
-  const handlePhoneNumberChange = (e) => {
+  const handlePhoneNumberChange = (e: { target: { value: any } }) => {
     const newPhone = e.target.value;
 
     // Remove non-numeric characters from the input
@@ -38,7 +39,7 @@ const SignUp = () => {
     // setPhoneError(phoneRegex.test(numericPhone) ? "" : "Invalid phone number");
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e: { target: { value: any } }) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
 
@@ -47,10 +48,14 @@ const SignUp = () => {
     // setPasswordError(passwordRegex.test(newPassword) ? "" : "Invalid password");
   };
 
-  const handleAdminChange = (e) => {
+  const handleAdminChange = (e: {
+    target: { checked: boolean | ((prevState: boolean) => boolean) };
+  }) => {
     setIsAdmin(e.target.checked);
   };
-
+  const handleShowPasswordToggle = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
   const handleReset = () => {
     setEmail("");
     setIsAdmin(false);
@@ -62,7 +67,7 @@ const SignUp = () => {
   };
 
   // Handle registration button click
-  const handleRegister = (e) => {
+  const handleRegister = (e: { preventDefault: () => void }) => {
     e.preventDefault(); // Prevent default form submission
 
     if (!email || !password || !phone) {
@@ -111,11 +116,15 @@ const SignUp = () => {
         {emailError && <ErrorMessage> {emailError}</ErrorMessage>}
         <p>Password *</p>
         <Input
-          type="password"
+          type={showPassword ? "text" : "password"}
           value={password}
           onChange={handlePasswordChange}
           className={passwordError ? "error" : ""}
         />
+        <ShowPassword>
+          <input type="checkbox" onChange={handleShowPasswordToggle} />
+          <p>Show Password</p>
+        </ShowPassword>
         {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
         <p>Phone Number *</p>
         <Input
@@ -193,6 +202,10 @@ const Input = styled.input`
   border-radius: 10px;
   border: 2px solid ${defaultTheme.colors.red};
   margin-bottom: 15px;
+  font-size: 25px;
+  line-height: 29px;
+  padding-left: 15px;
+  color: ${defaultTheme.colors.blue};
 
   /* Remove spinners for number inputs */
   -moz-appearance: textfield;
@@ -234,4 +247,12 @@ const ErrorMessage = styled.div`
   color: ${defaultTheme.colors.red};
   margin-top: -10px;
   margin-bottom: 10px;
+`;
+
+const ShowPassword = styled.div`
+  display: flex;
+  align-items: baseline;
+  p {
+    margin-left: 10px;
+  }
 `;

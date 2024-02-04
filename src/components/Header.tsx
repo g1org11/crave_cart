@@ -1,6 +1,6 @@
 // import React from "react";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { defaultTheme } from "../defaultTheme";
 import watch from "../assets/header/watch_icon.svg";
 import phone from "../assets/header/phone_icon.svg";
@@ -9,14 +9,40 @@ import cart from "../assets/header/cart.svg";
 import moto from "../assets/header/moto.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons/faArrowRightFromBracket";
 import { IconProps } from "./interface";
 import { Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+
+import { useAuth } from "./login-signup-components/AuthContext";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+  const { isAuthenticated, logout } = useAuth();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    setShowProfile(false);
+    setShowMenu(false);
+    localStorage.setItem("showProfile", JSON.stringify(false));
+    localStorage.setItem("showMenu", JSON.stringify(false));
+  }, [location.pathname]);
 
   const toggleMenu = () => {
-    setShowMenu(!showMenu);
+    const newShowMenu = !showMenu;
+    setShowMenu(newShowMenu);
+    localStorage.setItem("showMenu", JSON.stringify(newShowMenu));
+  };
+
+  const toggleProfile = () => {
+    const newShowProfile = !showProfile;
+    setShowProfile(newShowProfile);
+    localStorage.setItem("showProfile", JSON.stringify(newShowProfile));
   };
   return (
     <div>
@@ -94,9 +120,41 @@ const Header = () => {
             )}
           </Icons>
 
-          <Login>
+          {isAuthenticated ? (
+            <div>
+              <User onClick={toggleProfile}>
+                <FontAwesomeIcon icon={faUser} size="2xl" />
+              </User>
+              {showProfile && (
+                <ProfielModal>
+                  <div>
+                    <FontAwesomeIcon icon={faUser} size="xl" />
+                    <Link to={"/profile"}>Profile</Link>
+                  </div>
+                  <div>
+                    <FontAwesomeIcon icon={faHeart} size="xl" />
+                    <a href="#">Wishlist</a>
+                  </div>
+                  <div>
+                    <FontAwesomeIcon icon={faCartShopping} size="xl" />
+                    <a href="#">My Cart</a>
+                  </div>
+                  <LogOut onClick={logout}>
+                    <FontAwesomeIcon icon={faArrowRightFromBracket} size="xl" />
+                    <a href="#">Logout</a>
+                  </LogOut>
+                </ProfielModal>
+              )}
+            </div>
+          ) : (
+            <Login>
+              <Link to="Login-SignUp">LOGIN</Link>
+            </Login>
+          )}
+          {/* <Login>
             <Link to="Login-SignUp">LOGIN</Link>
           </Login>
+          <User></User> */}
         </NavAndInfo>
       </MainHeader>
     </div>
@@ -300,6 +358,39 @@ const ModalDiv = styled.div`
   }
 `;
 
+const User = styled.div`
+  cursor: pointer;
+  svg {
+    color: ${defaultTheme.colors.red};
+  }
+`;
+
+const LogOut = styled.div``;
+
+const ProfielModal = styled.div`
+  width: 300px;
+  padding: 10px;
+  position: absolute;
+  top: 80%;
+  right: 5%;
+  background-color: ${defaultTheme.colors.floralwhite};
+
+  svg {
+    color: ${defaultTheme.colors.red};
+    margin-right: 15px;
+  }
+  div {
+    padding: 5px 0;
+    a {
+      text-decoration: none;
+      font-size: 25px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      color: ${defaultTheme.colors.blue};
+    }
+  }
+`;
 // const ModalLi = styled.li`
 //   font-size: 12px;
 //   font-style: normal;

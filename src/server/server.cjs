@@ -42,23 +42,87 @@ app.post("/SignUp", async (req, res) => {
   }
 });
 
+// Inside /Login-user endpoint
 app.post("/Login-user", async (req, res) => {
+  console.log("Received login request:", req.body);
   const { email, password } = req.body;
 
   try {
-    const existingUser = await user.findOne({ email }); // Use the 'user' model, not 'User'
+    const existingUser = await user.findOne({ email });
+    console.log("Existing User:", existingUser);
+
     if (!existingUser) {
-      return res.json({ error: "User Not Found" });
+      return res.json({ status: "error", error: "User Not Found" });
     }
 
-    if (await bcrypt.compare(password, existingUser.password)) {
+    const passwordMatch = await bcrypt.compare(password, existingUser.password);
+    console.log("Password Match:", passwordMatch);
+
+    if (passwordMatch) {
       const token = jwt.sign({}, JWT_SECRET);
+      console.log("Login Successful. Sending token:", token);
       res.json({ status: "ok", data: token });
     } else {
-      res.json({ status: "error", error: "Invalid password" });
+      console.log("Invalid Password");
+      res.json({ status: "error", error: "Invalid email or password" });
     }
   } catch (error) {
     console.error(error);
+    res.json({ status: "error", error: "Internal server error" });
+  }
+});
+
+app.post("/reset-password-request", async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const userModel = await user.findOne({ email });
+
+    if (!userModel) {
+      return res.json({ status: "error", error: "User Not Found" });
+    }
+
+    const token = jwt.sign({ userId: existingUser._id, email: existingUser.email }, JWT_SECRET);
+    res.json({ status: "ok", data: token });
+
+    userModel.resetToken = resetToken;
+    userModel.resetTokenExpiration = new Date() + 3600000; // 1 hour
+    await userModel.save();
+
+    res.json({ status: "ok", resetToken });
+  } catch (error) {
+    console.error(error);
+    res.json({ status: "error", error: "Internal server error" });
+  }
+});
+
+app.post("/reset-password", async (req, res) => {
+  const { resetToken, newPassword } = req.body;
+
+  try {
+    const userDocument = await user.findOne({
+      resetToken,
+      resetTokenExpiration: { $gt: new Date() },
+    });
+
+    if (!userDocument) {
+      return res.json({ status: "error", error: "Invalid or expired token" });
+    }
+
+    // Update the password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the document
+    userDocument.password = hashedPassword;
+    userDocument.resetToken = null;
+    userDocument.resetTokenExpiration = null;
+
+    await userDocument.save();
+
+    console.log("Password updated successfully");
+    res.json({ status: "ok" });
+  } catch (error) {
+    console.error("Error:", error);
     res.json({ status: "error", error: "Internal server error" });
   }
 });
@@ -76,7 +140,6 @@ mongoose
     console.log("connected to database");
   })
   .catch((e) => console.log(e));
-
 // app.post("/post", async (req, res) => {
 //   console.log(req.body);
 //   const { data } = req.body;

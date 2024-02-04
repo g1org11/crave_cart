@@ -1,13 +1,18 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
+import { useAuth } from "./AuthContext";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   // State for login form
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
+  const { login } = useAuth();
+  const navigate = useNavigate();
   // Update state for login form
   const handleLoginEmailChange = (e: { target: { value: React.SetStateAction<string> } }) => {
     setLoginEmail(e.target.value);
@@ -16,18 +21,23 @@ const Login = () => {
   const handleLoginPasswordChange = (e: { target: { value: React.SetStateAction<string> } }) => {
     setLoginPassword(e.target.value);
   };
-
+  const handleShowPasswordToggle = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
   const handlereset = () => {
     setLoginEmail("");
     setLoginPassword("");
   };
   // Handle login button click
+
+  // Inside the handleLogin function in the Login component
+  // Inside the handleLogin function in the Login component
   const handleLogin = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    // Implement logic to send login request to the server
-    console.log("Logging in with:", loginEmail, loginPassword);
 
-    // Assume there is a server endpoint for login (replace with your actual API endpoint)
+    // Log the password before sending the request
+    console.log("Sending login request with:", loginEmail, loginPassword);
+
     fetch("http://localhost:5000/Login-user", {
       method: "POST",
       headers: {
@@ -43,23 +53,41 @@ const Login = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data, "userregister");
-      });
 
-    handlereset();
+        if (data.status === "ok") {
+          login();
+          handlereset();
+          navigate("/");
+        } else {
+          alert(`Login failed: ${data.error}`);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred. Please try again later.");
+      });
   };
 
   return (
     <Cards>
       <Card>
         <h1>Login</h1>
-        <p>Username or email address *</p>
+        <p>Email address *</p>
         <Input type="email" value={loginEmail} onChange={handleLoginEmailChange} />
         <p>Password *</p>
-        <Input type="password" value={loginPassword} onChange={handleLoginPasswordChange} />
+        <Input
+          type={showPassword ? "text" : "password"}
+          value={loginPassword}
+          onChange={handleLoginPasswordChange}
+        />
+        <ShowPassword>
+          <input type="checkbox" onChange={handleShowPasswordToggle} />
+          <p>Show Password</p>
+        </ShowPassword>
 
         <button onClick={handleLogin}>Log in</button>
 
-        <a href="/forgot-password">Lost your password?</a>
+        <Link to="/forgot-password">Lost your password?</Link>
       </Card>
     </Cards>
   );
@@ -124,7 +152,10 @@ const Input = styled.input`
   border-radius: 10px;
   border: 2px solid ${defaultTheme.colors.red};
   margin-bottom: 15px;
-
+  font-size: 25px;
+  line-height: 29px;
+  padding-left: 15px;
+  color: ${defaultTheme.colors.blue};
   /* Remove spinners for number inputs */
   -moz-appearance: textfield;
   appearance: textfield;
@@ -134,5 +165,18 @@ const Input = styled.input`
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+`;
+const ErrorText = styled.p`
+  color: ${defaultTheme.colors.red};
+  margin-top: 10px;
+  font-size: 16px;
+`;
+
+const ShowPassword = styled.div`
+  display: flex;
+  align-items: baseline;
+  p {
+    margin-left: 10px;
   }
 `;
