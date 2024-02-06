@@ -1,14 +1,80 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import profileimg from "../assets/profile/profile_image.png";
 import styled from "styled-components";
 import { defaultTheme } from "../defaultTheme";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 const Profile = () => {
+  const [profileData, setProfileData] = useState({
+    email: "",
+    phone: "",
+    fullName: "",
+    professionalTitle: "",
+    age: 0,
+    about: "",
+    contactNumber: "",
+    country: "",
+    postcode: 0,
+    city: "",
+    fullAddress: "",
+  });
+  useEffect(() => {
+    // Fetch user profile data from server and update state
+    // You may need to implement a backend endpoint to fetch profile data
+    // Example: /get-profile-data
+    // Update the URL and headers as needed
+    fetch("/get-profile-data", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // Set the received profile data in the state
+        setProfileData(data);
+
+        // If email and phone are present in the data, set them in the state
+        if (data.email && data.phone) {
+          setProfileData((prevData) => ({
+            ...prevData,
+            email: data.email,
+            phone: data.phone,
+          }));
+          // Store email and phone in localStorage
+          localStorage.setItem("email", data.email);
+          localStorage.setItem("phone", data.phone);
+        }
+      })
+
+      .catch((error) => console.error("Error fetching profile data:", error));
+  }, []); // Run once on component mount
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setProfileData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Submit the updated profile data to the server
+    // Example: /update-profile
+    // Update the URL and headers as needed
+    fetch("http://localhost:5000/update-profile", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(profileData),
+    }).catch((error) => console.error("Error updating profile:", error));
+  };
   return (
     <Container>
       <Wrapper>
         <UserInfo>
-          <img src={profileimg} alt="" />
+          <FontAwesomeIcon icon={faUser} size="2xl" />
           <h3>username</h3>
           <p>job</p>
         </UserInfo>
@@ -22,24 +88,32 @@ const Profile = () => {
           </ul>
         </ProfileManu>
       </Wrapper>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <h1>BASIC INFORMATION</h1>
         <UserName>
           <Label>User Full Name*</Label>
-          <input type="text" />
+          <input
+            type="text"
+            name="fullName"
+            value={profileData.fullName}
+            onChange={handleInputChange}
+          />
         </UserName>
-
         <JobAge>
           <div>
             <Label>Professional title*</Label>
-            <input type="text" />
+            <input
+              type="text"
+              name="professionalTitle"
+              value={profileData.professionalTitle}
+              onChange={handleInputChange}
+            />
           </div>
           <div>
             <Label>Age*</Label>
-            <input type="number" />
+            <input type="number" name="age" value={profileData.age} onChange={handleInputChange} />
           </div>
         </JobAge>
-
         <div>
           <Label>About</Label>
           <About>
@@ -52,34 +126,60 @@ const Profile = () => {
           </About>
         </div>
         <h1>CONTACT INFORMATION</h1>
+
         <MainForm>
           <div>
             <Label>Contact Number</Label>
-            <input type="tel" />
+            <input
+              type="tel"
+              name="contactNumber"
+              value={profileData.contactNumber}
+              onChange={handleInputChange}
+            />
           </div>
           <div>
             <Label>Email Address</Label>
-            <input type="email" />
+            <input
+              type="email"
+              name="email" // Assuming your email field is present in the profileData
+              value={profileData.email}
+              onChange={handleInputChange}
+            />
           </div>
           <div>
             <Label>Country</Label>
-            <input type="text" />
+            <input
+              type="text"
+              name="country"
+              value={profileData.country}
+              onChange={handleInputChange}
+            />
           </div>
           <div>
             <Label>Postcode</Label>
-            <input type="number" />
+            <input
+              type="number"
+              name="postcode"
+              value={profileData.postcode}
+              onChange={handleInputChange}
+            />
           </div>
           <div>
             <Label>City</Label>
-            <input type="text" />
+            <input type="text" name="city" value={profileData.city} onChange={handleInputChange} />
           </div>
           <div>
             <Label>Full Address</Label>
-            <input type="text" />
+            <input
+              type="text"
+              name="fullAddress"
+              value={profileData.fullAddress}
+              onChange={handleInputChange}
+            />
           </div>
         </MainForm>
         <SubmmitButoon>
-          <button>Save Setting</button>
+          <button type="submit">Save Setting</button>
         </SubmmitButoon>
       </Form>
     </Container>

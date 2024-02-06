@@ -1,11 +1,11 @@
 // userDetails.js
+
 const mongoose = require("mongoose");
 
 const UserDetailsSchema = new mongoose.Schema(
   {
     email: {
       type: String,
-
       unique: true,
     },
     password: {
@@ -22,6 +22,17 @@ const UserDetailsSchema = new mongoose.Schema(
     },
     resetToken: String,
     resetTokenExpiration: Date,
+
+    // New profile fields
+    fullName: String,
+    professionalTitle: String,
+    age: Number,
+
+    contactNumber: String,
+    country: String,
+    postcode: Number,
+    city: String,
+    fullAddress: String,
   },
   {
     collection: "registration",

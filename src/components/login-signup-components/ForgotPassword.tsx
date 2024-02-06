@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { defaultTheme } from "../defaultTheme";
+import { defaultTheme } from "../../defaultTheme";
 import { Link, useNavigate } from "react-router-dom";
+import withAuthData from "./Forgot";
 
-const ForgotPassword = () => {
+const ForgotPassword = ({ userData }) => {
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
@@ -12,14 +13,15 @@ const ForgotPassword = () => {
   const handleShowPasswordToggle = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
-
   const reset = () => {
     setEmail("");
     setNewPassword("");
     setRepeatPassword("");
     setShowPassword(false);
   };
-  const handlePasswordChange = async () => {
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
+
     try {
       // Validate email
       if (!email) {
@@ -38,13 +40,13 @@ const ForgotPassword = () => {
         alert("Passwords do not match.");
         return;
       }
-      console.log("reset with ", email, newPassword, repeatPassword);
+
+      // Fetch reset password request
       const response = await fetch("http://localhost:5000/reset-password-request", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           accept: "application/json",
-          "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify({ email }),
       });
@@ -52,40 +54,44 @@ const ForgotPassword = () => {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Password reset email sent. Check your email for further instructions.");
-        const resetToken = data.resetToken;
+        console.log(data); // Log response data if needed
+        alert("Password reset request successful.");
+        reset(); // Reset form fields
+        navigate("/Login_SignUp"); // Navigate to login/signup page
 
-        const updateResponse = await fetch("http://localhost:5000/reset-password", {
+        // Fetch password reset
+        const resetResponse = await fetch(`http://localhost:5000/reset-password/${userData.id}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             accept: "application/json",
-            "Access-Control-Allow-Origin": "*",
           },
-          body: JSON.stringify({ resetToken, newPassword }),
+          body: JSON.stringify({ newPassword }), // Send the new password to reset
         });
 
-        const updateData = await updateResponse.json();
+        const resetData = await resetResponse.json();
 
-        if (updateResponse.ok) {
-          alert("Password updated successfully.");
+        if (resetResponse.ok) {
+          // Log reset response data if needed
+          alert("Password reset successful.");
         } else {
-          alert(`Error updating password: ${updateData.error}`);
+          // Handle errors returned from the server for password reset
+          console.log(resetData.error);
+          alert("An error occurred during password reset. Please try again later.");
         }
       } else {
-        alert(`Error: ${data.error}`);
+        // Handle errors returned from the server for password request
+        console.log(data.error);
+        alert("An error occurred. Please try again later.");
       }
     } catch (error) {
       console.error("Error:", error);
       alert("An error occurred. Please try again later.");
     }
-
-    reset();
-    navigate("/Login_SignUp");
   };
 
   return (
-    <Container>
+    <Container onSubmit={handlePasswordChange}>
       <div>
         <h1>Change Password</h1>
 
@@ -108,15 +114,15 @@ const ForgotPassword = () => {
           <input type="checkbox" onChange={handleShowPasswordToggle} />
           <p>Show Password</p>
         </ShowPassword>
-        <button onClick={handlePasswordChange}>Change</button>
+        <button>Change</button>
         <Link to="/Login_SignUp">Go Back</Link>
       </div>
     </Container>
   );
 };
 
-export default ForgotPassword;
-const Container = styled.div`
+export default withAuthData(ForgotPassword);
+const Container = styled.form`
   display: flex;
   align-items: center;
   flex-direction: column;

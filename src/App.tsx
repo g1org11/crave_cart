@@ -11,7 +11,7 @@ import Items from "./pages/Items";
 import Contact from "./pages/Contact";
 import LoginSignUp from "./pages/LoginSignup";
 import { AuthProvider } from "./components/login-signup-components/AuthContext";
-import ForgotPassword from "./pages/ForgotPassword";
+import ForgotPassword from "./components/login-signup-components/ForgotPassword";
 import Profile from "./pages/Profile";
 
 function App() {
