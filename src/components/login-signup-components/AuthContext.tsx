@@ -11,6 +11,7 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userData, setUserData] = useState<{ id: string; email: string } | null>(null); // Initialize userData state
 
   useEffect(() => {
     // Check localStorage for authentication state on component mount
@@ -20,11 +21,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const login = () => {
+  const login = (userData: { id: string; email: string }) => {
     // Implement your login logic here
     // Set isAuthenticated to true if login is successful
     setIsAuthenticated(true);
+    setUserData(userData); // Set userData when user logs in
     // Save authentication state to localStorage
+
     localStorage.setItem("isAuthenticated", JSON.stringify(true));
   };
 
@@ -32,12 +35,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Implement your logout logic here
     // Set isAuthenticated to false
     setIsAuthenticated(false);
+    setUserData(null);
     // Remove authentication state from localStorage
     localStorage.removeItem("isAuthenticated");
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, userData }}>
       {children}
     </AuthContext.Provider>
   );

@@ -12,6 +12,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const { login } = useAuth();
+
   const navigate = useNavigate();
   // Update state for login form
   const handleLoginEmailChange = (e: { target: { value: React.SetStateAction<string> } }) => {
@@ -55,7 +56,8 @@ const Login = () => {
         console.log(data, "userregister");
 
         if (data.status === "ok") {
-          login();
+          login(data);
+
           handlereset();
           navigate("/");
         } else {
@@ -69,7 +71,7 @@ const Login = () => {
   };
 
   return (
-    <Cards>
+    <Cards onSubmit={handleLogin}>
       <Card>
         <h1>Login</h1>
         <p>Email address *</p>
@@ -85,7 +87,7 @@ const Login = () => {
           <p>Show Password</p>
         </ShowPassword>
 
-        <button onClick={handleLogin}>Log in</button>
+        <button>Log in</button>
 
         <Link to="/forgot-password">Lost your password?</Link>
       </Card>
