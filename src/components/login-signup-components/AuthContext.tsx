@@ -1,18 +1,30 @@
 // AuthContext.js
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from "react";
 
 interface AuthContextProps {
   isAuthenticated: boolean;
   login: () => void;
   logout: () => void;
+  userData: {
+    id: string;
+    email: string;
+  };
+  setUserData: Dispatch<SetStateAction<{ id: string; email: string }>>;
 }
 
-const AuthContext = createContext<AuthContextProps | undefined>(undefined);
+export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userData, setUserData] = useState<{ id: string; email: string } | null>(null); // Initialize userData state
-
+  console.log(userData, "authcontecxt");
   useEffect(() => {
     // Check localStorage for authentication state on component mount
     const storedAuthState = localStorage.getItem("isAuthenticated");
@@ -41,7 +53,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, userData }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, userData, setUserData }}>
       {children}
     </AuthContext.Provider>
   );

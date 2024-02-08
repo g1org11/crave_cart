@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import { Link, useNavigate } from "react-router-dom";
-import withAuthData from "./Forgot";
+// import withAuthData from "./Forgot";
+import { AuthContext } from "./AuthContext";
 
-const ForgotPassword = ({ userData }) => {
+const ForgotPassword = () => {
+  const { userData } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  // console.log(userData, "forgotPassword");
   const navigate = useNavigate();
   const handleShowPasswordToggle = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -19,7 +22,7 @@ const ForgotPassword = ({ userData }) => {
     setRepeatPassword("");
     setShowPassword(false);
   };
-  const handlePasswordChange = async (e) => {
+  const handlePasswordChange = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     try {
@@ -48,42 +51,11 @@ const ForgotPassword = ({ userData }) => {
           "Content-Type": "application/json",
           accept: "application/json",
         },
-        body: JSON.stringify({ email }),
-      });
+        body: JSON.stringify({ email, newPassword }),
+      }).then((data) => console.log(data));
 
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log(data); // Log response data if needed
-        alert("Password reset request successful.");
-        reset(); // Reset form fields
-        navigate("/Login_SignUp"); // Navigate to login/signup page
-
-        // Fetch password reset
-        const resetResponse = await fetch(`http://localhost:5000/reset-password/${userData.id}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            accept: "application/json",
-          },
-          body: JSON.stringify({ newPassword }), // Send the new password to reset
-        });
-
-        const resetData = await resetResponse.json();
-
-        if (resetResponse.ok) {
-          // Log reset response data if needed
-          alert("Password reset successful.");
-        } else {
-          // Handle errors returned from the server for password reset
-          console.log(resetData.error);
-          alert("An error occurred during password reset. Please try again later.");
-        }
-      } else {
-        // Handle errors returned from the server for password request
-        console.log(data.error);
-        alert("An error occurred. Please try again later.");
-      }
+      reset();
+      navigate("/Login_SignUp");
     } catch (error) {
       console.error("Error:", error);
       alert("An error occurred. Please try again later.");
@@ -121,7 +93,7 @@ const ForgotPassword = ({ userData }) => {
   );
 };
 
-export default withAuthData(ForgotPassword);
+export default ForgotPassword;
 const Container = styled.form`
   display: flex;
   align-items: center;

@@ -78,73 +78,28 @@ app.post("/Login-user", async (req, res) => {
 });
 
 app.post("/reset-password-request", async (req, res) => {
-  const { email } = req.body;
+  const { email, newPassword } = req.body;
+  console.log(email, newPassword);
+
+  const userModel = await user.findOne({ email });
+
+  if (!userModel) {
+    return res.json({ status: "error", error: "User Not Found" });
+  }
+
+  const NewPassword = await bcrypt.hash(newPassword, 10);
+  userModel.password = NewPassword;
 
   try {
-    const userModel = await user.findOne({ email });
-
-    if (!userModel) {
-      return res.json({ status: "error", error: "User Not Found" });
-    }
-    const secret = JWT_SECRET + userModel.password;
-    const token = jwt.sign({ userId: userModel._id, email: userModel.email }, secret, {
-      expiresIn: "10m",
-    });
-
-    res.json({ status: "ok", token });
-  } catch (error) {
-    console.error(error);
-    res.json({ status: "error", error: "Internal server error" });
-  }
-});
-
-app.get("/reset-password/:id", async (req, res) => {
-  const { token, id } = req.params;
-
-  console.log(req.params);
-  const oldUser = await user.findOne({ _id: id });
-  if (!oldUser) {
-    return res.json({ status: "User NOt Exists!!" });
-  }
-  const secret = JWT_SECRET + oldUser.password;
-  try {
-    const verify = jwt.verify(token, secret);
-    res.send("verify");
-  } catch (error) {
-    console.log(error);
-    res.send("Not verify");
-  }
-});
-app.post("/reset-password/:id", async (req, res) => {
-  const { token, id } = req.params;
-  const { newPassword } = req.body;
-  // console.log(newPassword);
-
-  const oldUser = await user.findOne({ _id: id });
-  if (!oldUser) {
-    return res.json({ status: "User NOt Exists!!" });
-  }
-  const secret = JWT_SECRET + oldUser.password;
-  try {
-    const verify = jwt.verify(token, secret);
-    const NewPassword = await bcrypt.hash(newPassword, 10);
-    await user.updateOne(
-      {
-        _id: id,
-      },
-      {
-        $set: {
-          password: NewPassword,
-        },
-      }
-    );
-
+    await userModel.save();
     res.json({ status: "Password Updated" });
   } catch (error) {
-    console.log(error);
-    res.send("Something went wrong");
+    res.json({ status: "Something Wrong" });
   }
+
+  // res.json({ status: "ok" });
 });
+app.get("/contactInfo/:id", async (req, res) => {});
 
 // app.get("/get-profile-data", async (req, res) => {
 //   try {
