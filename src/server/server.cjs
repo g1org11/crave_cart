@@ -8,12 +8,20 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+const session = require("express-session");
 
 const JWT_SECRET =
   "sdnn88^%$fwufnwiwmifnA8NUSNFn82828idwjndwindiwndBYGvyV781ybYGBbniNIN!!@#$HG%%45181818";
 
 const mongourl =
   "mongodb+srv://khoshtariagiorgi1:restaurant-12345@cluster0.karxje0.mongodb.net/restaurant";
+app.use(
+  session({
+    secret: JWT_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 require("./userDetails.cjs");
 
@@ -45,12 +53,11 @@ app.post("/SignUp", async (req, res) => {
 // Inside /Login-user endpoint
 app.post("/Login-user", async (req, res) => {
   console.log("Received login request:", req.body);
-  const { email, password } = req.body;
+  const { email, password, phone } = req.body;
 
   try {
     const existingUser = await user.findOne({ email });
     console.log("Existing User:", existingUser);
-
     if (!existingUser) {
       return res.json({ status: "error", error: "User Not Found" });
     }
@@ -59,13 +66,20 @@ app.post("/Login-user", async (req, res) => {
     console.log("Password Match:", passwordMatch);
 
     if (passwordMatch) {
-      const token = jwt.sign({}, JWT_SECRET);
+      const token = jwt.sign({ userId: existingUser._id }, JWT_SECRET); // Include userId in the token
       console.log("Login Successful. Sending token:", token);
+      // Store MongoDB ID in session
+      req.session.userId = existingUser._id;
+      // Also store user ID in the user document
+      existingUser.userId = existingUser._id;
+      console.log("userId from server", existingUser.userId);
+      await existingUser.save();
       res.json({
         status: "ok",
         data: token,
-        id: existingUser.id,
+        id: existingUser.userId,
         email: existingUser.email,
+        phone: existingUser.phone,
       });
     } else {
       console.log("Invalid Password");
@@ -78,105 +92,104 @@ app.post("/Login-user", async (req, res) => {
 });
 
 app.post("/reset-password-request", async (req, res) => {
-  const { email } = req.body;
+  const { email, newPassword } = req.body;
+  console.log(email, newPassword);
+
+  const userModel = await user.findOne({ email });
+
+  if (!userModel) {
+    return res.json({ status: "error", error: "User Not Found" });
+  }
+
+  const NewPassword = await bcrypt.hash(newPassword, 10);
+  userModel.password = NewPassword;
 
   try {
-    const userModel = await user.findOne({ email });
-
-    if (!userModel) {
-      return res.json({ status: "error", error: "User Not Found" });
-    }
-    const secret = JWT_SECRET + userModel.password;
-    const token = jwt.sign({ userId: userModel._id, email: userModel.email }, secret, {
-      expiresIn: "10m",
-    });
-
-    res.json({ status: "ok", token });
-  } catch (error) {
-    console.error(error);
-    res.json({ status: "error", error: "Internal server error" });
-  }
-});
-
-app.get("/reset-password/:id", async (req, res) => {
-  const { token, id } = req.params;
-
-  console.log(req.params);
-  const oldUser = await user.findOne({ _id: id });
-  if (!oldUser) {
-    return res.json({ status: "User NOt Exists!!" });
-  }
-  const secret = JWT_SECRET + oldUser.password;
-  try {
-    const verify = jwt.verify(token, secret);
-    res.send("verify");
-  } catch (error) {
-    console.log(error);
-    res.send("Not verify");
-  }
-});
-app.post("/reset-password/:id", async (req, res) => {
-  const { token, id } = req.params;
-  const { newPassword } = req.body;
-  // console.log(newPassword);
-
-  const oldUser = await user.findOne({ _id: id });
-  if (!oldUser) {
-    return res.json({ status: "User NOt Exists!!" });
-  }
-  const secret = JWT_SECRET + oldUser.password;
-  try {
-    const verify = jwt.verify(token, secret);
-    const NewPassword = await bcrypt.hash(newPassword, 10);
-    await user.updateOne(
-      {
-        _id: id,
-      },
-      {
-        $set: {
-          password: NewPassword,
-        },
-      }
-    );
-
+    await userModel.save();
     res.json({ status: "Password Updated" });
   } catch (error) {
-    console.log(error);
-    res.send("Something went wrong");
+    res.json({ status: "Something Wrong" });
   }
+
+  // res.json({ status: "ok" });
 });
 
-// app.get("/get-profile-data", async (req, res) => {
-//   try {
-//     // Fetch user profile data from the database
-//     const userProfile = await user.findById(userId, "-password -resetToken -resetTokenExpiration");
-
-//     res.json(userProfile);
-//   } catch (error) {
-//     console.error("Error fetching profile data:", error);
-//     res.status(500).json({ status: "error", error: "Internal server error" });
+// const extractUserId = (req, res, next) => {
+//   const token = req.headers.authorization;
+//   if (token) {
+//     jwt.verify(token, JWT_SECRET, (err, decoded) => {
+//       if (err) {
+//         console.error("Failed to authenticate token:", err);
+//         return res.status(401).json({ status: "error", message: "Unauthorized" });
+//       }
+//       req.user = decoded;
+//       next();
+//     });
+//   } else {
+//     return res.status(401).json({ status: "error", message: "Unauthorized" });
 //   }
-// });
+// };
 
-// app.post("/update-profile", async (req, res) => {
-//   try {
-//     // Extract user ID from the token (you may need to adjust this based on your token structure)
-//     const userId = req.user.userId;
+// Apply middleware to /get-profile-data endpoint
+app.get("/get-profile-data/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
 
-//     // Update user profile data in the database
-//     await user.findByIdAndUpdate(userId, req.body);
+    // Check if user is authenticated
+    const token = req.headers.authorization.split(" ")[1];
+    jwt.verify(token, JWT_SECRET, async (err, decoded) => {
+      if (err || decoded.userId !== userId) {
+        return res.status(401).json({ status: "error", message: "Unauthorized" });
+      }
 
-//     res.json({ status: "ok", message: "Profile updated successfully" });
-//   } catch (error) {
-//     console.error("Error updating profile:", error);
-//     res.status(500).json({ status: "error", error: "Internal server error" });
-//   }
-// });
+      // Query the database using the user ID
+      try {
+        const userProfile = await user.findById(userId, "-password");
+        if (!userProfile) {
+          return res.status(404).json({ status: "error", message: "User profile not found" });
+        }
+        res.json(userProfile);
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+        res.status(500).json({ status: "error", message: "Internal server error" });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching profile data:", error);
+    res.status(500).json({ status: "error", message: "Internal server error" });
+  }
+});
+// Route to update user profile data
+// Inside server.js
+
+// Route to update user profile data
+app.post("/update-profile/:userId", async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const updatedProfileData = req.body; // Assuming entire updated profile data is sent in the request body
+
+    // Retrieve the existing user profile
+    let userProfile = await user.findById(userId);
+    if (!userProfile) {
+      return res.status(404).json({ status: "error", message: "User profile not found" });
+    }
+
+    // Update the entire user profile object with the received data
+    userProfile.set(updatedProfileData);
+
+    // Save the updated user profile
+    await userProfile.save();
+
+    res.json({ status: "ok", message: "Profile updated successfully" });
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res.status(500).json({ status: "error", error: "Internal server error" });
+  }
+});
 
 app.listen(5000, () => {
   console.log("server started");
 });
-
 mongoose
   .connect(mongourl, {
     useNewUrlParser: true,

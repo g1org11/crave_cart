@@ -1,15 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import { useAuth } from "./AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-
+import { AuthContext } from "./AuthContext";
 const Login = () => {
   // State for login form
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const { setUserData } = useContext<{ setUserData: (data: any) => void }>(AuthContext);
 
   const { login } = useAuth();
 
@@ -56,12 +57,14 @@ const Login = () => {
         console.log(data, "userregister");
 
         if (data.status === "ok") {
+          localStorage.setItem("token", data.data);
           login(data);
-
+          setUserData(data);
           handlereset();
           navigate("/");
         } else {
           alert(`Login failed: ${data.error}`);
+          throw new Error(data.error);
         }
       })
       .catch((error) => {
