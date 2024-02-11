@@ -23,8 +23,12 @@ export const AuthContext = createContext<AuthContextProps | undefined>(undefined
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userData, setUserData] = useState<{ id: string; email: string } | null>(null); // Initialize userData state
-  console.log(userData, "authcontecxt");
+
+  const [userData, setUserData] = useState<{ id: string; email: string } | null>(() => {
+    const storedUserData = localStorage.getItem("userData");
+    return storedUserData ? JSON.parse(storedUserData) : null;
+  }); // Initialize userData state
+
   useEffect(() => {
     // Check localStorage for authentication state on component mount
     const storedAuthState = localStorage.getItem("isAuthenticated");
@@ -38,18 +42,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Set isAuthenticated to true if login is successful
     setIsAuthenticated(true);
     setUserData(userData); // Set userData when user logs in
-    // Save authentication state to localStorage
 
+    // Save authentication state to localStorage
     localStorage.setItem("isAuthenticated", JSON.stringify(true));
+    localStorage.setItem("userData", JSON.stringify(userData)); // Store user data in localStorage
   };
 
   const logout = () => {
     // Implement your logout logic here
     // Set isAuthenticated to false
     setIsAuthenticated(false);
-    setUserData(null);
-    // Remove authentication state from localStorage
-    localStorage.removeItem("isAuthenticated");
+    setUserData(userData);
+    // Remove authentication state and user data from localStorage
+    localStorage.removeItem("isAuthenticated", JSON.stringify(true));
+    localStorage.removeItem("userData", JSON.stringify(userData));
   };
 
   return (

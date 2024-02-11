@@ -45,7 +45,7 @@ const ForgotPassword = () => {
       }
 
       // Fetch reset password request
-      const response = await fetch("http://localhost:5000/reset-password-request", {
+      fetch("http://localhost:5000/reset-password-request", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
