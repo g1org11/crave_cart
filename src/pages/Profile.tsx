@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import profileimg from "../assets/profile/profile_image.png";
 import styled from "styled-components";
 import { defaultTheme } from "../defaultTheme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,13 +18,17 @@ const Profile = () => {
     city: "",
     fullAddress: "",
   });
-
+  const [profileImage, setProfileImage] = useState(null);
   const { userData } = useContext(AuthContext);
-  const userId = userData?.id; // Get the userId using optional chaining
+  const userId = userData?.id;
 
   useEffect(() => {
     if (userId) {
       fetchProfileData(userId, userData.data);
+    }
+    const storedProfileImage = localStorage.getItem("profileImage");
+    if (storedProfileImage) {
+      setProfileImage(storedProfileImage);
     }
   }, [userId, userData]);
 
@@ -34,9 +37,6 @@ const Profile = () => {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
       },
     })
       .then((response) => {
@@ -59,16 +59,33 @@ const Profile = () => {
     }));
   };
 
+  const onImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        localStorage.setItem("profileImage", reader.result);
+        setProfileImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("profileImage", profileImage);
+    Object.entries(profileData).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
 
     fetch(`http://localhost:5000/update-profile/${userId}`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${userData?.data}`,
       },
-      body: JSON.stringify(profileData),
+      body: formData,
     })
       .then((response) => response.json())
       .then((data) => {
@@ -76,8 +93,55 @@ const Profile = () => {
       })
       .catch((error) => console.error("Error updating profile:", error));
   };
+
   return (
     <Container>
+      <Wrapper>
+        <UserInfo>
+          <div>
+            {profileImage ? (
+              <label htmlFor="file-input">
+                {" "}
+                <ProfileImage src={profileImage} alt="Profile" />
+              </label>
+            ) : (
+              <label htmlFor="file-input">
+                <FontAwesomeIcon icon={faUser} size="2xl" />
+              </label>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={onImageChange}
+              name="image"
+              id="file-input"
+              style={{ display: "none" }}
+            />
+          </div>
+
+          <h3>{profileData.fullName}</h3>
+          <p>{profileData.professionalTitle}</p>
+        </UserInfo>
+        <ProfileManu>
+          <ul>
+            <li>
+              <a href="">Profile</a>
+            </li>
+            <li>
+              <a href="">My Cart</a>
+            </li>
+            <li>
+              <a href="">Wishlist</a>
+            </li>
+            <li>
+              <a href="">Shop</a>
+            </li>
+            <li>
+              <a href="">Logout</a>
+            </li>
+          </ul>
+        </ProfileManu>
+      </Wrapper>
       <Form onSubmit={handleSubmit}>
         <h1>BASIC INFORMATION</h1>
         <UserName>
@@ -165,7 +229,70 @@ const Container = styled.div`
   padding: 0 100px;
   margin-top: 25px;
 `;
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 50px;
+  h3 {
+    font-size: 25px;
+    line-height: 29px;
+    font-weight: 400;
+    color: ${defaultTheme.colors.blue};
+    margin: 5px 0;
+  }
+  p {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 21px;
+    color: ${defaultTheme.colors.red};
+    margin-bottom: 5px;
+  }
+`;
 
+const ProfileManu = styled.div`
+  ul {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+  li {
+    display: flex;
+    align-items: flex-start;
+
+    padding: 10px;
+    list-style-type: none;
+    text-align: left;
+  }
+  a {
+    text-align: left;
+    width: 339px;
+    padding: 10px;
+    font-size: 25px;
+    line-height: 29px;
+    color: ${defaultTheme.colors.blue};
+
+    border-top: 1px solid ${defaultTheme.colors.red};
+    border-bottom: 1px solid ${defaultTheme.colors.red};
+
+    text-decoration: none;
+    &:hover {
+      background-color: ${defaultTheme.colors.red};
+      color: ${defaultTheme.colors.floralwhite};
+    }
+  }
+`;
+const ProfileImage = styled.img`
+  width: 100px; /* Adjust as per your design */
+  height: 100px; /* Adjust as per your design */
+  border-radius: 50%;
+`;
 const Form = styled.form`
   h1 {
     font-size: 35px;
@@ -285,6 +412,7 @@ const SubmitButton = styled.div`
   margin-top: 50px;
   margin-bottom: 50px;
   button {
+    cursor: pointer;
     font-size: 25px;
     font-weight: 400;
     line-height: 29px;

@@ -34,6 +34,9 @@ const UserDetailsSchema = new mongoose.Schema(
     postcode: Number,
     city: String,
     fullAddress: String,
+    profileImage: {
+      type: Buffer,
+    },
   },
   {
     collection: "registration",

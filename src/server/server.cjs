@@ -6,8 +6,16 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+// app.use(express.urlencoded({ extended: true }));
+app.use(cors({ origin: true, credentials: true }));
+// Increase max header size
+app.use(express.json({ limit: "1mb" }));
+app.use(express.urlencoded({ limit: "1mb", extended: true }));
+app.use(express.raw({ limit: "1mb" }));
+
+const fs = require("fs");
+const multer = require("multer");
+
 const session = require("express-session");
 
 const JWT_SECRET =
@@ -114,22 +122,6 @@ app.post("/reset-password-request", async (req, res) => {
   // res.json({ status: "ok" });
 });
 
-// const extractUserId = (req, res, next) => {
-//   const token = req.headers.authorization;
-//   if (token) {
-//     jwt.verify(token, JWT_SECRET, (err, decoded) => {
-//       if (err) {
-//         console.error("Failed to authenticate token:", err);
-//         return res.status(401).json({ status: "error", message: "Unauthorized" });
-//       }
-//       req.user = decoded;
-//       next();
-//     });
-//   } else {
-//     return res.status(401).json({ status: "error", message: "Unauthorized" });
-//   }
-// };
-
 // Apply middleware to /get-profile-data endpoint
 app.get("/get-profile-data/:userId", async (req, res) => {
   try {
@@ -161,23 +153,39 @@ app.get("/get-profile-data/:userId", async (req, res) => {
 });
 // Route to update user profile data
 // Inside server.js
+// Multer configuration
+//
 
 // Route to update user profile data
-app.post("/update-profile/:userId", async (req, res) => {
+// Route to update user profile data
+// Inside /update-profile/:userId endpoint
+// Route to update user profile data
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads"); // Destination folder for uploaded files
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now();
+    cb(null, uniqueSuffix + file.originalname); // Use the original file name
+  },
+});
+const upload = multer({ storage: storage });
+app.post("/update-profile/:userId", upload.single("profileImage"), async (req, res) => {
   try {
     const userId = req.params.userId;
-    const updatedProfileData = req.body; // Assuming entire updated profile data is sent in the request body
 
-    // Retrieve the existing user profile
     let userProfile = await user.findById(userId);
     if (!userProfile) {
       return res.status(404).json({ status: "error", message: "User profile not found" });
     }
 
-    // Update the entire user profile object with the received data
-    userProfile.set(updatedProfileData);
+    userProfile.set(req.body);
 
-    // Save the updated user profile
+    if (req.file) {
+      userProfile.profileImage = req.file.buffer;
+    }
+
     await userProfile.save();
 
     res.json({ status: "ok", message: "Profile updated successfully" });
@@ -187,9 +195,27 @@ app.post("/update-profile/:userId", async (req, res) => {
   }
 });
 
+// app.post("/upload-image", upload.single("image"), async (req, res) => {
+//   if (req.file) {
+//     const imageName = req.file.filename;
+
+//     try {
+//       // Update user profile with the image name
+//       const userId = req.session.userId;
+//       await user.findByIdAndUpdate(userId, { profileImage: imageName });
+//       res.json({ status: "ok", image: imageName });
+//     } catch (error) {
+//       res.status(500).json({ status: "error", error: "Internal server error" });
+//     }
+//   } else {
+//     res.json({ status: "error", error: "No file uploaded" });
+//   }
+// });
+/////////////////////////////////////////
 app.listen(5000, () => {
   console.log("server started");
 });
+
 mongoose
   .connect(mongourl, {
     useNewUrlParser: true,
@@ -199,17 +225,5 @@ mongoose
     console.log("connected to database");
   })
   .catch((e) => console.log(e));
-// app.post("/post", async (req, res) => {
-//   console.log(req.body);
-//   const { data } = req.body;
 
-//   try {
-//     if (data === "giorgi") {
-//       res.send({ status: "ok" });
-//     } else {
-//       res.send({ status: "user not found" });
-//     }
-//   } catch (error) {
-//     res.send({ status: "something went wrong, try again" });
-//   }
-// });
+//////////////////////
