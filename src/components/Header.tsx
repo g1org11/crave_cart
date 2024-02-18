@@ -44,6 +44,10 @@ const Header = () => {
     setShowProfile(newShowProfile);
     localStorage.setItem("showProfile", JSON.stringify(newShowProfile));
   };
+  const handleLogout = () => {
+    logout(); // First logout
+    navigate("/Login_SignUp"); // Then navigate to the desired route
+  };
   return (
     <div>
       <TopHader>
@@ -139,7 +143,7 @@ const Header = () => {
                     <FontAwesomeIcon icon={faCartShopping} size="xl" />
                     <a href="#">My Cart</a>
                   </div>
-                  <LogOut onClick={logout}>
+                  <LogOut onClick={handleLogout}>
                     <FontAwesomeIcon icon={faArrowRightFromBracket} size="xl" />
                     <a href="#">Logout</a>
                   </LogOut>
