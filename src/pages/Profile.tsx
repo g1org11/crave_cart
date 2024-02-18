@@ -26,9 +26,11 @@ const Profile = () => {
     if (userId) {
       fetchProfileData(userId, userData.data);
     }
-    const storedProfileImage = localStorage.getItem("profileImage");
+    const storedProfileImage = localStorage.getItem(`profileImage_${userId}`);
     if (storedProfileImage) {
       setProfileImage(storedProfileImage);
+    } else {
+      setProfileImage(null);
     }
   }, [userId, userData]);
 
@@ -64,7 +66,7 @@ const Profile = () => {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        localStorage.setItem("profileImage", reader.result);
+        localStorage.setItem(`profileImage_${userId}`, reader.result);
         setProfileImage(reader.result);
       };
       reader.readAsDataURL(file);
@@ -119,8 +121,10 @@ const Profile = () => {
             />
           </div>
 
-          <h3>{profileData.fullName}</h3>
-          <p>{profileData.professionalTitle}</p>
+          <h3>{profileData.fullName ? profileData.fullName : "FullName"}</h3>
+          <p>
+            {profileData.professionalTitle ? profileData.professionalTitle : "Professional Title"}
+          </p>
         </UserInfo>
         <ProfileManu>
           <ul>
