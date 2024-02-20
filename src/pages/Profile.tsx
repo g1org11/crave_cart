@@ -12,7 +12,7 @@ const Profile = () => {
     professionalTitle: "",
     age: 0,
     about: "",
-    contactNumber: "",
+    phone: "",
     email: "",
     country: "",
     postcode: 0,
@@ -50,11 +50,12 @@ const Profile = () => {
       })
       .then((data) => {
         setProfileData(data);
+        console.log(data, "qq");
       })
       .catch((error) => console.error("Error fetching profile data:", error));
   };
 
-  const handleChange = (e: { target: { name: any; value: any } }) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setProfileData((prevData) => ({
       ...prevData,
@@ -71,20 +72,11 @@ const Profile = () => {
         setProfileImage(image);
         updateProfileImage(userData.id, image); // Update profile image
       };
-      // Get the file extension and convert it to lowercase for case-insensitive comparison
-      const fileExtension = file.name.split(".").pop().toLowerCase();
-      // Check if the file extension is one of the supported formats
-      if (["jpg", "jpeg", "png", "gif"].includes(fileExtension)) {
-        reader.readAsDataURL(file);
-      } else {
-        console.error(
-          "Unsupported file format. Please upload an image with JPG, JPEG, PNG, or GIF format."
-        );
-      }
+      reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -188,12 +180,7 @@ const Profile = () => {
         <MainForm>
           <div>
             <Label>Contact Number</Label>
-            <input
-              type="tel"
-              name="contactNumber"
-              value={profileData.contactNumber}
-              onChange={handleChange}
-            />
+            <input type="tel" name="phone" value={profileData.phone} onChange={handleChange} />
           </div>
           <div>
             <Label>Email Address</Label>
