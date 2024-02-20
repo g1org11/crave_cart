@@ -8,7 +8,7 @@ const Login = () => {
   // State for login form
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  const [loginError, setLoginError] = useState("");
+  // const [loginError, setLoginError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const { setUserData } = useContext<{ setUserData: (data: any) => void }>(AuthContext);
 
@@ -172,11 +172,11 @@ const Input = styled.input`
     margin: 0;
   }
 `;
-const ErrorText = styled.p`
-  color: ${defaultTheme.colors.red};
-  margin-top: 10px;
-  font-size: 16px;
-`;
+// const ErrorText = styled.p`
+//   color: ${defaultTheme.colors.red};
+//   margin-top: 10px;
+//   font-size: 16px;
+// `;
 
 const ShowPassword = styled.div`
   display: flex;

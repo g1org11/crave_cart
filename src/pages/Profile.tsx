@@ -4,6 +4,7 @@ import { defaultTheme } from "../defaultTheme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { AuthContext } from "../components/login-signup-components/AuthContext";
+import { useProfileImage } from "./ProfileImageContext.";
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({
@@ -21,18 +22,18 @@ const Profile = () => {
   const [profileImage, setProfileImage] = useState(null);
   const { userData } = useContext(AuthContext);
   const userId = userData?.id;
+  const { updateProfileImage, getProfileImage } = useProfileImage();
 
   useEffect(() => {
     if (userId) {
       fetchProfileData(userId, userData.data);
     }
-    const storedProfileImage = localStorage.getItem(`profileImage_${userId}`);
+    // Retrieve profile image from local storage
+    const storedProfileImage = getProfileImage(userId);
     if (storedProfileImage) {
       setProfileImage(storedProfileImage);
-    } else {
-      setProfileImage(null);
     }
-  }, [userId, userData]);
+  }, [userId, userData, getProfileImage]);
 
   const fetchProfileData = (userId, token) => {
     fetch(`http://localhost:5000/get-profile-data/${userId}`, {
@@ -53,7 +54,7 @@ const Profile = () => {
       .catch((error) => console.error("Error fetching profile data:", error));
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
     setProfileData((prevData) => ({
       ...prevData,
@@ -66,14 +67,24 @@ const Profile = () => {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        localStorage.setItem(`profileImage_${userId}`, reader.result);
-        setProfileImage(reader.result);
+        const image = reader.result;
+        setProfileImage(image);
+        updateProfileImage(userData.id, image); // Update profile image
       };
-      reader.readAsDataURL(file);
+      // Get the file extension and convert it to lowercase for case-insensitive comparison
+      const fileExtension = file.name.split(".").pop().toLowerCase();
+      // Check if the file extension is one of the supported formats
+      if (["jpg", "jpeg", "png", "gif"].includes(fileExtension)) {
+        reader.readAsDataURL(file);
+      } else {
+        console.error(
+          "Unsupported file format. Please upload an image with JPG, JPEG, PNG, or GIF format."
+        );
+      }
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     const formData = new FormData();

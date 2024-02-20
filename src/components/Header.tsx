@@ -1,6 +1,6 @@
 // import React from "react";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { defaultTheme } from "../defaultTheme";
 import watch from "../assets/header/watch_icon.svg";
 import phone from "../assets/header/phone_icon.svg";
@@ -17,11 +17,18 @@ import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { useAuth } from "./login-signup-components/AuthContext";
+import { AuthContext } from "./login-signup-components/AuthContext";
+import { useProfileImage } from "../pages/ProfileImageContext.";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const { isAuthenticated, logout } = useAuth();
+  const { updateProfileImage, getProfileImage } = useProfileImage();
+  const { userData } = useContext(AuthContext);
+  const userId = userData?.id;
+
+  const profileImage = isAuthenticated ? getProfileImage(userData?.id) : null;
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,7 +39,13 @@ const Header = () => {
     localStorage.setItem("showProfile", JSON.stringify(false));
     localStorage.setItem("showMenu", JSON.stringify(false));
   }, [location.pathname]);
-
+  useEffect(() => {
+    // Load profile image from local storage when component mounts
+    const storedImage = localStorage.getItem("profileImage_${userId}");
+    if (storedImage) {
+      updateProfileImage(storedImage);
+    }
+  }, [userId]);
   const toggleMenu = () => {
     const newShowMenu = !showMenu;
     setShowMenu(newShowMenu);
@@ -127,7 +140,11 @@ const Header = () => {
           {isAuthenticated ? (
             <div>
               <User onClick={toggleProfile}>
-                <FontAwesomeIcon icon={faUser} size="2xl" />
+                {profileImage ? (
+                  <ProfileImage src={profileImage} alt="Profile" />
+                ) : (
+                  <FontAwesomeIcon icon={faUser} size="2xl" />
+                )}
               </User>
               {showProfile && (
                 <ProfielModal>
@@ -394,6 +411,11 @@ const ProfielModal = styled.div`
       color: ${defaultTheme.colors.blue};
     }
   }
+`;
+const ProfileImage = styled.img`
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
 `;
 // const ModalLi = styled.li`
 //   font-size: 12px;
