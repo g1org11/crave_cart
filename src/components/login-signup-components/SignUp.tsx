@@ -83,6 +83,14 @@ const SignUp = () => {
       return false; // Return false in case of an error
     }
   };
+  // Validate password
+  const validatePassword = (password: string) => {
+    // Password should be 8-25 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|:<>?~=\\[\];\',./-])[A-Za-z\d!@#$%^&*()_+{}|:<>?~=\\[\];\',./-]{8,25}$/;
+
+    return passwordRegex.test(password);
+  };
 
   // Handle registration button click
   const handleRegister = async (e: { preventDefault: () => void }) => {
@@ -97,6 +105,13 @@ const SignUp = () => {
 
     if (userExists) {
       toast.error("User with this email or phone number already exists");
+      return;
+    }
+    console.log("Password:", password);
+    if (!validatePassword(password)) {
+      toast.error(
+        "Password must be 8-25 characters long and contain at least one uppercase letter, lowercase letter, digit, and special character"
+      );
       return;
     }
     // Implement logic to send registration request to the server
