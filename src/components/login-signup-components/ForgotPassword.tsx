@@ -4,6 +4,8 @@ import { defaultTheme } from "../../defaultTheme";
 import { Link, useNavigate } from "react-router-dom";
 // import withAuthData from "./Forgot";
 import { AuthContext } from "./AuthContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ForgotPassword = () => {
   const { userData } = useContext(AuthContext);
@@ -22,74 +24,111 @@ const ForgotPassword = () => {
     setRepeatPassword("");
     setShowPassword(false);
   };
+  const validatePassword = (newPassword: string) => {
+    // Password should be 8-25 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|:<>?~=\\[\];\',./-])[A-Za-z\d!@#$%^&*()_+{}|:<>?~=\\[\];\',./-]{8,25}$/;
+
+    return passwordRegex.test(newPassword);
+  };
   const handlePasswordChange = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    try {
-      // Validate email
-      if (!email) {
-        alert("Please enter your email.");
-        return;
-      }
+    // Validate email
 
-      // Validate new password
-      if (!newPassword || newPassword.length < 8) {
-        alert("Please enter a new password with at least 8 characters.");
-        return;
-      }
+    // Check if the email is not registered
+    const emailExistsResponse = await fetch("http://localhost:5000/checkUserExistence", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+    const emailExistsData = await emailExistsResponse.json();
 
-      // Validate repeat password
-      if (newPassword !== repeatPassword) {
-        alert("Passwords do not match.");
-        return;
-      }
-
-      // Fetch reset password request
-      fetch("http://localhost:5000/reset-password-request", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-        },
-        body: JSON.stringify({ email, newPassword }),
-      }).then((data) => console.log(data));
-
-      reset();
-      navigate("/Login_SignUp");
-    } catch (error) {
-      console.error("Error:", error);
-      alert("An error occurred. Please try again later.");
+    if (!email || !newPassword || !repeatPassword) {
+      toast.error("Please fill in all required fields");
+      return;
     }
+    if (!emailExistsData.exists) {
+      toast.error("Email not registered. Please enter a valid email address.");
+      return;
+    }
+
+    if (!validatePassword(newPassword)) {
+      toast.error(
+        "Password must be 8-25 characters long and contain at least one uppercase letter, lowercase letter, digit, and special character"
+      );
+      return;
+    }
+
+    // Validate repeat password
+    if (!repeatPassword) {
+      toast.error("Please repeat your new password.");
+      return;
+    }
+
+    if (newPassword !== repeatPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+
+    // Fetch reset password request
+    fetch("http://localhost:5000/reset-password-request", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        accept: "application/json",
+      },
+      body: JSON.stringify({ email, newPassword }),
+    })
+      .then((response) => {
+        console.log(response, "forgot password");
+        if (response.ok) {
+          toast.success("Password changed successfully.");
+          reset();
+          navigate("/Login_SignUp");
+        } else {
+          toast.error("Failed to change password. Please try again later.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        toast.error("An error occurred. Please try again later.");
+      });
   };
 
   return (
-    <Container onSubmit={handlePasswordChange}>
-      <div>
-        <h1>Change Password</h1>
+    <div>
+      <ToastContainer />
+      <Container onSubmit={handlePasswordChange}>
+        <div>
+          <h1>Change Password</h1>
 
-        <p>Email Password</p>
-        <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <p>New password</p>
-        <Input
-          type={showPassword ? "text" : "password"}
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-        />
+          <p>Email Password</p>
+          <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <p>New password</p>
+          <Input
+            type={showPassword ? "text" : "password"}
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+          />
 
-        <p>Repeat password</p>
-        <Input
-          type={showPassword ? "text" : "password"}
-          value={repeatPassword}
-          onChange={(e) => setRepeatPassword(e.target.value)}
-        />
-        <ShowPassword>
-          <input type="checkbox" onChange={handleShowPasswordToggle} />
-          <p>Show Password</p>
-        </ShowPassword>
-        <button>Change</button>
-        <Link to="/Login_SignUp">Go Back</Link>
-      </div>
-    </Container>
+          <p>Repeat password</p>
+          <Input
+            type={showPassword ? "text" : "password"}
+            value={repeatPassword}
+            onChange={(e) => setRepeatPassword(e.target.value)}
+          />
+          <ShowPassword>
+            <input type="checkbox" onChange={handleShowPasswordToggle} />
+            <p>Show Password</p>
+          </ShowPassword>
+          <button>Change</button>
+          <Link to="/Login_SignUp">Go Back</Link>
+        </div>
+      </Container>
+    </div>
   );
 };
 
