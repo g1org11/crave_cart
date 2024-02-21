@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignUp = () => {
   // State for registration form
@@ -65,16 +67,38 @@ const SignUp = () => {
     setPasswordError("");
     setPhoneError("");
   };
+  const checkUserExistence = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/checkUserExistence", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, phone }), // Send email and phone to check
+      });
+      const data = await response.json();
+      return data.exists; // Return true if user exists, false otherwise
+    } catch (error) {
+      console.error("Error checking user existence:", error);
+      return false; // Return false in case of an error
+    }
+  };
 
   // Handle registration button click
-  const handleRegister = (e: { preventDefault: () => void }) => {
+  const handleRegister = async (e: { preventDefault: () => void }) => {
     e.preventDefault(); // Prevent default form submission
 
     if (!email || !password || !phone) {
-      alert("Please fill in all required fields");
+      toast.error("Please fill in all required fields");
       return;
     }
+    // Check if the user already exists
+    const userExists = await checkUserExistence();
 
+    if (userExists) {
+      toast.error("User with this email or phone number already exists");
+      return;
+    }
     // Implement logic to send registration request to the server
     console.log("Registering with:", email, password, phone, isAdmin);
     // Call your registration API
@@ -96,50 +120,55 @@ const SignUp = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data, "userRegister");
+        toast.success("Registration successful");
       });
 
     handleReset();
   };
 
   return (
-    <Cards onSubmit={handleRegister}>
-      <Card>
-        <h1>Register</h1>
-        <p>Email address *</p>
-        <Input
-          type="email"
-          value={email}
-          onChange={handleEmailChange}
-          className={emailError ? "error" : ""}
-        />
+    <div>
+      {" "}
+      <ToastContainer />
+      <Cards onSubmit={handleRegister}>
+        <Card>
+          <h1>Register</h1>
+          <p>Email address *</p>
+          <Input
+            type="email"
+            value={email}
+            onChange={handleEmailChange}
+            className={emailError ? "error" : ""}
+          />
 
-        {emailError && <ErrorMessage> {emailError}</ErrorMessage>}
-        <p>Password *</p>
-        <Input
-          type={showPassword ? "text" : "password"}
-          value={password}
-          onChange={handlePasswordChange}
-          className={passwordError ? "error" : ""}
-        />
-        <ShowPassword>
-          <input type="checkbox" onChange={handleShowPasswordToggle} />
-          <p>Show Password</p>
-        </ShowPassword>
-        {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
-        <p>Phone Number *</p>
-        <Input
-          type="tel"
-          value={phone}
-          onChange={handlePhoneNumberChange}
-          className={phoneError ? "error" : ""}
-        />
-        {phoneError && <ErrorMessage>{phoneError}</ErrorMessage>}
-        <CheckBox>
-          <input type="checkbox" checked={isAdmin} onChange={handleAdminChange} /> <p>Admin</p>
-        </CheckBox>
-        <button type="submit">Register</button>
-      </Card>
-    </Cards>
+          {emailError && <ErrorMessage> {emailError}</ErrorMessage>}
+          <p>Password *</p>
+          <Input
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={handlePasswordChange}
+            className={passwordError ? "error" : ""}
+          />
+          <ShowPassword>
+            <input type="checkbox" onChange={handleShowPasswordToggle} />
+            <p>Show Password</p>
+          </ShowPassword>
+          {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
+          <p>Phone Number *</p>
+          <Input
+            type="tel"
+            value={phone}
+            onChange={handlePhoneNumberChange}
+            className={phoneError ? "error" : ""}
+          />
+          {phoneError && <ErrorMessage>{phoneError}</ErrorMessage>}
+          <CheckBox>
+            <input type="checkbox" checked={isAdmin} onChange={handleAdminChange} /> <p>Admin</p>
+          </CheckBox>
+          <button type="submit">Register</button>
+        </Card>
+      </Cards>
+    </div>
   );
 };
 

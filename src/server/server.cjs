@@ -57,6 +57,25 @@ app.post("/SignUp", async (req, res) => {
     res.send({ status: "error" });
   }
 });
+app.post("/checkUserExistence", async (req, res) => {
+  try {
+    const { email, phone } = req.body;
+
+    // Query the database to check if a user with the provided email or phone exists
+    const existingUser = await user.findOne({ $or: [{ email }, { phone }] });
+
+    if (existingUser) {
+      // If a user with the provided email or phone exists, return true
+      res.json({ exists: true });
+    } else {
+      // If no user found, return false
+      res.json({ exists: false });
+    }
+  } catch (error) {
+    console.error("Error checking user existence:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 // Inside /Login-user endpoint
 app.post("/Login-user", async (req, res) => {
@@ -162,12 +181,17 @@ app.get("/get-profile-data/:userId", async (req, res) => {
 // Route to update user profile data
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./uploads"); // Destination folder for uploaded files
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
   },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now();
-    cb(null, uniqueSuffix + file.originalname); // Use the original file name
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname).toLowerCase();
+    const fileName =
+      file.originalname.replace(ext, "").toLowerCase().split(" ").join("-") +
+      "-" +
+      Date.now() +
+      ext;
+    cb(null, fileName);
   },
 });
 const upload = multer({ storage: storage });

@@ -50,7 +50,7 @@ const Profile = () => {
       })
       .then((data) => {
         setProfileData(data);
-        console.log(data, "qq");
+        // console.log(data, "qq");
       })
       .catch((error) => console.error("Error fetching profile data:", error));
   };
