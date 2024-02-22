@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { AuthContext } from "../components/login-signup-components/AuthContext";
 import { useProfileImage } from "./ProfileImageContext.";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({
@@ -55,7 +57,7 @@ const Profile = () => {
       .catch((error) => console.error("Error fetching profile data:", error));
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
     setProfileData((prevData) => ({
       ...prevData,
@@ -63,7 +65,7 @@ const Profile = () => {
     }));
   };
 
-  const onImageChange = (e) => {
+  const onImageChange = (e: { target: { files: any[] } }) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -76,7 +78,7 @@ const Profile = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -95,129 +97,146 @@ const Profile = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Profile updated successfully:", data);
+        toast.success("Profile Saved successfuly");
       })
-      .catch((error) => console.error("Error updating profile:", error));
+      .catch((error) => {
+        toast.error("An error occurred. Please try again later.");
+        console.error("Error updating profile:", error);
+      });
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <UserInfo>
-          <div>
-            {profileImage ? (
-              <label htmlFor="file-input">
-                {" "}
-                <ProfileImage src={profileImage} alt="Profile" />
-              </label>
-            ) : (
-              <label htmlFor="file-input">
-                <FontAwesomeIcon icon={faUser} size="2xl" />
-              </label>
-            )}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={onImageChange}
-              name="image"
-              id="file-input"
-              style={{ display: "none" }}
-            />
-          </div>
+    <div>
+      <ToastContainer />
+      <Container>
+        <Wrapper>
+          <UserInfo>
+            <div>
+              {profileImage ? (
+                <label htmlFor="file-input">
+                  {" "}
+                  <ProfileImage src={profileImage} alt="Profile" />
+                </label>
+              ) : (
+                <label htmlFor="file-input">
+                  <FontAwesomeIcon icon={faUser} size="2xl" />
+                </label>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={onImageChange}
+                name="image"
+                id="file-input"
+                style={{ display: "none" }}
+              />
+            </div>
 
-          <h3>{profileData.fullName ? profileData.fullName : "FullName"}</h3>
-          <p>
-            {profileData.professionalTitle ? profileData.professionalTitle : "Professional Title"}
-          </p>
-        </UserInfo>
-        <ProfileManu>
-          <ul>
-            <li>
-              <a href="">Profile</a>
-            </li>
-            <li>
-              <a href="">My Cart</a>
-            </li>
-            <li>
-              <a href="">Wishlist</a>
-            </li>
-            <li>
-              <a href="">Shop</a>
-            </li>
-            <li>
-              <a href="">Logout</a>
-            </li>
-          </ul>
-        </ProfileManu>
-      </Wrapper>
-      <Form onSubmit={handleSubmit}>
-        <h1>BASIC INFORMATION</h1>
-        <UserName>
-          <Label>User Full Name*</Label>
-          <input type="text" name="fullName" value={profileData.fullName} onChange={handleChange} />
-        </UserName>
-        <JobAge>
-          <div>
-            <Label>Professional title*</Label>
+            <h3>{profileData.fullName ? profileData.fullName : "FullName"}</h3>
+            <p>
+              {profileData.professionalTitle ? profileData.professionalTitle : "Professional Title"}
+            </p>
+          </UserInfo>
+          <ProfileManu>
+            <ul>
+              <li>
+                <a href="">Profile</a>
+              </li>
+              <li>
+                <a href="">My Cart</a>
+              </li>
+              <li>
+                <a href="">Wishlist</a>
+              </li>
+              <li>
+                <a href="">Shop</a>
+              </li>
+              <li>
+                <a href="">Logout</a>
+              </li>
+            </ul>
+          </ProfileManu>
+        </Wrapper>
+        <Form onSubmit={handleSubmit}>
+          <h1>BASIC INFORMATION</h1>
+          <UserName>
+            <Label>User Full Name*</Label>
             <input
               type="text"
-              name="professionalTitle"
-              value={profileData.professionalTitle}
+              name="fullName"
+              value={profileData.fullName}
               onChange={handleChange}
             />
-          </div>
+          </UserName>
+          <JobAge>
+            <div>
+              <Label>Professional title*</Label>
+              <input
+                type="text"
+                name="professionalTitle"
+                value={profileData.professionalTitle}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <Label>Age*</Label>
+              <input type="number" name="age" value={profileData.age} onChange={handleChange} />
+            </div>
+          </JobAge>
           <div>
-            <Label>Age*</Label>
-            <input type="number" name="age" value={profileData.age} onChange={handleChange} />
+            <Label>About</Label>
+            <About>
+              <textarea name="about" value={profileData.about} onChange={handleChange}></textarea>
+            </About>
           </div>
-        </JobAge>
-        <div>
-          <Label>About</Label>
-          <About>
-            <textarea name="about" value={profileData.about} onChange={handleChange}></textarea>
-          </About>
-        </div>
-        <h1>CONTACT INFORMATION</h1>
-        <MainForm>
-          <div>
-            <Label>Contact Number</Label>
-            <input type="tel" name="phone" value={profileData.phone} onChange={handleChange} />
-          </div>
-          <div>
-            <Label>Email Address</Label>
-            <input type="email" name="email" value={profileData.email} onChange={handleChange} />
-          </div>
-          <div>
-            <Label>Country</Label>
-            <input type="text" name="country" value={profileData.country} onChange={handleChange} />
-          </div>
-          <div>
-            <Label>Postcode</Label>
-            <input
-              type="number"
-              name="postcode"
-              value={profileData.postcode}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <Label>City</Label>
-            <input type="text" name="city" value={profileData.city} onChange={handleChange} />
-          </div>
-          <div>
-            <Label>Full Address</Label>
-            <input
-              type="text"
-              name="fullAddress"
-              value={profileData.fullAddress}
-              onChange={handleChange}
-            />
-          </div>
-        </MainForm>
-        <SubmitButton>
-          <button type="submit">Save Setting</button>
-        </SubmitButton>
-      </Form>
-    </Container>
+          <h1>CONTACT INFORMATION</h1>
+          <MainForm>
+            <div>
+              <Label>Contact Number</Label>
+              <input type="tel" name="phone" value={profileData.phone} onChange={handleChange} />
+            </div>
+            <div>
+              <Label>Email Address</Label>
+              <input type="email" name="email" value={profileData.email} onChange={handleChange} />
+            </div>
+            <div>
+              <Label>Country</Label>
+              <input
+                type="text"
+                name="country"
+                value={profileData.country}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <Label>Postcode</Label>
+              <input
+                type="number"
+                name="postcode"
+                value={profileData.postcode}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <Label>City</Label>
+              <input type="text" name="city" value={profileData.city} onChange={handleChange} />
+            </div>
+            <div>
+              <Label>Full Address</Label>
+              <input
+                type="text"
+                name="fullAddress"
+                value={profileData.fullAddress}
+                onChange={handleChange}
+              />
+            </div>
+          </MainForm>
+          <SubmitButton>
+            <button type="submit">Save Setting</button>
+          </SubmitButton>
+        </Form>
+      </Container>
+    </div>
   );
 };
 

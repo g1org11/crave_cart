@@ -34,7 +34,7 @@ const Login = () => {
   };
   // Handle login button click
 
-  const handleLogin = (e) => {
+  const handleLogin = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     // Check if email or password is empty
