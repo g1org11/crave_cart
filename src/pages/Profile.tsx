@@ -3,11 +3,13 @@ import styled from "styled-components";
 import { defaultTheme } from "../defaultTheme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { AuthContext } from "../components/login-signup-components/AuthContext";
 import { useProfileImage } from "./ProfileImageContext.";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
+
+import { AuthContext } from "../components/login-signup-components/AuthContext";
+import { useAuth } from "../components/login-signup-components/AuthContext";
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({
@@ -23,6 +25,7 @@ const Profile = () => {
     fullAddress: "",
   });
   const [profileImage, setProfileImage] = useState(null);
+  const { isAuthenticated } = useAuth();
   const { userData } = useContext(AuthContext);
   const userId = userData?.id;
   const { updateProfileImage, getProfileImage } = useProfileImage();
@@ -158,6 +161,11 @@ const Profile = () => {
               <li>
                 <a href="">Shop</a>
               </li>
+              {isAuthenticated && userData && userData.isAdmin && (
+                <li>
+                  <a to="#">Admin Panel</a>
+                </li>
+              )}
               <li>
                 <a href="">Logout</a>
               </li>
@@ -219,6 +227,11 @@ const Profile = () => {
                     <li>
                       <a href="">Shop</a>
                     </li>
+                    {isAuthenticated && userData && userData.isAdmin && (
+                      <li>
+                        <a to="#">Admin Panel</a>
+                      </li>
+                    )}
                     <li>
                       <a href="">Logout</a>
                     </li>
