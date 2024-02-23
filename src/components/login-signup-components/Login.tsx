@@ -56,6 +56,7 @@ const Login = () => {
       body: JSON.stringify({
         email: loginEmail,
         password: loginPassword,
+        // isAdmin,
       }),
     })
       .then((res) => res.json())
@@ -63,6 +64,7 @@ const Login = () => {
         console.log(data, "userregister");
 
         if (data.status === "ok") {
+          // console.log(data, "login userdata");
           localStorage.setItem("token", data.data);
           login(data);
           setUserData(data);

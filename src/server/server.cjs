@@ -80,7 +80,7 @@ app.post("/checkUserExistence", async (req, res) => {
 // Inside /Login-user endpoint
 app.post("/Login-user", async (req, res) => {
   console.log("Received login request:", req.body);
-  const { email, password, phone } = req.body;
+  const { email, password, phone, isAdmin } = req.body;
 
   try {
     const existingUser = await user.findOne({ email });
@@ -107,6 +107,7 @@ app.post("/Login-user", async (req, res) => {
         id: existingUser.userId,
         email: existingUser.email,
         phone: existingUser.phone,
+        isAdmin: existingUser.isAdmin,
       });
     } else {
       console.log("Invalid Password");

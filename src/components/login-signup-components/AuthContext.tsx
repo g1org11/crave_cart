@@ -11,6 +11,7 @@ import React, {
 interface UserData {
   id: string;
   email: string;
+  isAdmin: boolean; // Add isAdmin property
 }
 
 interface AuthContextProps {
@@ -19,12 +20,14 @@ interface AuthContextProps {
   logout: () => void;
   userData: UserData | null;
   setUserData: Dispatch<SetStateAction<UserData | null>>;
+  isAdmin: boolean;
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const [userData, setUserData] = useState<UserData | null>(() => {
     const storedUserData = localStorage.getItem("userData");
@@ -41,6 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = (userData: UserData) => {
     setIsAuthenticated(true);
     setUserData(userData);
+    setIsAdmin(userData.isAdmin);
     localStorage.setItem("isAuthenticated", JSON.stringify(true));
     localStorage.setItem("userData", JSON.stringify(userData));
   };
@@ -48,12 +52,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     setIsAuthenticated(false);
     setUserData(null);
+    setIsAdmin(false);
     localStorage.removeItem("isAuthenticated");
     localStorage.removeItem("userData");
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, userData, setUserData }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, isAdmin, login, logout, userData, setUserData }}
+    >
       {children}
     </AuthContext.Provider>
   );

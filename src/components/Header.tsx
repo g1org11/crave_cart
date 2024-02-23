@@ -12,11 +12,13 @@ import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faUser, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons/faArrowRightFromBracket";
+import { faScrewdriverWrench } from "@fortawesome/free-solid-svg-icons";
 import { IconProps } from "./interface";
 import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { useAuth } from "./login-signup-components/AuthContext";
+
 import { AuthContext } from "./login-signup-components/AuthContext";
 import { useProfileImage } from "../pages/ProfileImageContext.";
 
@@ -46,6 +48,13 @@ const Header = () => {
       updateProfileImage(storedImage);
     }
   }, [userId]);
+
+  useEffect(() => {
+    console.log("userData:", userData);
+    console.log("isAdmin:", userData?.isAdmin);
+    console.log("isAuthenticated:", isAuthenticated);
+  }, [userData, isAuthenticated]);
+
   const toggleMenu = () => {
     const newShowMenu = !showMenu;
     setShowMenu(newShowMenu);
@@ -160,6 +169,16 @@ const Header = () => {
                     <FontAwesomeIcon icon={faCartShopping} size="xl" />
                     <a href="#">My Cart</a>
                   </div>
+                  {isAuthenticated && userData && userData.isAdmin && (
+                    <div>
+                      <FontAwesomeIcon
+                        icon={faScrewdriverWrench}
+                        size="xl"
+                        style={{ color: "#cc3333" }}
+                      />
+                      <Link to="#">Admin Panel</Link>
+                    </div>
+                  )}
                   <LogOut onClick={handleLogout}>
                     <FontAwesomeIcon icon={faArrowRightFromBracket} size="xl" />
                     <a href="#">Logout</a>
@@ -395,6 +414,7 @@ const ProfielModal = styled.div`
   position: absolute;
   top: 80%;
   right: 5%;
+  z-index: 2;
   background-color: ${defaultTheme.colors.floralwhite};
 
   svg {
