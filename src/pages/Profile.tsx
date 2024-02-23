@@ -7,17 +7,18 @@ import { AuthContext } from "../components/login-signup-components/AuthContext";
 import { useProfileImage } from "./ProfileImageContext.";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({
     fullName: "",
     professionalTitle: "",
-    age: 0,
+    age: "",
     about: "",
     phone: "",
     email: "",
     country: "",
-    postcode: 0,
+    postcode: "",
     city: "",
     fullAddress: "",
   });
@@ -25,7 +26,13 @@ const Profile = () => {
   const { userData } = useContext(AuthContext);
   const userId = userData?.id;
   const { updateProfileImage, getProfileImage } = useProfileImage();
+  const [showMenu, setShowMenu] = useState(false);
 
+  const toggleMenu = () => {
+    const newShowMenu = !showMenu;
+    setShowMenu(newShowMenu);
+    localStorage.setItem("showMenu", JSON.stringify(newShowMenu));
+  };
   useEffect(() => {
     if (userId) {
       fetchProfileData(userId, userData.data);
@@ -157,8 +164,70 @@ const Profile = () => {
             </ul>
           </ProfileManu>
         </Wrapper>
+
         <Form onSubmit={handleSubmit}>
-          <h1>BASIC INFORMATION</h1>
+          <MainTitleDiv>
+            <h1>BASIC INFORMATION</h1>
+            <Icons>
+              <BurgerIcon icon={faBars} size="2x" onClick={toggleMenu} show={!showMenu} />
+              {showMenu && (
+                <XmarkIcon icon={faXmark} size="2x" onClick={toggleMenu} show={showMenu} />
+              )}
+            </Icons>
+            {showMenu && (
+              <WrapperModal>
+                <UserInfo>
+                  <div>
+                    {profileImage ? (
+                      <label htmlFor="file-input">
+                        {" "}
+                        <ProfileImage src={profileImage} alt="Profile" />
+                      </label>
+                    ) : (
+                      <label htmlFor="file-input">
+                        <FontAwesomeIcon icon={faUser} size="2xl" />
+                      </label>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={onImageChange}
+                      name="image"
+                      id="file-input"
+                      style={{ display: "none" }}
+                    />
+                  </div>
+
+                  <h3>{profileData.fullName ? profileData.fullName : "FullName"}</h3>
+                  <p>
+                    {profileData.professionalTitle
+                      ? profileData.professionalTitle
+                      : "Professional Title"}
+                  </p>
+                </UserInfo>
+                <ProfileManu>
+                  <ul>
+                    <li>
+                      <a href="">Profile</a>
+                    </li>
+                    <li>
+                      <a href="">My Cart</a>
+                    </li>
+                    <li>
+                      <a href="">Wishlist</a>
+                    </li>
+                    <li>
+                      <a href="">Shop</a>
+                    </li>
+                    <li>
+                      <a href="">Logout</a>
+                    </li>
+                  </ul>
+                </ProfileManu>
+              </WrapperModal>
+            )}
+          </MainTitleDiv>
+
           <UserName>
             <Label>User Full Name*</Label>
             <input
@@ -169,7 +238,7 @@ const Profile = () => {
             />
           </UserName>
           <JobAge>
-            <div>
+            <WidthDiv>
               <Label>Professional title*</Label>
               <input
                 type="text"
@@ -177,11 +246,11 @@ const Profile = () => {
                 value={profileData.professionalTitle}
                 onChange={handleChange}
               />
-            </div>
-            <div>
+            </WidthDiv>
+            <WidthDiv>
               <Label>Age*</Label>
               <input type="number" name="age" value={profileData.age} onChange={handleChange} />
-            </div>
+            </WidthDiv>
           </JobAge>
           <div>
             <Label>About</Label>
@@ -191,15 +260,15 @@ const Profile = () => {
           </div>
           <h1>CONTACT INFORMATION</h1>
           <MainForm>
-            <div>
+            <WidthDiv>
               <Label>Contact Number</Label>
               <input type="tel" name="phone" value={profileData.phone} onChange={handleChange} />
-            </div>
-            <div>
+            </WidthDiv>
+            <WidthDiv>
               <Label>Email Address</Label>
               <input type="email" name="email" value={profileData.email} onChange={handleChange} />
-            </div>
-            <div>
+            </WidthDiv>
+            <WidthDiv>
               <Label>Country</Label>
               <input
                 type="text"
@@ -207,8 +276,8 @@ const Profile = () => {
                 value={profileData.country}
                 onChange={handleChange}
               />
-            </div>
-            <div>
+            </WidthDiv>
+            <WidthDiv>
               <Label>Postcode</Label>
               <input
                 type="number"
@@ -216,12 +285,12 @@ const Profile = () => {
                 value={profileData.postcode}
                 onChange={handleChange}
               />
-            </div>
-            <div>
+            </WidthDiv>
+            <WidthDiv>
               <Label>City</Label>
               <input type="text" name="city" value={profileData.city} onChange={handleChange} />
-            </div>
-            <div>
+            </WidthDiv>
+            <WidthDiv>
               <Label>Full Address</Label>
               <input
                 type="text"
@@ -229,7 +298,7 @@ const Profile = () => {
                 value={profileData.fullAddress}
                 onChange={handleChange}
               />
-            </div>
+            </WidthDiv>
           </MainForm>
           <SubmitButton>
             <button type="submit">Save Setting</button>
@@ -245,16 +314,24 @@ export default Profile;
 const Container = styled.div`
   display: flex;
   align-items: top;
-  justify-content: space-around;
+  justify-content: space-between;
   gap: 50px;
   padding: 0 100px;
   margin-top: 25px;
+  overflow: hidden;
+  @media (max-width: 1150px) {
+    padding: 0 50px;
+  }
 `;
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  @media (max-width: 950px) {
+    display: none;
+  }
 `;
+
 const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
@@ -308,13 +385,56 @@ const ProfileManu = styled.div`
       color: ${defaultTheme.colors.floralwhite};
     }
   }
+  @media (max-width: 1430px) {
+    a {
+      width: 200px;
+    }
+  }
 `;
 const ProfileImage = styled.img`
   width: 100px; /* Adjust as per your design */
   height: 100px; /* Adjust as per your design */
   border-radius: 50%;
 `;
+const WrapperModal = styled.div`
+  width: 100%;
+
+  position: absolute;
+  right: 0;
+  top: 50px;
+  background-color: ${defaultTheme.colors.lightred};
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+const Icons = styled.div`
+  width: 100%;
+  position: absolute;
+  top: 5px;
+  right: -100%;
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  margin-right: 20px;
+`;
+const BurgerIcon = styled(FontAwesomeIcon)<IconProps>`
+  display: none;
+
+  @media (max-width: 950px) {
+    display: ${(props) => (props.show ? "inline-block" : "none")};
+  }
+`;
+
+const XmarkIcon = styled(FontAwesomeIcon)<IconProps>`
+  display: none;
+
+  @media (max-width: 950px) {
+    display: ${(props) => (props.show ? "inline-block" : "none")};
+  }
+`;
 const Form = styled.form`
+  width: 100%;
   h1 {
     font-size: 35px;
     font-weight: 700;
@@ -325,6 +445,9 @@ const Form = styled.form`
   }
 `;
 
+const MainTitleDiv = styled.div`
+  position: relative;
+`;
 const Label = styled.p`
   font-size: 18px;
   line-height: 21px;
@@ -354,9 +477,10 @@ const UserName = styled.div`
 
 const JobAge = styled.div`
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* flex-shrink: 0; */
+  /* flex-wrap: wrap; */
   margin-bottom: 20px;
   input {
     width: 375px;
@@ -373,6 +497,24 @@ const JobAge = styled.div`
       outline: none;
     }
   }
+  @media (max-width: 1430px) {
+    gap: 30px;
+    input {
+      width: 300px;
+    }
+  }
+  @media (max-width: 1150px) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    input {
+      width: 100%;
+    }
+  }
+`;
+
+const WidthDiv = styled.div`
+  width: 100%;
 `;
 
 const About = styled.div`
@@ -404,11 +546,12 @@ const About = styled.div`
 
 const MainForm = styled.div`
   margin-top: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   flex-wrap: wrap;
+  flex-direction: row;
   gap: 50px;
+  width: 100%;
   input {
     width: 375px;
     height: 50px;
@@ -422,6 +565,20 @@ const MainForm = styled.div`
     color: ${defaultTheme.colors.blue};
     &:focus {
       outline: none;
+    }
+  }
+  @media (max-width: 1430px) {
+    gap: 30px;
+    input {
+      width: 300px;
+    }
+  }
+  @media (max-width: 1150px) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    input {
+      width: 100%;
     }
   }
 `;

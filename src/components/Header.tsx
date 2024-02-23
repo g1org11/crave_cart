@@ -335,6 +335,7 @@ const Icons = styled.div`
   align-items: center;
   justify-content: center;
   margin-right: 20px;
+  z-index: 1;
 `;
 const BurgerIcon = styled(FontAwesomeIcon)<IconProps>`
   display: none;
