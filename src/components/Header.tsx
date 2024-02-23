@@ -176,7 +176,7 @@ const Header = () => {
                         size="xl"
                         style={{ color: "#cc3333" }}
                       />
-                      <Link to="#">Admin Panel</Link>
+                      <Link to="/Admin-Panel">Admin Panel</Link>
                     </div>
                   )}
                   <LogOut onClick={handleLogout}>

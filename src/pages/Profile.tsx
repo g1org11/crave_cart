@@ -6,6 +6,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useProfileImage } from "./ProfileImageContext.";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import { AuthContext } from "../components/login-signup-components/AuthContext";
@@ -163,7 +164,7 @@ const Profile = () => {
               </li>
               {isAuthenticated && userData && userData.isAdmin && (
                 <li>
-                  <a to="#">Admin Panel</a>
+                  <Link to="/Admin-Panel">Admin Panel</Link>
                 </li>
               )}
               <li>
@@ -229,7 +230,7 @@ const Profile = () => {
                     </li>
                     {isAuthenticated && userData && userData.isAdmin && (
                       <li>
-                        <a to="#">Admin Panel</a>
+                        <Link to="/Admin-Panel">Admin Panel</Link>
                       </li>
                     )}
                     <li>
@@ -376,10 +377,10 @@ const ProfileManu = styled.div`
   li {
     display: flex;
     align-items: flex-start;
-
     padding: 10px;
     list-style-type: none;
     text-align: left;
+    cursor: pointer;
   }
   a {
     text-align: left;

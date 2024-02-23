@@ -14,6 +14,7 @@ import { AuthProvider } from "./components/login-signup-components/AuthContext";
 import ForgotPassword from "./components/login-signup-components/ForgotPassword";
 import Profile from "./pages/Profile";
 import { ProfileImageProvider } from "./pages/ProfileImageContext.";
+import AdminPanel from "./pages/AdminPanel";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/Login_SignUp" element={<LoginSignUp />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/Admin-Panel" element={<AdminPanel />} />
             </Routes>
             <Footer />
           </Router>
