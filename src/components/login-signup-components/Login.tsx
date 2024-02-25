@@ -6,6 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios"; // Import Axios
+
 const Login = () => {
   // State for login form
   const [loginEmail, setLoginEmail] = useState("");
@@ -46,21 +48,24 @@ const Login = () => {
     // Log the password before sending the request
     console.log("Sending login request with:", loginEmail, loginPassword);
 
-    fetch("http://localhost:5000/Login-user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
-        email: loginEmail,
-        password: loginPassword,
-        // isAdmin,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
+    axios
+      .post(
+        "http://localhost:5000/Login-user",
+        {
+          email: loginEmail,
+          password: loginPassword,
+          // isAdmin,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      )
+      .then((res) => {
+        const data = res.data;
         console.log(data, "userregister");
 
         if (data.status === "ok") {

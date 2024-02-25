@@ -2,10 +2,10 @@ import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import { Link, useNavigate } from "react-router-dom";
-// import withAuthData from "./Forgot";
 import { AuthContext } from "./AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const ForgotPassword = () => {
   const { userData } = useContext(AuthContext);
@@ -13,89 +13,69 @@ const ForgotPassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  // console.log(userData, "forgotPassword");
   const navigate = useNavigate();
+
   const handleShowPasswordToggle = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
+
   const reset = () => {
     setEmail("");
     setNewPassword("");
     setRepeatPassword("");
     setShowPassword(false);
   };
-  const validatePassword = (newPassword: string) => {
-    // Password should be 8-25 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character
+
+  const validatePassword = (newPassword) => {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|:<>?~=\\[\];\',./-])[A-Za-z\d!@#$%^&*()_+{}|:<>?~=\\[\];\',./-]{8,25}$/;
-
     return passwordRegex.test(newPassword);
   };
-  const handlePasswordChange = async (e: { preventDefault: () => void }) => {
+
+  const handlePasswordChange = async (e) => {
     e.preventDefault();
 
-    // Validate email
-
-    // Check if the email is not registered
-    const emailExistsResponse = await fetch("http://localhost:5000/checkUserExistence", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email }),
-    });
-    const emailExistsData = await emailExistsResponse.json();
-
-    if (!email || !newPassword || !repeatPassword) {
-      toast.error("Please fill in all required fields");
-      return;
-    }
-    if (!emailExistsData.exists) {
-      toast.error("Email not registered. Please enter a valid email address.");
-      return;
-    }
-
-    if (!validatePassword(newPassword)) {
-      toast.error(
-        "Password must be 8-25 characters long and contain at least one uppercase letter, lowercase letter, digit, and special character"
-      );
-      return;
-    }
-
-    // Validate repeat password
-    if (!repeatPassword) {
-      toast.error("Please repeat your new password.");
-      return;
-    }
-
-    if (newPassword !== repeatPassword) {
-      toast.error("Passwords do not match.");
-      return;
-    }
-
-    // Fetch reset password request
-    fetch("http://localhost:5000/reset-password-request", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        accept: "application/json",
-      },
-      body: JSON.stringify({ email, newPassword }),
-    })
-      .then((response) => {
-        console.log(response, "forgot password");
-        if (response.ok) {
-          toast.success("Password changed successfully.");
-          reset();
-          navigate("/Login_SignUp");
-        } else {
-          toast.error("Failed to change password. Please try again later.");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        toast.error("An error occurred. Please try again later.");
+    try {
+      const emailExistsResponse = await axios.post("http://localhost:5000/checkUserExistence", {
+        email,
       });
+      const emailExistsData = emailExistsResponse.data;
+
+      if (!email || !newPassword || !repeatPassword) {
+        toast.error("Please fill in all required fields");
+        return;
+      }
+
+      if (!emailExistsData.exists) {
+        toast.error("Email not registered. Please enter a valid email address.");
+        return;
+      }
+
+      if (!validatePassword(newPassword)) {
+        toast.error(
+          "Password must be 8-25 characters long and contain at least one uppercase letter, lowercase letter, digit, and special character"
+        );
+        return;
+      }
+
+      if (newPassword !== repeatPassword) {
+        toast.error("Passwords do not match.");
+        return;
+      }
+
+      const response = await axios.post("http://localhost:5000/reset-password-request", {
+        email,
+        newPassword,
+      });
+
+      console.log(response.data, "forgot password");
+      toast.success("Password changed successfully.");
+      reset();
+      navigate("/Login_SignUp");
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("An error occurred. Please try again later.");
+    }
   };
 
   return (
@@ -133,6 +113,7 @@ const ForgotPassword = () => {
 };
 
 export default ForgotPassword;
+
 const Container = styled.form`
   display: flex;
   align-items: center;
@@ -151,7 +132,7 @@ const Container = styled.form`
     color: ${defaultTheme.colors.red};
     margin-bottom: 15px;
   }
-  P {
+  p {
     font-size: 18px;
     font-style: normal;
     font-weight: 400;
@@ -182,6 +163,7 @@ const Container = styled.form`
     margin-top: 15px;
   }
 `;
+
 const Input = styled.input`
   width: 300px;
   height: 50px;
@@ -192,17 +174,16 @@ const Input = styled.input`
   line-height: 29px;
   padding-left: 15px;
   color: ${defaultTheme.colors.blue};
-  /* Remove spinners for number inputs */
   -moz-appearance: textfield;
   appearance: textfield;
 
-  /* Webkit browsers like Chrome and Safari */
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }
 `;
+
 const ShowPassword = styled.div`
   display: flex;
   align-items: baseline;
