@@ -1,51 +1,36 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 
 const SignUp = () => {
-  // State for registration form
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
 
-  // State for validation errors
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [phoneError, setPhoneError] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
-  // Update state for registration form
+
   const handleEmailChange = (e: { target: { value: any } }) => {
     const newEmail = e.target.value;
     setEmail(newEmail);
-
-    // // Email validation using a regular expression
-    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // setEmailError(emailRegex.test(newEmail) ? "" : "Invalid email address");
   };
 
   const handlePhoneNumberChange = (e: { target: { value: any } }) => {
     const newPhone = e.target.value;
-
-    // Remove non-numeric characters from the input
-    const numericPhone = newPhone.replace(/\D/g, ""); // \D matches non-digit characters
-
+    const numericPhone = newPhone.replace(/\D/g, "");
     setPhone(numericPhone);
-
-    // // Phone number validation using a regular expression
-    // const phoneRegex = /^[0-9]{10}$/;
-
-    // setPhoneError(phoneRegex.test(numericPhone) ? "" : "Invalid phone number");
   };
 
   const handlePasswordChange = (e: { target: { value: any } }) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
-
-    // // Password validation
-    // const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/;
-    // setPasswordError(passwordRegex.test(newPassword) ? "" : "Invalid password");
   };
 
   const handleAdminChange = (e: {
@@ -53,9 +38,11 @@ const SignUp = () => {
   }) => {
     setIsAdmin(e.target.checked);
   };
+
   const handleShowPasswordToggle = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
+
   const handleReset = () => {
     setEmail("");
     setIsAdmin(false);
@@ -66,80 +53,107 @@ const SignUp = () => {
     setPhoneError("");
   };
 
-  // Handle registration button click
-  const handleRegister = (e: { preventDefault: () => void }) => {
-    e.preventDefault(); // Prevent default form submission
+  const checkUserExistence = async () => {
+    try {
+      const response = await axios.post("http://localhost:5000/checkUserExistence", {
+        email,
+        phone,
+      });
+      const data = response.data;
+      return data.exists;
+    } catch (error) {
+      console.error("Error checking user existence:", error);
+      return false;
+    }
+  };
+
+  const validatePassword = (password: string): boolean => {
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|:<>?~=\\[\];',./-])[A-Za-z\d!@#$%^&*()_+{}|:<>?~=\\[\];',./-]{8,25}$/;
+    return passwordRegex.test(password);
+  };
+
+  const handleRegister = async (e: { preventDefault: () => void }) => {
+    e.preventDefault();
 
     if (!email || !password || !phone) {
-      alert("Please fill in all required fields");
+      toast.error("Please fill in all required fields");
       return;
     }
 
-    // Implement logic to send registration request to the server
-    console.log("Registering with:", email, password, phone, isAdmin);
-    // Call your registration API
-    // const origin = "http://localhost:5173";
-    fetch("http://localhost:5000/SignUp", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
+    const userExists = await checkUserExistence();
+
+    if (userExists) {
+      toast.error("User with this email or phone number already exists");
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      toast.error(
+        "Password must be 8-25 characters long and contain at least one uppercase letter, lowercase letter, digit, and special character"
+      );
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://localhost:5000/SignUp", {
         email,
         password,
         phone,
         isAdmin,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data, "userRegister");
       });
+      console.log(response.data, "userRegister");
+      toast.success("Registration successful");
+    } catch (error) {
+      console.error("Error registering user:", error);
+      toast.error("An error occurred during registration");
+    }
 
     handleReset();
   };
 
   return (
-    <Cards onSubmit={handleRegister}>
-      <Card>
-        <h1>Register</h1>
-        <p>Email address *</p>
-        <Input
-          type="email"
-          value={email}
-          onChange={handleEmailChange}
-          className={emailError ? "error" : ""}
-        />
+    <div>
+      <ToastContainer />
+      <Cards onSubmit={handleRegister}>
+        <Card>
+          <h1>Register</h1>
+          <p>Email address *</p>
+          <Input
+            type="email"
+            value={email}
+            onChange={handleEmailChange}
+            className={emailError ? "error" : ""}
+          />
 
-        {emailError && <ErrorMessage> {emailError}</ErrorMessage>}
-        <p>Password *</p>
-        <Input
-          type={showPassword ? "text" : "password"}
-          value={password}
-          onChange={handlePasswordChange}
-          className={passwordError ? "error" : ""}
-        />
-        <ShowPassword>
-          <input type="checkbox" onChange={handleShowPasswordToggle} />
-          <p>Show Password</p>
-        </ShowPassword>
-        {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
-        <p>Phone Number *</p>
-        <Input
-          type="tel"
-          value={phone}
-          onChange={handlePhoneNumberChange}
-          className={phoneError ? "error" : ""}
-        />
-        {phoneError && <ErrorMessage>{phoneError}</ErrorMessage>}
-        <CheckBox>
-          <input type="checkbox" checked={isAdmin} onChange={handleAdminChange} /> <p>Admin</p>
-        </CheckBox>
-        <button type="submit">Register</button>
-      </Card>
-    </Cards>
+          {emailError && <ErrorMessage> {emailError}</ErrorMessage>}
+          <p>Password *</p>
+          <Input
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={handlePasswordChange}
+            className={passwordError ? "error" : ""}
+          />
+          <ShowPassword>
+            <input type="checkbox" onChange={handleShowPasswordToggle} />
+            <p>Show Password</p>
+          </ShowPassword>
+          {passwordError && <ErrorMessage>{passwordError}</ErrorMessage>}
+          <p>Phone Number *</p>
+          <Input
+            type="tel"
+            value={phone}
+            onChange={handlePhoneNumberChange}
+            className={phoneError ? "error" : ""}
+          />
+          {phoneError && <ErrorMessage>{phoneError}</ErrorMessage>}
+          <CheckBox>
+            <input type="checkbox" checked={isAdmin} onChange={handleAdminChange} /> <p>Admin</p>
+          </CheckBox>
+          <button type="submit">Register</button>
+        </Card>
+      </Cards>
+    </div>
   );
 };
 

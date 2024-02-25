@@ -1,6 +1,6 @@
 // import React from "react";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { defaultTheme } from "../defaultTheme";
 import watch from "../assets/header/watch_icon.svg";
 import phone from "../assets/header/phone_icon.svg";
@@ -12,16 +12,25 @@ import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faUser, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons/faArrowRightFromBracket";
+import { faScrewdriverWrench } from "@fortawesome/free-solid-svg-icons";
 import { IconProps } from "./interface";
 import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { useAuth } from "./login-signup-components/AuthContext";
 
+import { AuthContext } from "./login-signup-components/AuthContext";
+import { useProfileImage } from "../pages/ProfileImageContext.";
+
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const { isAuthenticated, logout } = useAuth();
+  const { updateProfileImage, getProfileImage } = useProfileImage();
+  const { userData } = useContext(AuthContext);
+  const userId = userData?.id;
+
+  const profileImage = isAuthenticated ? getProfileImage(userData?.id) : null;
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,6 +41,19 @@ const Header = () => {
     localStorage.setItem("showProfile", JSON.stringify(false));
     localStorage.setItem("showMenu", JSON.stringify(false));
   }, [location.pathname]);
+  useEffect(() => {
+    // Load profile image from local storage when component mounts
+    const storedImage = localStorage.getItem("profileImage_${userId}");
+    if (storedImage) {
+      updateProfileImage(storedImage);
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    console.log("userData:", userData);
+    console.log("isAdmin:", userData?.isAdmin);
+    console.log("isAuthenticated:", isAuthenticated);
+  }, [userData, isAuthenticated]);
 
   const toggleMenu = () => {
     const newShowMenu = !showMenu;
@@ -43,6 +65,10 @@ const Header = () => {
     const newShowProfile = !showProfile;
     setShowProfile(newShowProfile);
     localStorage.setItem("showProfile", JSON.stringify(newShowProfile));
+  };
+  const handleLogout = () => {
+    logout(); // First logout
+    navigate("/Login_SignUp"); // Then navigate to the desired route
   };
   return (
     <div>
@@ -123,7 +149,11 @@ const Header = () => {
           {isAuthenticated ? (
             <div>
               <User onClick={toggleProfile}>
-                <FontAwesomeIcon icon={faUser} size="2xl" />
+                {profileImage ? (
+                  <ProfileImage src={profileImage} alt="Profile" />
+                ) : (
+                  <FontAwesomeIcon icon={faUser} size="2xl" />
+                )}
               </User>
               {showProfile && (
                 <ProfielModal>
@@ -139,7 +169,17 @@ const Header = () => {
                     <FontAwesomeIcon icon={faCartShopping} size="xl" />
                     <a href="#">My Cart</a>
                   </div>
-                  <LogOut onClick={logout}>
+                  {isAuthenticated && userData && userData.isAdmin && (
+                    <div>
+                      <FontAwesomeIcon
+                        icon={faScrewdriverWrench}
+                        size="xl"
+                        style={{ color: "#cc3333" }}
+                      />
+                      <Link to="/Admin-Panel">Admin Panel</Link>
+                    </div>
+                  )}
+                  <LogOut onClick={handleLogout}>
                     <FontAwesomeIcon icon={faArrowRightFromBracket} size="xl" />
                     <a href="#">Logout</a>
                   </LogOut>
@@ -314,6 +354,7 @@ const Icons = styled.div`
   align-items: center;
   justify-content: center;
   margin-right: 20px;
+  z-index: 1;
 `;
 const BurgerIcon = styled(FontAwesomeIcon)<IconProps>`
   display: none;
@@ -373,6 +414,7 @@ const ProfielModal = styled.div`
   position: absolute;
   top: 80%;
   right: 5%;
+  z-index: 2;
   background-color: ${defaultTheme.colors.floralwhite};
 
   svg {
@@ -390,6 +432,11 @@ const ProfielModal = styled.div`
       color: ${defaultTheme.colors.blue};
     }
   }
+`;
+const ProfileImage = styled.img`
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
 `;
 // const ModalLi = styled.li`
 //   font-size: 12px;

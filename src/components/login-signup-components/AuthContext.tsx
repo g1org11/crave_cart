@@ -1,4 +1,4 @@
-// AuthContext.js
+// AuthContext.tsx
 import React, {
   createContext,
   useContext,
@@ -8,58 +8,59 @@ import React, {
   SetStateAction,
 } from "react";
 
+interface UserData {
+  id: string;
+  email: string;
+  isAdmin: boolean; // Add isAdmin property
+}
+
 interface AuthContextProps {
   isAuthenticated: boolean;
-  login: () => void;
+  login: (userData: UserData) => void;
   logout: () => void;
-  userData: {
-    id: string;
-    email: string;
-  };
-  setUserData: Dispatch<SetStateAction<{ id: string; email: string }>>;
+  userData: UserData | null;
+  setUserData: Dispatch<SetStateAction<UserData | null>>;
+  isAdmin: boolean;
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  const [userData, setUserData] = useState<{ id: string; email: string } | null>(() => {
+  const [userData, setUserData] = useState<UserData | null>(() => {
     const storedUserData = localStorage.getItem("userData");
     return storedUserData ? JSON.parse(storedUserData) : null;
-  }); // Initialize userData state
+  });
 
   useEffect(() => {
-    // Check localStorage for authentication state on component mount
     const storedAuthState = localStorage.getItem("isAuthenticated");
     if (storedAuthState) {
       setIsAuthenticated(JSON.parse(storedAuthState));
     }
   }, []);
 
-  const login = (userData: { id: string; email: string }) => {
-    // Implement your login logic here
-    // Set isAuthenticated to true if login is successful
+  const login = (userData: UserData) => {
     setIsAuthenticated(true);
-    setUserData(userData); // Set userData when user logs in
-
-    // Save authentication state to localStorage
+    setUserData(userData);
+    setIsAdmin(userData.isAdmin);
     localStorage.setItem("isAuthenticated", JSON.stringify(true));
-    localStorage.setItem("userData", JSON.stringify(userData)); // Store user data in localStorage
+    localStorage.setItem("userData", JSON.stringify(userData));
   };
 
   const logout = () => {
-    // Implement your logout logic here
-    // Set isAuthenticated to false
     setIsAuthenticated(false);
-    setUserData(userData);
-    // Remove authentication state and user data from localStorage
-    localStorage.removeItem("isAuthenticated", JSON.stringify(true));
-    localStorage.removeItem("userData", JSON.stringify(userData));
+    setUserData(null);
+    setIsAdmin(false);
+    localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("userData");
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, userData, setUserData }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, isAdmin, login, logout, userData, setUserData }}
+    >
       {children}
     </AuthContext.Provider>
   );

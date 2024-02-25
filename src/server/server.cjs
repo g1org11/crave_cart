@@ -32,8 +32,10 @@ app.use(
 );
 
 require("./userDetails.cjs");
+require("./itemsDetails.cjs");
 
 const user = mongoose.model("registration");
+const Item = mongoose.model("Items");
 
 app.post("/SignUp", async (req, res) => {
   console.log("Received registration request:", req.body);
@@ -57,11 +59,30 @@ app.post("/SignUp", async (req, res) => {
     res.send({ status: "error" });
   }
 });
+app.post("/checkUserExistence", async (req, res) => {
+  try {
+    const { email, phone } = req.body;
+
+    // Query the database to check if a user with the provided email or phone exists
+    const existingUser = await user.findOne({ $or: [{ email }, { phone }] });
+
+    if (existingUser) {
+      // If a user with the provided email or phone exists, return true
+      res.json({ exists: true });
+    } else {
+      // If no user found, return false
+      res.json({ exists: false });
+    }
+  } catch (error) {
+    console.error("Error checking user existence:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 // Inside /Login-user endpoint
 app.post("/Login-user", async (req, res) => {
   console.log("Received login request:", req.body);
-  const { email, password, phone } = req.body;
+  const { email, password, phone, isAdmin } = req.body;
 
   try {
     const existingUser = await user.findOne({ email });
@@ -88,6 +109,7 @@ app.post("/Login-user", async (req, res) => {
         id: existingUser.userId,
         email: existingUser.email,
         phone: existingUser.phone,
+        isAdmin: existingUser.isAdmin,
       });
     } else {
       console.log("Invalid Password");
@@ -162,12 +184,17 @@ app.get("/get-profile-data/:userId", async (req, res) => {
 // Route to update user profile data
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./uploads"); // Destination folder for uploaded files
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
   },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now();
-    cb(null, uniqueSuffix + file.originalname); // Use the original file name
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname).toLowerCase();
+    const fileName =
+      file.originalname.replace(ext, "").toLowerCase().split(" ").join("-") +
+      "-" +
+      Date.now() +
+      ext;
+    cb(null, fileName);
   },
 });
 const upload = multer({ storage: storage });
@@ -187,7 +214,7 @@ app.post("/update-profile/:userId", upload.single("profileImage"), async (req, r
     }
 
     await userProfile.save();
-
+    console.log(req.file);
     res.json({ status: "ok", message: "Profile updated successfully" });
   } catch (error) {
     console.error("Error updating profile:", error);
@@ -195,22 +222,40 @@ app.post("/update-profile/:userId", upload.single("profileImage"), async (req, r
   }
 });
 
-// app.post("/upload-image", upload.single("image"), async (req, res) => {
-//   if (req.file) {
-//     const imageName = req.file.filename;
+/////////////////////////////////////////////////////
+app.post("/add-item", upload.single("mainImage"), async (req, res) => {
+  try {
+    const { name, price, ingredients, descriptions } = req.body;
+    const { mainImage, secondaryImage, tertiaryImage } = req.file;
 
-//     try {
-//       // Update user profile with the image name
-//       const userId = req.session.userId;
-//       await user.findByIdAndUpdate(userId, { profileImage: imageName });
-//       res.json({ status: "ok", image: imageName });
-//     } catch (error) {
-//       res.status(500).json({ status: "error", error: "Internal server error" });
-//     }
-//   } else {
-//     res.json({ status: "error", error: "No file uploaded" });
-//   }
-// });
+    await Item.create({
+      name,
+      price,
+      ingredients,
+      descriptions,
+      mainImage: {
+        data: fs.readFileSync(mainImage.path),
+        contentType: mainImage.mimetype,
+      },
+      secondaryImage: {
+        data: fs.readFileSync(secondaryImage.path),
+        contentType: secondaryImage.mimetype,
+      },
+      tertiaryImage: {
+        data: fs.readFileSync(tertiaryImage.path),
+        contentType: tertiaryImage.mimetype,
+      },
+    });
+
+    await newItem.save();
+
+    res.status(201).json({ message: "Item added successfully" });
+  } catch (error) {
+    console.error("Error adding item:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 /////////////////////////////////////////
 app.listen(5000, () => {
   console.log("server started");

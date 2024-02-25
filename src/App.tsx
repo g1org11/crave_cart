@@ -13,27 +13,32 @@ import LoginSignUp from "./pages/LoginSignup";
 import { AuthProvider } from "./components/login-signup-components/AuthContext";
 import ForgotPassword from "./components/login-signup-components/ForgotPassword";
 import Profile from "./pages/Profile";
+import { ProfileImageProvider } from "./pages/ProfileImageContext.";
+import AdminPanel from "./pages/AdminPanel";
 
 function App() {
   return (
     <div>
-      <AuthProvider>
-        <Router>
-          <GlobalStyles />
-          <Header />
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/items" element={<Items />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/Login-SignUp" element={<LoginSignUp />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/Login_SignUp" element={<LoginSignUp />} />
-            <Route path="/profile" element={<Profile />} />
-          </Routes>
-          <Footer />
-        </Router>
-      </AuthProvider>
+      <ProfileImageProvider>
+        <AuthProvider>
+          <Router>
+            <GlobalStyles />
+            <Header />
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/items" element={<Items />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/Login-SignUp" element={<LoginSignUp />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/Login_SignUp" element={<LoginSignUp />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/Admin-Panel" element={<AdminPanel />} />
+            </Routes>
+            <Footer />
+          </Router>
+        </AuthProvider>
+      </ProfileImageProvider>
     </div>
   );
 }
