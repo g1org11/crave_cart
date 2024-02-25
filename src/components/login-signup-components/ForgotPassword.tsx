@@ -26,13 +26,13 @@ const ForgotPassword = () => {
     setShowPassword(false);
   };
 
-  const validatePassword = (newPassword) => {
+  const validatePassword = (newPassword: String) => {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|:<>?~=\\[\];\',./-])[A-Za-z\d!@#$%^&*()_+{}|:<>?~=\\[\];\',./-]{8,25}$/;
     return passwordRegex.test(newPassword);
   };
 
-  const handlePasswordChange = async (e) => {
+  const handlePasswordChange = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     try {

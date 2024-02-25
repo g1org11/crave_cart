@@ -17,23 +17,25 @@ const SignUp = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e: { target: { value: any } }) => {
     const newEmail = e.target.value;
     setEmail(newEmail);
   };
 
-  const handlePhoneNumberChange = (e) => {
+  const handlePhoneNumberChange = (e: { target: { value: any } }) => {
     const newPhone = e.target.value;
     const numericPhone = newPhone.replace(/\D/g, "");
     setPhone(numericPhone);
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e: { target: { value: any } }) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
   };
 
-  const handleAdminChange = (e) => {
+  const handleAdminChange = (e: {
+    target: { checked: boolean | ((prevState: boolean) => boolean) };
+  }) => {
     setIsAdmin(e.target.checked);
   };
 
@@ -65,13 +67,13 @@ const SignUp = () => {
     }
   };
 
-  const validatePassword = (password) => {
+  const validatePassword = (password: string): boolean => {
     const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|:<>?~=\\[\];\',./-])[A-Za-z\d!@#$%^&*()_+{}|:<>?~=\\[\];\',./-]{8,25}$/;
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|:<>?~=\\[\];',./-])[A-Za-z\d!@#$%^&*()_+{}|:<>?~=\\[\];',./-]{8,25}$/;
     return passwordRegex.test(password);
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     if (!email || !password || !phone) {

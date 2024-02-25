@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 import { AuthContext } from "../components/login-signup-components/AuthContext";
 import { useAuth } from "../components/login-signup-components/AuthContext";
@@ -49,26 +50,21 @@ const Profile = () => {
   }, [userId, userData, getProfileImage]);
 
   const fetchProfileData = (userId, token) => {
-    fetch(`http://localhost:5000/get-profile-data/${userId}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    axios
+      .get(`http://localhost:5000/get-profile-data/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error("Network response was not ok.");
+        setProfileData(response.data);
       })
-      .then((data) => {
-        setProfileData(data);
-        // console.log(data, "qq");
-      })
-      .catch((error) => console.error("Error fetching profile data:", error));
+      .catch((error) => {
+        console.error("Error fetching profile data:", error);
+      });
   };
 
-  const handleChange = (e: { target: { name: any; value: any } }) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setProfileData((prevData) => ({
       ...prevData,
@@ -76,7 +72,7 @@ const Profile = () => {
     }));
   };
 
-  const onImageChange = (e: { target: { files: any[] } }) => {
+  const onImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -89,7 +85,7 @@ const Profile = () => {
     }
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -97,24 +93,24 @@ const Profile = () => {
     Object.entries(profileData).forEach(([key, value]) => {
       formData.append(key, value);
     });
-    console.log(formData);
-    await fetch(`http://localhost:5000/update-profile/${userId}`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${userData?.data}`,
-        // "Content-Type": "multipart/form-data",
-      },
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Profile updated successfully:", data);
-        toast.success("Profile Saved successfuly");
-      })
-      .catch((error) => {
-        toast.error("An error occurred. Please try again later.");
-        console.error("Error updating profile:", error);
-      });
+
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/update-profile/${userId}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${userData?.data}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Profile updated successfully:", response.data);
+      toast.success("Profile Saved successfully");
+    } catch (error) {
+      toast.error("An error occurred. Please try again later.");
+      console.error("Error updating profile:", error);
+    }
   };
 
   return (
