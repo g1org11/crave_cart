@@ -1,45 +1,126 @@
 import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../defaultTheme";
+import { useState } from "react";
 
 const AdminPanel = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    ingredients: "",
+    descriptions: "",
+    mainImage: null,
+    secondaryImage: null,
+    tertiaryImage: null,
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+    setFormData({
+      ...formData,
+      [name]: files[0],
+    });
+  };
+  const handleReset = () => {
+    setFormData({
+      name: "",
+      price: "",
+      ingredients: "",
+      descriptions: "",
+      mainImage: null,
+      secondaryImage: null,
+      tertiaryImage: null,
+    });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // const formDataToSend = new FormData();
+    // formDataToSend.append("name", formData.name);
+    // formDataToSend.append("price", formData.price);
+    // formDataToSend.append("ingredients", formData.ingredients);
+    // formDataToSend.append("descriptions", formData.descriptions);
+    // formDataToSend.append("mainImage", formData.mainImage);
+    // formDataToSend.append("secondaryImage", formData.secondaryImage);
+    // formDataToSend.append("tertiaryImage", formData.tertiaryImage);
+
+    try {
+      const response = await fetch("http://localhost:5000/add-item", {
+        method: "POST",
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      console.log(data);
+      handleReset();
+      // Handle success response as needed
+    } catch (error) {
+      console.error("Error adding item:", error);
+      // Handle error response as needed
+    }
+  };
+
   return (
     <Container>
-      <Form>
+      <Form onSubmit={handleSubmit}>
         <h1>Add Items</h1>
         <div>
           <NamePrice>
             <WidthDiv>
               <p>Item Name</p>
-              <Input type="text" />
+              <Input type="text" name="name" value={formData.name} onChange={handleInputChange} />
             </WidthDiv>
             <WidthDiv>
               <p>Item Price</p>
-              <Input type="number" />
+              <Input
+                type="number"
+                name="price"
+                value={formData.price}
+                onChange={handleInputChange}
+              />
             </WidthDiv>
           </NamePrice>
           <Descriptions>
             <WidthDiv>
               <p>Item Ingredients</p>
-              <Input type="text" />
+              <Input
+                type="text"
+                name="ingredients"
+                value={formData.ingredients}
+                onChange={handleInputChange}
+              />
             </WidthDiv>
             <WidthDiv>
               <p>Description</p>
-              <textarea name="" id="" cols="30" rows="10"></textarea>
+              <textarea
+                name="descriptions"
+                value={formData.descriptions}
+                onChange={handleInputChange}
+                id=""
+                cols="30"
+                rows="10"
+              ></textarea>
             </WidthDiv>
           </Descriptions>
           <ImagesDiv>
             <div>
               <p>Add Main Image</p>
-              <input type="file" name="" id="" />
+              <input type="file" name="mainImage" onChange={handleFileChange} />
             </div>
             <div>
               <p>Add Secondary Image</p>
-              <input type="file" name="" id="" />
+              <input type="file" name="secondaryImage" onChange={handleFileChange} />
             </div>
             <div>
               <p>Add Tertiary Image</p>
-              <input type="file" name="" id="" />
+              <input type="file" name="tertiaryImage" onChange={handleFileChange} />
             </div>
           </ImagesDiv>
         </div>
@@ -121,7 +202,6 @@ const Descriptions = styled.div`
   display: flex;
   align-items: top;
   justify-content: space-between;
-  flex-wrap: wrap;
 
   textarea {
     width: 400px;
@@ -140,6 +220,7 @@ const Descriptions = styled.div`
       outline: none;
     }
     @media (max-width: 1000px) {
+      flex-direction: column;
       width: 100%;
     }
   }

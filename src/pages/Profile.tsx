@@ -89,7 +89,7 @@ const Profile = () => {
     }
   };
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -97,11 +97,12 @@ const Profile = () => {
     Object.entries(profileData).forEach(([key, value]) => {
       formData.append(key, value);
     });
-
-    fetch(`http://localhost:5000/update-profile/${userId}`, {
+    console.log(formData);
+    await fetch(`http://localhost:5000/update-profile/${userId}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${userData?.data}`,
+        // "Content-Type": "multipart/form-data",
       },
       body: formData,
     })
@@ -201,7 +202,7 @@ const Profile = () => {
                       type="file"
                       accept="image/*"
                       onChange={onImageChange}
-                      name="image"
+                      name="profileImage"
                       id="file-input"
                       style={{ display: "none" }}
                     />
