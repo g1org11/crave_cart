@@ -24,11 +24,14 @@ const AdminPanel = () => {
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
+    const file = files[0]; // Only taking the first file from the array
+
     setFormData({
       ...formData,
-      [name]: files[0],
+      [name]: file,
     });
   };
+
   const handleReset = () => {
     setFormData({
       name: "",
@@ -42,20 +45,19 @@ const AdminPanel = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // const formDataToSend = new FormData();
-    // formDataToSend.append("name", formData.name);
-    // formDataToSend.append("price", formData.price);
-    // formDataToSend.append("ingredients", formData.ingredients);
-    // formDataToSend.append("descriptions", formData.descriptions);
-    // formDataToSend.append("mainImage", formData.mainImage);
-    // formDataToSend.append("secondaryImage", formData.secondaryImage);
-    // formDataToSend.append("tertiaryImage", formData.tertiaryImage);
+    const Data = new FormData();
+    Data.append("name", formData.name);
+    Data.append("price", formData.price);
+    Data.append("ingredients", formData.ingredients);
+    Data.append("descriptions", formData.descriptions);
+    Data.append("mainImage", formData.mainImage);
+    Data.append("secondaryImage", formData.secondaryImage);
+    Data.append("tertiaryImage", formData.tertiaryImage);
 
     try {
       const response = await fetch("http://localhost:5000/add-item", {
         method: "POST",
-        body: JSON.stringify(formData),
+        body: Data,
       });
       const data = await response.json();
       console.log(data);
@@ -69,7 +71,7 @@ const AdminPanel = () => {
 
   return (
     <Container>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} encType="multipart/form-data">
         <h1>Add Items</h1>
         <div>
           <NamePrice>
@@ -103,9 +105,6 @@ const AdminPanel = () => {
                 name="descriptions"
                 value={formData.descriptions}
                 onChange={handleInputChange}
-                id=""
-                cols="30"
-                rows="10"
               ></textarea>
             </WidthDiv>
           </Descriptions>
