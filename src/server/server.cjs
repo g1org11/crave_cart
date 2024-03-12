@@ -151,9 +151,14 @@ app.get("/get-profile-data/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
 
-    // Check if user is authenticated
-    const token = req.headers.authorization.split(" ")[1];
-    jwt.verify(token, JWT_SECRET, async (err, decoded) => {
+    // Check if Authorization header exists
+    const token = req.headers.authorization;
+    if (!token) {
+      return res.status(401).json({ status: "error", message: "Authorization token is missing" });
+    }
+
+    // Verify the JWT token
+    jwt.verify(token.split(" ")[1], JWT_SECRET, async (err, decoded) => {
       if (err || decoded.userId !== userId) {
         return res.status(401).json({ status: "error", message: "Unauthorized" });
       }

@@ -55,7 +55,7 @@ const Profile = () => {
       axios
         .get(`http://localhost:5000/get-profile-data/${userId}`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${authContext.userData?.data}`, // Correct the token retrieval
           },
         })
         .then((response) => {
@@ -162,7 +162,7 @@ const Profile = () => {
               <li>
                 <a href="">Shop</a>
               </li>
-              {isAuthenticated && userData && userData.isAdmin && (
+              {isAuthenticated && authContext.userData && authContext.userData.isAdmin && (
                 <li>
                   <Link to="/Admin-Panel">Admin Panel</Link>
                 </li>
@@ -228,11 +228,12 @@ const Profile = () => {
                     <li>
                       <a href="">Shop</a>
                     </li>
-                    {isAuthenticated && userData && userData.isAdmin && (
+                    {isAuthenticated && authContext.userData && authContext.userData.isAdmin && (
                       <li>
                         <Link to="/Admin-Panel">Admin Panel</Link>
                       </li>
                     )}
+
                     <li>
                       <a href="">Logout</a>
                     </li>
