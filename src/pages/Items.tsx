@@ -3,9 +3,11 @@ import pizza from "./../assets/items/pizza.png";
 import styled from "styled-components";
 import { defaultTheme } from "../defaultTheme";
 import ItemsCard from "../components/items-component/ItemsCard";
+import ItemsHero from "../components/items-component/Itemshero";
 const Items = () => {
   return (
     <div>
+      <ItemsHero />
       <ItemsCard
         title={"Chicken Supreme Pizza"}
         ingredients={"Topped with chicken, onion, capsicum, black olive & Green chilli"}
