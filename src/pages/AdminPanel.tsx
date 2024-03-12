@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../defaultTheme";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AdminPanel = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +15,7 @@ const AdminPanel = () => {
     secondaryImage: null,
     tertiaryImage: null,
   });
-
+  const formRef = useRef(null);
   const handleInputChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
     setFormData({
@@ -42,6 +44,7 @@ const AdminPanel = () => {
       secondaryImage: null,
       tertiaryImage: null,
     });
+    formRef.current.reset();
   };
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -68,72 +71,77 @@ const AdminPanel = () => {
       const data = await response.json();
       console.log(data);
       handleReset();
+      toast.success("Item add Successfuly");
       // Handle success response as needed
     } catch (error) {
       console.error("Error adding item:", error);
+      toast.error(`There is some problem`);
       // Handle error response as needed
     }
   };
 
   return (
-    <Container>
-      <Form onSubmit={handleSubmit} encType="multipart/form-data">
-        <h1>Add Items</h1>
-        <div>
-          <NamePrice>
-            <WidthDiv>
-              <p>Item Name</p>
-              <Input type="text" name="name" value={formData.name} onChange={handleInputChange} />
-            </WidthDiv>
-            <WidthDiv>
-              <p>Item Price</p>
-              <Input
-                type="number"
-                name="price"
-                value={formData.price}
-                onChange={handleInputChange}
-              />
-            </WidthDiv>
-          </NamePrice>
-          <Descriptions>
-            <WidthDiv>
-              <p>Item Ingredients</p>
-              <Input
-                type="text"
-                name="ingredients"
-                value={formData.ingredients}
-                onChange={handleInputChange}
-              />
-            </WidthDiv>
-            <WidthDiv>
-              <p>Description</p>
-              <textarea
-                name="descriptions"
-                value={formData.descriptions}
-                onChange={handleInputChange}
-              ></textarea>
-            </WidthDiv>
-          </Descriptions>
-          <ImagesDiv>
-            <div>
-              <p>Add Main Image</p>
-              <input type="file" name="mainImage" onChange={handleFileChange} />
-            </div>
-            <div>
-              <p>Add Secondary Image</p>
-              <input type="file" name="secondaryImage" onChange={handleFileChange} />
-            </div>
-            <div>
-              <p>Add Tertiary Image</p>
-              <input type="file" name="tertiaryImage" onChange={handleFileChange} />
-            </div>
-          </ImagesDiv>
-        </div>
-        <ButtonDiv>
-          <button>Submit</button>
-        </ButtonDiv>
-      </Form>
-    </Container>
+    <div>
+      <ToastContainer />
+      <Container>
+        <Form ref={formRef} onSubmit={handleSubmit} encType="multipart/form-data">
+          <h1>Add Items</h1>
+          <div>
+            <NamePrice>
+              <WidthDiv>
+                <p>Item Name</p>
+                <Input type="text" name="name" value={formData.name} onChange={handleInputChange} />
+              </WidthDiv>
+              <WidthDiv>
+                <p>Item Price</p>
+                <Input
+                  type="number"
+                  name="price"
+                  value={formData.price}
+                  onChange={handleInputChange}
+                />
+              </WidthDiv>
+            </NamePrice>
+            <Descriptions>
+              <WidthDiv>
+                <p>Item Ingredients</p>
+                <Input
+                  type="text"
+                  name="ingredients"
+                  value={formData.ingredients}
+                  onChange={handleInputChange}
+                />
+              </WidthDiv>
+              <WidthDiv>
+                <p>Description</p>
+                <textarea
+                  name="descriptions"
+                  value={formData.descriptions}
+                  onChange={handleInputChange}
+                ></textarea>
+              </WidthDiv>
+            </Descriptions>
+            <ImagesDiv>
+              <div>
+                <p>Add Main Image</p>
+                <input type="file" name="mainImage" onChange={handleFileChange} />
+              </div>
+              <div>
+                <p>Add Secondary Image</p>
+                <input type="file" name="secondaryImage" onChange={handleFileChange} />
+              </div>
+              <div>
+                <p>Add Tertiary Image</p>
+                <input type="file" name="tertiaryImage" onChange={handleFileChange} />
+              </div>
+            </ImagesDiv>
+          </div>
+          <ButtonDiv>
+            <button>Submit</button>
+          </ButtonDiv>
+        </Form>
+      </Container>
+    </div>
   );
 };
 
