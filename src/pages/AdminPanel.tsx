@@ -225,9 +225,12 @@ const Descriptions = styled.div`
       outline: none;
     }
     @media (max-width: 1000px) {
-      flex-direction: column;
       width: 100%;
     }
+  }
+  @media (max-width: 1000px) {
+    flex-direction: column;
+    width: 100%;
   }
 `;
 const ImagesDiv = styled.div`

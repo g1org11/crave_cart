@@ -22,7 +22,7 @@ const Container = styled.div`
   background-image: url(${hero});
   background-repeat: no-repeat;
   background-size: cover;
-
+  margin-bottom: 35px;
   display: flex;
   align-items: center;
   justify-content: center;

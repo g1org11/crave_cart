@@ -2,7 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 
-const ItemsCard = ({ title, ingredients, price, img }) => {
+interface ItemsCardProps {
+  title: string;
+  ingredients: string;
+  price: number;
+  img: string;
+}
+
+// Functional component with destructured props and defined interface
+const ItemsCard: React.FC<ItemsCardProps> = ({ title, ingredients, price, img }) => {
   return (
     <ItemContainer>
       <div>
