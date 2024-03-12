@@ -14,7 +14,7 @@ const AdminPanel = () => {
     tertiaryImage: null,
   });
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -22,7 +22,7 @@ const AdminPanel = () => {
     });
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = (e: { target: { name: any; files: any } }) => {
     const { name, files } = e.target;
     const file = files[0]; // Only taking the first file from the array
 
@@ -43,16 +43,22 @@ const AdminPanel = () => {
       tertiaryImage: null,
     });
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     const Data = new FormData();
-    Data.append("name", formData.name);
-    Data.append("price", formData.price);
-    Data.append("ingredients", formData.ingredients);
-    Data.append("descriptions", formData.descriptions);
-    Data.append("mainImage", formData.mainImage);
-    Data.append("secondaryImage", formData.secondaryImage);
-    Data.append("tertiaryImage", formData.tertiaryImage);
+    Data.append("name", formData.name || ""); // Default to empty string if null
+    Data.append("price", formData.price || ""); // Default to empty string if null
+    Data.append("ingredients", formData.ingredients || ""); // Default to empty string if null
+    Data.append("descriptions", formData.descriptions || ""); // Default to empty string if null
+    if (formData.mainImage) {
+      Data.append("mainImage", formData.mainImage);
+    }
+    if (formData.secondaryImage) {
+      Data.append("secondaryImage", formData.secondaryImage);
+    }
+    if (formData.tertiaryImage) {
+      Data.append("tertiaryImage", formData.tertiaryImage);
+    }
 
     try {
       const response = await fetch("http://localhost:5000/add-item", {

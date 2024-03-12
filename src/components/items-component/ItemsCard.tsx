@@ -1,22 +1,23 @@
 import React from "react";
-import pizza from "./../assets/items/pizza.png";
 import styled from "styled-components";
-import { defaultTheme } from "../defaultTheme";
-import ItemsCard from "../components/items-component/ItemsCard";
-const Items = () => {
+import { defaultTheme } from "../../defaultTheme";
+
+const ItemsCard = ({ title, ingredients, price, img }) => {
   return (
-    <div>
-      <ItemsCard
-        title={"Chicken Supreme Pizza"}
-        ingredients={"Topped with chicken, onion, capsicum, black olive & Green chilli"}
-        price={"150"}
-        img={pizza}
-      />
-    </div>
+    <ItemContainer>
+      <div>
+        <Title>{title}</Title>
+        <Ingredients>{ingredients}</Ingredients>
+        <Price>From ${price}</Price>
+      </div>
+      <div>
+        <ItemImage src={img} alt="pizza" />
+      </div>
+    </ItemContainer>
   );
 };
-export default Items;
 
+export default ItemsCard;
 const ItemContainer = styled.div`
   width: 500px;
   display: flex;
@@ -24,6 +25,7 @@ const ItemContainer = styled.div`
   justify-content: center;
   box-shadow: 0px 1px 4px 3px #00000040;
   border-radius: 20px;
+  padding: 5px;
 `;
 const Title = styled.h1`
   font-size: 20px;
