@@ -19,7 +19,7 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ title, ingredients, price, img })
         <Price>From ${price}</Price>
       </div>
       <div>
-        <ItemImage src={img} alt="pizza" />
+        <ItemImage src={URL.createObjectURL(img)} alt="pizza" />
       </div>
     </ItemContainer>
   );

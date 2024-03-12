@@ -4,19 +4,22 @@ import { defaultTheme } from "../defaultTheme";
 import { useState, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useItemContext } from "../components/items-component/ItemContext";
 
 const AdminPanel = () => {
+  const { addItem } = useItemContext();
   const [formData, setFormData] = useState({
     name: "",
     price: "",
     ingredients: "",
     descriptions: "",
-    mainImage: null,
-    secondaryImage: null,
-    tertiaryImage: null,
+    mainImage: null as File | null,
+    secondaryImage: null as File | null,
+    tertiaryImage: null as File | null,
   });
-  const formRef = useRef(null);
-  const handleInputChange = (e: { target: { name: any; value: any } }) => {
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -24,10 +27,9 @@ const AdminPanel = () => {
     });
   };
 
-  const handleFileChange = (e: { target: { name: any; files: any } }) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
-    const file = files[0]; // Only taking the first file from the array
-
+    const file = files ? files[0] : null;
     setFormData({
       ...formData,
       [name]: file,
@@ -44,15 +46,18 @@ const AdminPanel = () => {
       secondaryImage: null,
       tertiaryImage: null,
     });
-    formRef.current.reset();
+    if (formRef.current) {
+      formRef.current.reset();
+    }
   };
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const Data = new FormData();
-    Data.append("name", formData.name || ""); // Default to empty string if null
-    Data.append("price", formData.price || ""); // Default to empty string if null
-    Data.append("ingredients", formData.ingredients || ""); // Default to empty string if null
-    Data.append("descriptions", formData.descriptions || ""); // Default to empty string if null
+    Data.append("name", formData.name || "");
+    Data.append("price", formData.price || "");
+    Data.append("ingredients", formData.ingredients || "");
+    Data.append("descriptions", formData.descriptions || "");
     if (formData.mainImage) {
       Data.append("mainImage", formData.mainImage);
     }
@@ -70,16 +75,21 @@ const AdminPanel = () => {
       });
       const data = await response.json();
       console.log(data);
+
+      addItem({
+        title: formData.name,
+        ingredients: formData.ingredients,
+        price: formData.price,
+        image: formData.mainImage,
+      });
+
       handleReset();
-      toast.success("Item add Successfuly");
-      // Handle success response as needed
+      toast.success("Item added Successfully");
     } catch (error) {
       console.error("Error adding item:", error);
       toast.error(`There is some problem`);
-      // Handle error response as needed
     }
   };
-
   return (
     <div>
       <ToastContainer />

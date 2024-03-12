@@ -4,19 +4,26 @@ import styled from "styled-components";
 import { defaultTheme } from "../defaultTheme";
 import ItemsCard from "../components/items-component/ItemsCard";
 import ItemsHero from "../components/items-component/Itemshero";
+import { useItemContext } from "../components/items-component/ItemContext";
 const Items = () => {
+  const { items } = useItemContext();
+
   return (
     <div>
       <ItemsHero />
-      <ItemsCard
-        title={"Chicken Supreme Pizza"}
-        ingredients={"Topped with chicken, onion, capsicum, black olive & Green chilli"}
-        price={"150"}
-        img={pizza}
-      />
+      {items.map((item, index) => (
+        <ItemsCard
+          key={index}
+          title={item.title}
+          ingredients={item.ingredients}
+          price={item.price}
+          img={item.image}
+        />
+      ))}
     </div>
   );
 };
+
 export default Items;
 
 const ItemContainer = styled.div`
