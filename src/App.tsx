@@ -15,30 +15,33 @@ import ForgotPassword from "./components/login-signup-components/ForgotPassword"
 import Profile from "./pages/Profile";
 import { ProfileImageProvider } from "./pages/ProfileImageContext.";
 import AdminPanel from "./pages/AdminPanel";
+import { ItemProvider } from "./components/items-component/ItemContext";
 
 function App() {
   return (
     <div>
-      <ProfileImageProvider>
-        <AuthProvider>
-          <Router>
-            <GlobalStyles />
-            <Header />
-            <Routes>
-              <Route path="/" element={<Main />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/items" element={<Items />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/Login-SignUp" element={<LoginSignUp />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/Login_SignUp" element={<LoginSignUp />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/Admin-Panel" element={<AdminPanel />} />
-            </Routes>
-            <Footer />
-          </Router>
-        </AuthProvider>
-      </ProfileImageProvider>
+      <ItemProvider>
+        <ProfileImageProvider>
+          <AuthProvider>
+            <Router>
+              <GlobalStyles />
+              <Header />
+              <Routes>
+                <Route path="/" element={<Main />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/items" element={<Items />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/Login-SignUp" element={<LoginSignUp />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/Login_SignUp" element={<LoginSignUp />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/Admin-Panel" element={<AdminPanel />} />
+              </Routes>
+              <Footer />
+            </Router>
+          </AuthProvider>
+        </ProfileImageProvider>
+      </ItemProvider>
     </div>
   );
 }

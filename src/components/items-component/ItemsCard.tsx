@@ -1,31 +1,31 @@
 import React from "react";
-import pizza from "./../assets/items/pizza.png";
 import styled from "styled-components";
-import { defaultTheme } from "../defaultTheme";
-import ItemsCard from "../components/items-component/ItemsCard";
-import ItemsHero from "../components/items-component/Itemshero";
-import { useItemContext } from "../components/items-component/ItemContext";
-const Items = () => {
-  const { items } = useItemContext();
+import { defaultTheme } from "../../defaultTheme";
 
+interface ItemsCardProps {
+  title: string;
+  ingredients: string;
+  price: number;
+  img: string;
+}
+
+// Functional component with destructured props and defined interface
+const ItemsCard: React.FC<ItemsCardProps> = ({ title, ingredients, price, img }) => {
   return (
-    <div>
-      <ItemsHero />
-      {items.map((item, index) => (
-        <ItemsCard
-          key={index}
-          title={item.title}
-          ingredients={item.ingredients}
-          price={item.price}
-          img={item.image}
-        />
-      ))}
-    </div>
+    <ItemContainer>
+      <div>
+        <Title>{title}</Title>
+        <Ingredients>{ingredients}</Ingredients>
+        <Price>From ${price}</Price>
+      </div>
+      <div>
+        <ItemImage src={URL.createObjectURL(img)} alt="pizza" />
+      </div>
+    </ItemContainer>
   );
 };
 
-export default Items;
-
+export default ItemsCard;
 const ItemContainer = styled.div`
   width: 500px;
   display: flex;
@@ -33,6 +33,7 @@ const ItemContainer = styled.div`
   justify-content: center;
   box-shadow: 0px 1px 4px 3px #00000040;
   border-radius: 20px;
+  padding: 5px;
 `;
 const Title = styled.h1`
   font-size: 20px;

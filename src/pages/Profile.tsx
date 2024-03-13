@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
-import { AuthContext } from "../components/login-signup-components/AuthContext";
+import { AuthContext, AuthContextProps } from "../components/login-signup-components/AuthContext";
 import { useAuth } from "../components/login-signup-components/AuthContext";
 
 const Profile = () => {
@@ -26,10 +26,10 @@ const Profile = () => {
     city: "",
     fullAddress: "",
   });
-  const [profileImage, setProfileImage] = useState(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
   const { isAuthenticated } = useAuth();
-  const { userData } = useContext(AuthContext);
-  const userId = userData?.id;
+  const authContext = useContext(AuthContext) as AuthContextProps;
+  const userId = authContext.userData?.id;
   const { updateProfileImage, getProfileImage } = useProfileImage();
   const [showMenu, setShowMenu] = useState(false);
 
@@ -38,33 +38,36 @@ const Profile = () => {
     setShowMenu(newShowMenu);
     localStorage.setItem("showMenu", JSON.stringify(newShowMenu));
   };
+
   useEffect(() => {
     if (userId) {
-      fetchProfileData(userId, userData.data);
+      fetchProfileData(userId, authContext.userData?.id);
     }
     // Retrieve profile image from local storage
     const storedProfileImage = getProfileImage(userId);
     if (storedProfileImage) {
       setProfileImage(storedProfileImage);
     }
-  }, [userId, userData, getProfileImage]);
+  }, [userId, authContext.userData?.id, getProfileImage]);
 
-  const fetchProfileData = (userId, token) => {
-    axios
-      .get(`http://localhost:5000/get-profile-data/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        setProfileData(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching profile data:", error);
-      });
+  const fetchProfileData = (userId: string | undefined, token: string | undefined) => {
+    if (userId && token) {
+      axios
+        .get(`http://localhost:5000/get-profile-data/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${authContext.userData?.data}`, // Correct the token retrieval
+          },
+        })
+        .then((response) => {
+          setProfileData(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching profile data:", error);
+        });
+    }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setProfileData((prevData) => ({
       ...prevData,
@@ -72,24 +75,24 @@ const Profile = () => {
     }));
   };
 
-  const onImageChange = (e) => {
-    const file = e.target.files[0];
+  const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        const image = reader.result;
+        const image = reader.result as string;
         setProfileImage(image);
-        updateProfileImage(userData.id, image); // Update profile image
+        updateProfileImage(authContext.userData?.id, image); // Update profile image
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("profileImage", profileImage);
+    formData.append("profileImage", profileImage || "");
     Object.entries(profileData).forEach(([key, value]) => {
       formData.append(key, value);
     });
@@ -100,7 +103,7 @@ const Profile = () => {
         formData,
         {
           headers: {
-            Authorization: `Bearer ${userData?.data}`,
+            Authorization: `Bearer ${authContext.userData?.id}`,
             "Content-Type": "multipart/form-data",
           },
         }
@@ -159,7 +162,7 @@ const Profile = () => {
               <li>
                 <a href="">Shop</a>
               </li>
-              {isAuthenticated && userData && userData.isAdmin && (
+              {isAuthenticated && authContext.userData && authContext.userData.isAdmin && (
                 <li>
                   <Link to="/Admin-Panel">Admin Panel</Link>
                 </li>
@@ -225,11 +228,12 @@ const Profile = () => {
                     <li>
                       <a href="">Shop</a>
                     </li>
-                    {isAuthenticated && userData && userData.isAdmin && (
+                    {isAuthenticated && authContext.userData && authContext.userData.isAdmin && (
                       <li>
                         <Link to="/Admin-Panel">Admin Panel</Link>
                       </li>
                     )}
+
                     <li>
                       <a href="">Logout</a>
                     </li>

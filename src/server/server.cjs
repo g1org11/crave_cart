@@ -6,6 +6,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const app = express();
 app.use(express.json());
+const path = require("path");
+
 // app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: true, credentials: true }));
 // Increase max header size
@@ -149,9 +151,14 @@ app.get("/get-profile-data/:userId", async (req, res) => {
   try {
     const userId = req.params.userId;
 
-    // Check if user is authenticated
-    const token = req.headers.authorization.split(" ")[1];
-    jwt.verify(token, JWT_SECRET, async (err, decoded) => {
+    // Check if Authorization header exists
+    const token = req.headers.authorization;
+    if (!token) {
+      return res.status(401).json({ status: "error", message: "Authorization token is missing" });
+    }
+
+    // Verify the JWT token
+    jwt.verify(token.split(" ")[1], JWT_SECRET, async (err, decoded) => {
       if (err || decoded.userId !== userId) {
         return res.status(401).json({ status: "error", message: "Unauthorized" });
       }
@@ -223,38 +230,65 @@ app.post("/update-profile/:userId", upload.single("profileImage"), async (req, r
 });
 
 /////////////////////////////////////////////////////
-app.post("/add-item", upload.single("mainImage"), async (req, res) => {
-  try {
-    const { name, price, ingredients, descriptions } = req.body;
-    const { mainImage, secondaryImage, tertiaryImage } = req.file;
-
-    await Item.create({
-      name,
-      price,
-      ingredients,
-      descriptions,
-      mainImage: {
-        data: fs.readFileSync(mainImage.path),
-        contentType: mainImage.mimetype,
-      },
-      secondaryImage: {
-        data: fs.readFileSync(secondaryImage.path),
-        contentType: secondaryImage.mimetype,
-      },
-      tertiaryImage: {
-        data: fs.readFileSync(tertiaryImage.path),
-        contentType: tertiaryImage.mimetype,
-      },
-    });
-
-    await newItem.save();
-
-    res.status(201).json({ message: "Item added successfully" });
-  } catch (error) {
-    console.error("Error adding item:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
+const storage1 = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    const ext = path.extname(file.originalname).toLowerCase();
+    const fileName =
+      file.originalname.replace(ext, "").toLowerCase().split(" ").join("-") +
+      "-" +
+      Date.now() +
+      ext;
+    cb(null, fileName);
+  },
 });
+
+const upload1 = multer({ storage: storage1 });
+
+// Route for adding items with images
+app.post(
+  "/add-item",
+  upload1.fields([
+    { name: "mainImage", maxCount: 1 },
+    { name: "secondaryImage", maxCount: 1 },
+    { name: "tertiaryImage", maxCount: 1 },
+  ]),
+  async (req, res) => {
+    try {
+      // Extract form data
+      const { name, price, ingredients, descriptions } = req.body;
+
+      // Extract uploaded files
+      const mainImage = req.files["mainImage"] ? req.files["mainImage"][0] : null;
+      const secondaryImage = req.files["secondaryImage"] ? req.files["secondaryImage"][0] : null;
+      const tertiaryImage = req.files["tertiaryImage"] ? req.files["tertiaryImage"][0] : null;
+
+      // Create new item document
+      const newItem = await Item.create({
+        name: name,
+        price: price,
+        ingredients: ingredients,
+        descriptions: descriptions,
+        mainImage: mainImage ? { data: mainImage.buffer, contentType: mainImage.mimetype } : null,
+        secondaryImage: secondaryImage
+          ? { data: secondaryImage.buffer, contentType: secondaryImage.mimetype }
+          : null,
+        tertiaryImage: tertiaryImage
+          ? { data: tertiaryImage.buffer, contentType: tertiaryImage.mimetype }
+          : null,
+      });
+
+      // Respond with success message
+      res.status(201).json({ message: "Item added successfully", newItem });
+    } catch (error) {
+      // Handle errors
+      console.error("Error adding item:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+);
 
 /////////////////////////////////////////
 app.listen(5000, () => {

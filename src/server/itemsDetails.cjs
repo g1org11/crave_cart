@@ -7,13 +7,16 @@ const ItemsDetailsSchema = new mongoose.Schema(
     ingredients: String,
     descriptions: String,
     mainImage: {
-      type: Buffer,
+      data: Buffer, // Store binary data
+      contentType: String, // Store content type (e.g., image/jpeg, image/png)
     },
     secondaryImage: {
-      type: Buffer,
+      data: Buffer,
+      contentType: String,
     },
     tertiaryImage: {
-      type: Buffer,
+      data: Buffer,
+      contentType: String,
     },
   },
   {
@@ -21,4 +24,4 @@ const ItemsDetailsSchema = new mongoose.Schema(
   }
 );
 
-mongoose.model("Items", ItemsDetailsSchema); // Registering the schema with the model name "Items"
+mongoose.model("Items", ItemsDetailsSchema);
