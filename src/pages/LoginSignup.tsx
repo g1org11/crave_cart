@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import LoginHero from "../components/login-signup-components/Loginhero";
 

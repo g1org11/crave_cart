@@ -1,5 +1,3 @@
-import React from "react";
-
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import team1 from "../../assets/about-us/image_ourTeam_1.svg";

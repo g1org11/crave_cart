@@ -16,11 +16,11 @@ interface UserData {
 
 interface AuthContextProps {
   isAuthenticated: boolean;
+  isAdmin: boolean;
   login: (userData: UserData) => void;
   logout: () => void;
-  userData: UserData | null;
+  userData?: UserData | null; // Making userData optional
   setUserData: Dispatch<SetStateAction<UserData | null>>;
-  isAdmin: boolean;
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(undefined);

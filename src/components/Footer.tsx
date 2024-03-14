@@ -1,4 +1,3 @@
-import React from "react";
 import watch from "../assets/footer/watch.svg";
 import phone from "../assets/footer/phone.svg";
 import styled from "styled-components";

@@ -1,11 +1,13 @@
 // ItemContext.tsx
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface Item {
   title: string;
   ingredients: string;
-  price: string;
-  image: File | null;
+  price: number; // Updated to number
+  image: string | File | null; // Updated to handle string or File
+  image2: string | File | null;
+  image3: string | File | null;
 }
 
 interface ItemContextType {
@@ -23,7 +25,7 @@ export const useItemContext = () => {
   return context;
 };
 
-export const ItemProvider: React.FC = ({ children }) => {
+export const ItemProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<Item[]>([]);
 
   const addItem = (newItem: Item) => {
