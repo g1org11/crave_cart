@@ -26,7 +26,13 @@ const AdminPanel = () => {
       [name]: value,
     });
   };
-
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
     const file = files ? files[0] : null;
@@ -55,7 +61,7 @@ const AdminPanel = () => {
     e.preventDefault();
     const Data = new FormData();
     Data.append("name", formData.name || "");
-    Data.append("price", formData.price || "");
+    Data.append("price", formData.price.toString()); // Convert number to string
     Data.append("ingredients", formData.ingredients || "");
     Data.append("descriptions", formData.descriptions || "");
     if (formData.mainImage) {
@@ -79,10 +85,12 @@ const AdminPanel = () => {
       addItem({
         title: formData.name,
         ingredients: formData.ingredients,
-        price: formData.price,
+        price: Number(formData.price), // Keep this conversion if needed elsewhere
         image: formData.mainImage,
+        image2: formData.secondaryImage,
+        image3: formData.tertiaryImage,
       });
-
+      console.log(addItem, "admin panel");
       handleReset();
       toast.success("Item added Successfully");
     } catch (error) {
@@ -90,6 +98,7 @@ const AdminPanel = () => {
       toast.error(`There is some problem`);
     }
   };
+
   return (
     <div>
       <ToastContainer />
@@ -127,7 +136,7 @@ const AdminPanel = () => {
                 <textarea
                   name="descriptions"
                   value={formData.descriptions}
-                  onChange={handleInputChange}
+                  onChange={handleTextareaChange}
                 ></textarea>
               </WidthDiv>
             </Descriptions>

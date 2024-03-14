@@ -1,60 +1,54 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
-import { useAuth } from "./AuthContext";
+// import { useAuth } from "./AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "./AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios"; // Import Axios
+import axios from "axios";
 
 const Login = () => {
-  // State for login form
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-  // const [loginError, setLoginError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const { setUserData } = useContext<{ setUserData: (data: any) => void }>(AuthContext);
 
-  const { login } = useAuth();
+  // Use React.Context to infer the type of context value
+  const { login, setUserData } = useContext(AuthContext)!;
 
   const navigate = useNavigate();
-  // Update state for login form
-  const handleLoginEmailChange = (e: { target: { value: React.SetStateAction<string> } }) => {
+
+  const handleLoginEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginEmail(e.target.value);
   };
 
-  const handleLoginPasswordChange = (e: { target: { value: React.SetStateAction<string> } }) => {
+  const handleLoginPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginPassword(e.target.value);
   };
+
   const handleShowPasswordToggle = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
+
   const handlereset = () => {
     setLoginEmail("");
     setLoginPassword("");
   };
-  // Handle login button click
 
-  const handleLogin = (e: { preventDefault: () => void }) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Check if email or password is empty
     if (!loginEmail || !loginPassword) {
       toast.error("Please fill in all required fields.");
       return;
     }
 
-    // Log the password before sending the request
-    console.log("Sending login request with:", loginEmail, loginPassword);
-
-    axios
-      .post(
+    try {
+      const response = await axios.post(
         "http://localhost:5000/Login-user",
         {
           email: loginEmail,
           password: loginPassword,
-          // isAdmin,
         },
         {
           headers: {
@@ -63,32 +57,29 @@ const Login = () => {
             "Access-Control-Allow-Origin": "*",
           },
         }
-      )
-      .then((res) => {
-        const data = res.data;
-        console.log(data, "userregister");
+      );
 
-        if (data.status === "ok") {
-          // console.log(data, "login userdata");
-          localStorage.setItem("token", data.data);
-          login(data);
-          setUserData(data);
-          handlereset();
-          navigate("/");
-          toast.success("Login successful");
+      const data = response.data;
+
+      if (data.status === "ok") {
+        localStorage.setItem("token", data.data);
+        login(data);
+        setUserData(data);
+        handlereset();
+        navigate("/");
+        toast.success("Login successful");
+      } else {
+        if (data.error === "User does not exist") {
+          toast.error("User does not exist. Please sign up first.");
         } else {
-          if (data.error === "User does not exist") {
-            toast.error("User does not exist. Please sign up first.");
-          } else {
-            toast.error(`Login failed: ${data.error}`);
-          }
-          throw new Error(data.error);
+          toast.error(`Login failed: ${data.error}`);
         }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-        toast.error("An error occurred. Please try again later.");
-      });
+        throw new Error(data.error);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("An error occurred. Please try again later.");
+    }
   };
 
   return (
@@ -121,13 +112,12 @@ const Login = () => {
 
 export default Login;
 
-// Styled components remain unchanged
-
 const Card = styled.div`
   display: flex;
   align-items: top;
   flex-direction: column;
 `;
+
 const Cards = styled.form`
   display: flex;
   align-items: top;
@@ -141,7 +131,8 @@ const Cards = styled.form`
     color: ${defaultTheme.colors.red};
     margin-bottom: 15px;
   }
-  P {
+
+  p {
     font-size: 18px;
     font-style: normal;
     font-weight: 400;
@@ -162,6 +153,7 @@ const Cards = styled.form`
     border: 0;
     border-radius: 10px;
   }
+
   a {
     font-size: 25px;
     font-style: normal;
@@ -172,6 +164,7 @@ const Cards = styled.form`
     margin-top: 15px;
   }
 `;
+
 const Input = styled.input`
   width: 300px;
   height: 50px;
@@ -182,6 +175,7 @@ const Input = styled.input`
   line-height: 29px;
   padding-left: 15px;
   color: ${defaultTheme.colors.blue};
+
   /* Remove spinners for number inputs */
   -moz-appearance: textfield;
   appearance: textfield;
@@ -193,15 +187,11 @@ const Input = styled.input`
     margin: 0;
   }
 `;
-// const ErrorText = styled.p`
-//   color: ${defaultTheme.colors.red};
-//   margin-top: 10px;
-//   font-size: 16px;
-// `;
 
 const ShowPassword = styled.div`
   display: flex;
   align-items: baseline;
+
   p {
     margin-left: 10px;
   }

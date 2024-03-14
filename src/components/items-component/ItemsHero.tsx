@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import hero from "./../../assets/items/itemhero.png";

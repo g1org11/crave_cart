@@ -1,4 +1,3 @@
-import React from "react";
 import story from "../../assets/about-us/image_ourStory_.png";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";

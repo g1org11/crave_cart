@@ -1,13 +1,31 @@
-// ProfileImageContext.js
+// ProfileImageContext.tsx
+import React, { createContext, useState, useContext, useEffect, ReactNode } from "react";
 
-import React, { createContext, useState, useContext, useEffect } from "react";
+interface ProfileImage {
+  [userId: string]: string | undefined;
+}
 
-const ProfileImageContext = createContext();
+interface ProfileImageContextType {
+  updateProfileImage: (userId: string, image: string) => void;
+  getProfileImage: (userId: string) => string | null;
+}
 
-export const useProfileImage = () => useContext(ProfileImageContext);
+const ProfileImageContext = createContext<ProfileImageContextType | undefined>(undefined);
 
-export const ProfileImageProvider = ({ children }) => {
-  const [profileImages, setProfileImages] = useState({});
+export const useProfileImage = () => {
+  const context = useContext(ProfileImageContext);
+  if (!context) {
+    throw new Error("useProfileImage must be used within a ProfileImageProvider");
+  }
+  return context;
+};
+
+interface ProfileImageProviderProps {
+  children: ReactNode;
+}
+
+export const ProfileImageProvider: React.FC<ProfileImageProviderProps> = ({ children }) => {
+  const [profileImages, setProfileImages] = useState<ProfileImage>({});
 
   useEffect(() => {
     // Load profile images from local storage when component mounts
@@ -17,7 +35,7 @@ export const ProfileImageProvider = ({ children }) => {
     }
   }, []);
 
-  const updateProfileImage = (userId, image) => {
+  const updateProfileImage = (userId: string, image: string) => {
     // Update profile image in state
     setProfileImages((prevImages) => ({
       ...prevImages,
@@ -28,7 +46,7 @@ export const ProfileImageProvider = ({ children }) => {
     localStorage.setItem("profileImages", JSON.stringify({ ...profileImages, [userId]: image }));
   };
 
-  const getProfileImage = (userId) => {
+  const getProfileImage = (userId: string) => {
     return profileImages[userId] || null;
   };
 

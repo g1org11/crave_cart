@@ -1,14 +1,15 @@
-import React, { useState, useContext } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "./AuthContext";
+// import { AuthContext } from "./AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 
 const ForgotPassword = () => {
-  const { userData } = useContext(AuthContext);
+  // const { userData } = useContext(AuthContext) || {}; // Handle possible absence of AuthContext
+
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
@@ -26,7 +27,7 @@ const ForgotPassword = () => {
     setShowPassword(false);
   };
 
-  const validatePassword = (newPassword: String) => {
+  const validatePassword = (newPassword: string) => {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}|:<>?~=\\[\];\',./-])[A-Za-z\d!@#$%^&*()_+{}|:<>?~=\\[\];\',./-]{8,25}$/;
     return passwordRegex.test(newPassword);
