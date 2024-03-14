@@ -1,8 +1,8 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "./AuthContext";
+// import { AuthContext } from "./AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";

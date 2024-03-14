@@ -17,17 +17,17 @@ import { IconProps } from "./interface";
 import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { useAuth } from "./login-signup-components/AuthContext";
-
+// import { useAuth } from "./login-signup-components/AuthContext";
 import { AuthContext } from "./login-signup-components/AuthContext";
+// Other imports...
 import { useProfileImage } from "../pages/ProfileImageContext.";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
-  const { isAuthenticated, logout } = useAuth();
+  // const { isAuthenticated, logout } = useAuth();
   const { updateProfileImage, getProfileImage } = useProfileImage();
-  const { userData } = useContext(AuthContext);
+  const { isAuthenticated, logout, userData } = useContext(AuthContext);
   const userId = userData?.id;
 
   const profileImage = isAuthenticated ? getProfileImage(userData?.id) : null;

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, ChangeEvent } from "react";
+
 import styled from "styled-components";
 import { defaultTheme } from "../defaultTheme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,6 +13,9 @@ import axios from "axios";
 
 import { AuthContext, AuthContextProps } from "../components/login-signup-components/AuthContext";
 import { useAuth } from "../components/login-signup-components/AuthContext";
+interface IconProps {
+  show: boolean;
+}
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({
