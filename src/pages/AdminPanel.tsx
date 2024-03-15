@@ -4,10 +4,8 @@ import { defaultTheme } from "../defaultTheme";
 import { useState, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useItemContext } from "../components/items-component/ItemContext";
 
 const AdminPanel = () => {
-  const { addItem } = useItemContext();
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -82,15 +80,6 @@ const AdminPanel = () => {
       const data = await response.json();
       console.log(data);
 
-      addItem({
-        title: formData.name,
-        ingredients: formData.ingredients,
-        price: Number(formData.price), // Keep this conversion if needed elsewhere
-        image: formData.mainImage,
-        image2: formData.secondaryImage,
-        image3: formData.tertiaryImage,
-      });
-      console.log(addItem, "admin panel");
       handleReset();
       toast.success("Item added Successfully");
     } catch (error) {
