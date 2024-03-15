@@ -290,6 +290,18 @@ app.post(
   }
 );
 
+app.get("/get-items", async (req, res) => {
+  try {
+    // Fetch items from your database (MongoDB)
+    const items = await Item.find();
+    res.json(items); // Send items as a JSON response
+    console.log(items);
+  } catch (error) {
+    console.error("Error fetching items:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 /////////////////////////////////////////
 app.listen(5000, () => {
   console.log("server started");
