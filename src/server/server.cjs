@@ -257,27 +257,24 @@ app.post(
   ]),
   async (req, res) => {
     try {
-      // Extract form data
-      const { name, price, ingredients, descriptions } = req.body;
+      // Extract form data including courseType
+      const { name, price, ingredients, descriptions, courseType } = req.body;
 
       // Extract uploaded files
-      const mainImage = req.files["mainImage"] ? req.files["mainImage"][0] : null;
-      const secondaryImage = req.files["secondaryImage"] ? req.files["secondaryImage"][0] : null;
-      const tertiaryImage = req.files["tertiaryImage"] ? req.files["tertiaryImage"][0] : null;
+      const mainImage = req.files["mainImage"][0].filename;
+      const secondaryImage = req.files["secondaryImage"][0].filename;
+      const tertiaryImage = req.files["tertiaryImage"][0].filename;
 
-      // Create new item document
+      // Create new item document with courseType
       const newItem = await Item.create({
-        name: name,
-        price: price,
-        ingredients: ingredients,
-        descriptions: descriptions,
-        mainImage: mainImage ? { data: mainImage.buffer, contentType: mainImage.mimetype } : null,
-        secondaryImage: secondaryImage
-          ? { data: secondaryImage.buffer, contentType: secondaryImage.mimetype }
-          : null,
-        tertiaryImage: tertiaryImage
-          ? { data: tertiaryImage.buffer, contentType: tertiaryImage.mimetype }
-          : null,
+        name,
+        price,
+        ingredients,
+        descriptions,
+        mainImage,
+        secondaryImage,
+        tertiaryImage,
+        courseType, // Save courseType field
       });
 
       // Respond with success message
@@ -289,6 +286,19 @@ app.post(
     }
   }
 );
+
+///////////////////////////
+app.get("/get-items", async (req, res) => {
+  try {
+    // Fetch items from your database (MongoDB)
+    const items = await Item.find();
+    res.json(items); // Send items as a JSON response
+    console.log(items);
+  } catch (error) {
+    console.error("Error fetching items:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 /////////////////////////////////////////
 app.listen(5000, () => {

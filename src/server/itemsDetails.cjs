@@ -6,18 +6,10 @@ const ItemsDetailsSchema = new mongoose.Schema(
     price: Number,
     ingredients: String,
     descriptions: String,
-    mainImage: {
-      data: Buffer, // Store binary data
-      contentType: String, // Store content type (e.g., image/jpeg, image/png)
-    },
-    secondaryImage: {
-      data: Buffer,
-      contentType: String,
-    },
-    tertiaryImage: {
-      data: Buffer,
-      contentType: String,
-    },
+    mainImage: String,
+    secondaryImage: String,
+    tertiaryImage: String,
+    courseType: String,
   },
   {
     collection: "items",

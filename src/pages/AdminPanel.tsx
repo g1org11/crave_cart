@@ -4,22 +4,21 @@ import { defaultTheme } from "../defaultTheme";
 import { useState, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useItemContext } from "../components/items-component/ItemContext";
 
 const AdminPanel = () => {
-  const { addItem } = useItemContext();
   const [formData, setFormData] = useState({
     name: "",
     price: "",
     ingredients: "",
     descriptions: "",
-    mainImage: null as File | null,
-    secondaryImage: null as File | null,
-    tertiaryImage: null as File | null,
+    mainImage: "",
+    secondaryImage: "",
+    tertiaryImage: "",
+    courseType: "Main Course",
   });
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -48,9 +47,10 @@ const AdminPanel = () => {
       price: "",
       ingredients: "",
       descriptions: "",
-      mainImage: null,
-      secondaryImage: null,
-      tertiaryImage: null,
+      mainImage: "",
+      secondaryImage: "",
+      tertiaryImage: "",
+      courseType: "",
     });
     if (formRef.current) {
       formRef.current.reset();
@@ -64,6 +64,7 @@ const AdminPanel = () => {
     Data.append("price", formData.price.toString()); // Convert number to string
     Data.append("ingredients", formData.ingredients || "");
     Data.append("descriptions", formData.descriptions || "");
+    Data.append("courseType", formData.courseType || "");
     if (formData.mainImage) {
       Data.append("mainImage", formData.mainImage);
     }
@@ -82,15 +83,6 @@ const AdminPanel = () => {
       const data = await response.json();
       console.log(data);
 
-      addItem({
-        title: formData.name,
-        ingredients: formData.ingredients,
-        price: Number(formData.price), // Keep this conversion if needed elsewhere
-        image: formData.mainImage,
-        image2: formData.secondaryImage,
-        image3: formData.tertiaryImage,
-      });
-      console.log(addItem, "admin panel");
       handleReset();
       toast.success("Item added Successfully");
     } catch (error) {
@@ -140,6 +132,15 @@ const AdminPanel = () => {
                 ></textarea>
               </WidthDiv>
             </Descriptions>
+            <Select>
+              <p>Choose Type of Course</p>
+              <select name="courseType" value={formData.courseType} onChange={handleInputChange}>
+                <option value="Main Course">Main Course</option>
+                <option value="Starter Course">Starter Course</option>
+                <option value="Dessert">Dessert</option>
+                <option value="Cocktail">Cocktail</option>
+              </select>
+            </Select>
             <ImagesDiv>
               <div>
                 <p>Add Main Image</p>
@@ -193,7 +194,7 @@ const Container = styled.div`
   }
 `;
 const Input = styled.input`
-  width: 400px;
+  width: 500px;
   height: 50px;
   font-size: 25px;
   font-weight: 400;
@@ -236,7 +237,7 @@ const Descriptions = styled.div`
   justify-content: space-between;
 
   textarea {
-    width: 400px;
+    width: 500px;
     height: 150px;
     font-size: 18px;
     font-weight: 400;
@@ -267,6 +268,28 @@ const ImagesDiv = styled.div`
   flex-wrap: wrap;
   gap: 30px;
   margin-top: 20px;
+`;
+
+const Select = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 20px 0;
+  p {
+    margin-right: 10px;
+  }
+  select {
+    /* width: 100px; */
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 21px;
+    color: ${defaultTheme.colors.blue};
+    margin-bottom: 5px;
+    background-color: ${defaultTheme.colors.lightred};
+    &:focus {
+      outline: none;
+    }
+  }
 `;
 const ButtonDiv = styled.div`
   display: flex;

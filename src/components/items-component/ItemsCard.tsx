@@ -2,25 +2,29 @@ import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 
-interface ItemsCardProps {
+interface Props {
   title: string;
   ingredients: string;
   price: number;
-  image: string | File;
+  mainimage: string;
+  courseType: string;
 }
 
-const ItemsCard: React.FC<ItemsCardProps> = ({ title, ingredients, price, image }) => {
-  const imageURL = typeof image === "string" ? image : URL.createObjectURL(image);
+const ItemsCard: React.FC<Props> = ({ title, ingredients, price, mainimage, courseType }) => {
+  // Provide a default image URL if image is falsy
 
   return (
     <ItemContainer>
       <div>
         <Title>{title}</Title>
         <Ingredients>{ingredients}</Ingredients>
+        <Type>
+          <span>Type of Course:</span> {courseType}
+        </Type>
         <Price>From ${price}</Price>
       </div>
       <div>
-        <ItemImage src={imageURL} alt="pizza" />
+        <ItemImage src={`../../../uploads/${mainimage}`} alt={title} />
       </div>
     </ItemContainer>
   );
@@ -31,11 +35,11 @@ export default ItemsCard;
 const ItemContainer = styled.div`
   width: 500px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: space-between;
   box-shadow: 0px 1px 4px 3px #00000040;
   border-radius: 20px;
-  padding: 5px;
+  padding: 10px;
 `;
 
 const Title = styled.h1`
@@ -55,6 +59,17 @@ const Ingredients = styled.p`
   margin-bottom: 7px;
 `;
 
+const Type = styled.p`
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: 0em;
+  color: ${defaultTheme.colors.blue};
+  margin-bottom: 6px;
+  span {
+    font-weight: 700;
+  }
+`;
 const Price = styled.p`
   font-size: 20px;
   font-weight: 700;
@@ -67,4 +82,5 @@ const ItemImage = styled.img`
   height: 150px;
   border-radius: 20px;
   margin-left: 5px;
+  background-image: url(${(props) => props.src});
 `;
