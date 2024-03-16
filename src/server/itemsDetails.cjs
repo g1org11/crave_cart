@@ -9,6 +9,7 @@ const ItemsDetailsSchema = new mongoose.Schema(
     mainImage: String,
     secondaryImage: String,
     tertiaryImage: String,
+    courseType: String,
   },
   {
     collection: "items",

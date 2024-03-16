@@ -257,23 +257,24 @@ app.post(
   ]),
   async (req, res) => {
     try {
-      // Extract form data
-      const { name, price, ingredients, descriptions } = req.body;
+      // Extract form data including courseType
+      const { name, price, ingredients, descriptions, courseType } = req.body;
 
       // Extract uploaded files
       const mainImage = req.files["mainImage"][0].filename;
       const secondaryImage = req.files["secondaryImage"][0].filename;
       const tertiaryImage = req.files["tertiaryImage"][0].filename;
 
-      // Create new item document
+      // Create new item document with courseType
       const newItem = await Item.create({
-        name: name,
-        price: price,
-        ingredients: ingredients,
-        descriptions: descriptions,
-        mainImage: mainImage,
-        secondaryImage: secondaryImage,
-        tertiaryImage: tertiaryImage,
+        name,
+        price,
+        ingredients,
+        descriptions,
+        mainImage,
+        secondaryImage,
+        tertiaryImage,
+        courseType, // Save courseType field
       });
 
       // Respond with success message
@@ -285,6 +286,7 @@ app.post(
     }
   }
 );
+
 ///////////////////////////
 app.get("/get-items", async (req, res) => {
   try {

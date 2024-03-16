@@ -7,9 +7,10 @@ interface Props {
   ingredients: string;
   price: number;
   mainimage: string;
+  courseType: string;
 }
 
-const ItemsCard: React.FC<Props> = ({ title, ingredients, price, mainimage }) => {
+const ItemsCard: React.FC<Props> = ({ title, ingredients, price, mainimage, courseType }) => {
   // Provide a default image URL if image is falsy
 
   return (
@@ -17,6 +18,9 @@ const ItemsCard: React.FC<Props> = ({ title, ingredients, price, mainimage }) =>
       <div>
         <Title>{title}</Title>
         <Ingredients>{ingredients}</Ingredients>
+        <Type>
+          <span>type of course:</span> {courseType}
+        </Type>
         <Price>From ${price}</Price>
       </div>
       <div>
@@ -55,6 +59,17 @@ const Ingredients = styled.p`
   margin-bottom: 7px;
 `;
 
+const Type = styled.p`
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: 0em;
+  color: ${defaultTheme.colors.blue};
+  margin-bottom: 6px;
+  span {
+    font-weight: 700;
+  }
+`;
 const Price = styled.p`
   font-size: 20px;
   font-weight: 700;

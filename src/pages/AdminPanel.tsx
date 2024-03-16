@@ -14,10 +14,11 @@ const AdminPanel = () => {
     mainImage: "",
     secondaryImage: "",
     tertiaryImage: "",
+    courseType: "main course",
   });
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -49,6 +50,7 @@ const AdminPanel = () => {
       mainImage: "",
       secondaryImage: "",
       tertiaryImage: "",
+      courseType: "",
     });
     if (formRef.current) {
       formRef.current.reset();
@@ -62,6 +64,7 @@ const AdminPanel = () => {
     Data.append("price", formData.price.toString()); // Convert number to string
     Data.append("ingredients", formData.ingredients || "");
     Data.append("descriptions", formData.descriptions || "");
+    Data.append("courseType", formData.courseType || "");
     if (formData.mainImage) {
       Data.append("mainImage", formData.mainImage);
     }
@@ -129,6 +132,15 @@ const AdminPanel = () => {
                 ></textarea>
               </WidthDiv>
             </Descriptions>
+            <Select>
+              <p>Choose type of course</p>
+              <select name="courseType" value={formData.courseType} onChange={handleInputChange}>
+                <option value="main course">Main Course</option>
+                <option value="starter course">Starter Course</option>
+                <option value="dessert">Dessert</option>
+                <option value="cocktail">Cocktail</option>
+              </select>
+            </Select>
             <ImagesDiv>
               <div>
                 <p>Add Main Image</p>
@@ -256,6 +268,28 @@ const ImagesDiv = styled.div`
   flex-wrap: wrap;
   gap: 30px;
   margin-top: 20px;
+`;
+
+const Select = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 20px 0;
+  p {
+    margin-right: 10px;
+  }
+  select {
+    /* width: 100px; */
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 21px;
+    color: ${defaultTheme.colors.blue};
+    margin-bottom: 5px;
+    background-color: ${defaultTheme.colors.lightred};
+    &:focus {
+      outline: none;
+    }
+  }
 `;
 const ButtonDiv = styled.div`
   display: flex;

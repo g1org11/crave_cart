@@ -9,6 +9,7 @@ interface Item {
   ingredients: string;
   price: number;
   mainImage?: string;
+  courseType: string;
   // Add other properties as needed
 }
 
@@ -41,6 +42,7 @@ const Items: React.FC = () => {
             ingredients={item.ingredients}
             price={item.price}
             mainimage={item.mainImage || "/default-image.jpg"}
+            courseType={item.courseType}
           />
         ))}
       </ItemsContainer>
