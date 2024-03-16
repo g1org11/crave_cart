@@ -23,6 +23,8 @@ const Items: React.FC = () => {
     try {
       const response = await axios.get<Item[]>("http://localhost:5000/get-items"); // GET request using Axios
       setItems(response.data); // Set the items in the state
+
+      console.log(response.data);
     } catch (error) {
       console.error("Error fetching items:", error);
     }
@@ -38,7 +40,7 @@ const Items: React.FC = () => {
             title={item.name}
             ingredients={item.ingredients}
             price={item.price}
-            image={item.mainImage || "/default-image.jpg"}
+            mainimage={item.mainImage || "/default-image.jpg"}
           />
         ))}
       </ItemsContainer>
@@ -50,7 +52,8 @@ export default Items;
 
 const ItemsContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: 1fr 1fr;
+  flex-wrap: wrap;
   gap: 20px;
   padding: 20px;
   justify-items: center;

@@ -261,9 +261,9 @@ app.post(
       const { name, price, ingredients, descriptions } = req.body;
 
       // Extract uploaded files
-      const mainImage = req.files["mainImage"] ? req.files["mainImage"][0] : null;
-      const secondaryImage = req.files["secondaryImage"] ? req.files["secondaryImage"][0] : null;
-      const tertiaryImage = req.files["tertiaryImage"] ? req.files["tertiaryImage"][0] : null;
+      const mainImage = req.files["mainImage"][0].filename;
+      const secondaryImage = req.files["secondaryImage"][0].filename;
+      const tertiaryImage = req.files["tertiaryImage"][0].filename;
 
       // Create new item document
       const newItem = await Item.create({
@@ -271,13 +271,9 @@ app.post(
         price: price,
         ingredients: ingredients,
         descriptions: descriptions,
-        mainImage: mainImage ? { data: mainImage.buffer, contentType: mainImage.mimetype } : null,
-        secondaryImage: secondaryImage
-          ? { data: secondaryImage.buffer, contentType: secondaryImage.mimetype }
-          : null,
-        tertiaryImage: tertiaryImage
-          ? { data: tertiaryImage.buffer, contentType: tertiaryImage.mimetype }
-          : null,
+        mainImage: mainImage,
+        secondaryImage: secondaryImage,
+        tertiaryImage: tertiaryImage,
       });
 
       // Respond with success message
@@ -289,7 +285,7 @@ app.post(
     }
   }
 );
-
+///////////////////////////
 app.get("/get-items", async (req, res) => {
   try {
     // Fetch items from your database (MongoDB)

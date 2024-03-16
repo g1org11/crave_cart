@@ -11,9 +11,9 @@ const AdminPanel = () => {
     price: "",
     ingredients: "",
     descriptions: "",
-    mainImage: null as File | null,
-    secondaryImage: null as File | null,
-    tertiaryImage: null as File | null,
+    mainImage: "",
+    secondaryImage: "",
+    tertiaryImage: "",
   });
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -46,9 +46,9 @@ const AdminPanel = () => {
       price: "",
       ingredients: "",
       descriptions: "",
-      mainImage: null,
-      secondaryImage: null,
-      tertiaryImage: null,
+      mainImage: "",
+      secondaryImage: "",
+      tertiaryImage: "",
     });
     if (formRef.current) {
       formRef.current.reset();
