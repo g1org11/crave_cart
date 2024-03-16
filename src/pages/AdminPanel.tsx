@@ -14,7 +14,7 @@ const AdminPanel = () => {
     mainImage: "",
     secondaryImage: "",
     tertiaryImage: "",
-    courseType: "main course",
+    courseType: "Main Course",
   });
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -133,12 +133,12 @@ const AdminPanel = () => {
               </WidthDiv>
             </Descriptions>
             <Select>
-              <p>Choose type of course</p>
+              <p>Choose Type of Course</p>
               <select name="courseType" value={formData.courseType} onChange={handleInputChange}>
-                <option value="main course">Main Course</option>
-                <option value="starter course">Starter Course</option>
-                <option value="dessert">Dessert</option>
-                <option value="cocktail">Cocktail</option>
+                <option value="Main Course">Main Course</option>
+                <option value="Starter Course">Starter Course</option>
+                <option value="Dessert">Dessert</option>
+                <option value="Cocktail">Cocktail</option>
               </select>
             </Select>
             <ImagesDiv>
@@ -194,7 +194,7 @@ const Container = styled.div`
   }
 `;
 const Input = styled.input`
-  width: 400px;
+  width: 500px;
   height: 50px;
   font-size: 25px;
   font-weight: 400;
@@ -237,7 +237,7 @@ const Descriptions = styled.div`
   justify-content: space-between;
 
   textarea {
-    width: 400px;
+    width: 500px;
     height: 150px;
     font-size: 18px;
     font-weight: 400;

@@ -19,7 +19,7 @@ const ItemsCard: React.FC<Props> = ({ title, ingredients, price, mainimage, cour
         <Title>{title}</Title>
         <Ingredients>{ingredients}</Ingredients>
         <Type>
-          <span>type of course:</span> {courseType}
+          <span>Type of Course:</span> {courseType}
         </Type>
         <Price>From ${price}</Price>
       </div>
