@@ -4,6 +4,7 @@ import { defaultTheme } from "../defaultTheme";
 import axios from "axios"; // Import Axios
 import ItemsCard from "../components/items-component/ItemsCard";
 import ItemsHero from "../components/items-component/ItemsHero";
+import { useLocation } from "react-router-dom";
 
 interface Item {
   name: string;
@@ -17,10 +18,17 @@ interface Item {
 const Items: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [filter, setFilter] = useState<string>("All");
+  const location = useLocation();
 
   useEffect(() => {
+    // Fetch items when component mounts or filter changes
     fetchItems();
-  }, []);
+  }, [filter]);
+
+  useEffect(() => {
+    // Scroll to top when location changes (navigation)
+    window.scrollTo(0, 0);
+  }, [location]);
 
   const fetchItems = async () => {
     try {
@@ -32,8 +40,10 @@ const Items: React.FC = () => {
       console.error("Error fetching items:", error);
     }
   };
+
   const filteredItems =
     filter === "All" ? items : items.filter((item) => item.courseType === filter);
+
   return (
     <div>
       <ItemsHero />

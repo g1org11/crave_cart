@@ -34,6 +34,7 @@ function App() {
               <Route path="/Login_SignUp" element={<LoginSignUp />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/Admin-Panel" element={<AdminPanel />} />
+              <Route path="/items" element={<Items />} />
             </Routes>
             <Footer />
           </Router>

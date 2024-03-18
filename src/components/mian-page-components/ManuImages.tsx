@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
+import { Link } from "react-router-dom";
 
 interface ManuImagesProps {
   img: string;
@@ -11,7 +12,7 @@ const ManuImages: React.FC<ManuImagesProps> = ({ img }) => {
     <ImageContainer>
       <Wrapper>
         <img src={img} alt="poster" />
-        <a href="/">
+        <Link to={"/items"}>
           VIEW ALL MENU
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -22,7 +23,7 @@ const ManuImages: React.FC<ManuImagesProps> = ({ img }) => {
           >
             {/* ... (your SVG path) */}
           </svg>
-        </a>
+        </Link>
       </Wrapper>
     </ImageContainer>
   );
