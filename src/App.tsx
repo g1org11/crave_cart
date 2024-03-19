@@ -15,6 +15,7 @@ import ForgotPassword from "./components/login-signup-components/ForgotPassword"
 import Profile from "./pages/Profile";
 import { ProfileImageProvider } from "./pages/ProfileImageContext.";
 import AdminPanel from "./pages/AdminPanel";
+import ItemsCard from "./components/items-component/ItemsDetails";
 
 function App() {
   return (
@@ -35,6 +36,8 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/Admin-Panel" element={<AdminPanel />} />
               <Route path="/items" element={<Items />} />
+              {/* <Route path="`/items/ItemsCard/${item.name}" element={<ItemsCard />} /> */}
+              <Route path={`/items/:itemName/:id`} element={<ItemsCard />} />
             </Routes>
             <Footer />
           </Router>

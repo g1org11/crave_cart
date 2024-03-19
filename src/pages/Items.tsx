@@ -1,18 +1,23 @@
+// Items.tsx
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { defaultTheme } from "../defaultTheme";
-import axios from "axios"; // Import Axios
+import axios from "axios";
 import ItemsCard from "../components/items-component/ItemsCard";
 import ItemsHero from "../components/items-component/ItemsHero";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
+
+import { defaultTheme } from "../defaultTheme";
 
 interface Item {
+  [_id: string]: any;
   name: string;
   ingredients: string;
   price: number;
   mainImage?: string;
+  secondaryImage?: string;
+  tertiaryImage?: string;
+  descriptions?: string;
   courseType: string;
-  // Add other properties as needed
 }
 
 const Items: React.FC = () => {
@@ -21,21 +26,17 @@ const Items: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Fetch items when component mounts or filter changes
     fetchItems();
   }, [filter]);
 
   useEffect(() => {
-    // Scroll to top when location changes (navigation)
     window.scrollTo(0, 0);
   }, [location]);
 
   const fetchItems = async () => {
     try {
-      const response = await axios.get<Item[]>("http://localhost:5000/get-items"); // GET request using Axios
-      setItems(response.data); // Set the items in the state
-
-      console.log(response.data);
+      const response = await axios.get<Item[]>("http://localhost:5000/get-items");
+      setItems(response.data);
     } catch (error) {
       console.error("Error fetching items:", error);
     }
@@ -60,14 +61,19 @@ const Items: React.FC = () => {
         </Select>{" "}
         <ItemsContainer>
           {filteredItems.map((item, index) => (
-            <ItemsCard
+            <Link
               key={index}
-              title={item.name}
-              ingredients={item.ingredients}
-              price={item.price}
-              mainimage={item.mainImage || "/default-image.jpg"}
-              courseType={item.courseType}
-            />
+              to={`/items/${encodeURIComponent(item.name)}/${item._id}`}
+              style={{ textDecoration: "none" }}
+            >
+              <ItemsCard
+                title={item.name}
+                ingredients={item.ingredients}
+                price={item.price}
+                mainimage={item.mainImage || "/default-image.jpg"}
+                courseType={item.courseType}
+              />
+            </Link>
           ))}
         </ItemsContainer>
       </div>
@@ -101,7 +107,6 @@ const Select = styled.div`
     color: ${defaultTheme.colors.blue};
   }
   select {
-    /* width: 100px; */
     font-size: 16px;
     font-weight: 400;
     line-height: 21px;

@@ -300,6 +300,20 @@ app.get("/get-items", async (req, res) => {
   }
 });
 
+///////////////
+
+app.get("/get-item/:id", async (req, res) => {
+  try {
+    const item = await Item.findById(req.params.id);
+    if (!item) {
+      return res.status(404).json({ error: "Item not found" });
+    }
+    res.json(item);
+  } catch (error) {
+    console.error("Error fetching item:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 /////////////////////////////////////////
 app.listen(5000, () => {
   console.log("server started");
