@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { defaultTheme } from "../../defaultTheme";
 
 interface Item {
   _id: string;
@@ -39,44 +40,108 @@ const ItemsDetails: React.FC = () => {
   }
 
   return (
-    <div>
+    <Conatiner>
       <div>
         {/* Main image */}
         <MainImage src={`../../../uploads/${item.mainImage}`} alt="Main" />
-        <div>
+        <ImagesDiv>
           {/* Second image */}
           <Second_Third src={`../../../uploads/${item.secondaryImage}`} alt="Secondary" />
           {/* Third image */}
           <Second_Third src={`../../../uploads/${item.tertiaryImage}`} alt="Tertiary" />
-        </div>
+        </ImagesDiv>
       </div>
-      <div>
+      <ItemCOntent>
         {/* Name */}
+        <h3> Name of the Dish:</h3>
         <p>{item.name}</p>
         {/* Ingredients */}
+        <h3> Ingredients of the Dish:</h3>
         <p>{item.ingredients}</p>
         {/* Price */}
-        <p>{item.price}</p>
+        <h3>Price of the Dish:</h3>
+        <p> From $ {item.price}</p>
+        <h3>Description of the Dish:</h3>
         {/* Description */}
         <p>{item.descriptions}</p>
-      </div>
-    </div>
+      </ItemCOntent>
+    </Conatiner>
   );
 };
 
 export default ItemsDetails;
 
-const MainImage = styled.img`
-  width: 300px;
-  height: 300px;
-  border-radius: 10px;
+const Conatiner = styled.div`
+  margin-top: 50px;
+  display: flex;
+  align-items: top;
+  justify-content: space-evenly;
+  padding: 8px 30px;
+  @media (max-width: 1000px) {
+    text-align: center;
+    align-items: center;
+    flex-direction: column-reverse;
+  }
+`;
 
+const ImagesDiv = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`;
+const MainImage = styled.img`
+  width: 580px;
+  height: 330px;
+  border-radius: 10px;
+  @media (max-width: 1250px) {
+    width: 380px;
+  }
+  @media (max-width: 1000px) {
+    width: 580px;
+  }
+  @media (max-width: 750px) {
+    width: 420px;
+  }
+  @media (max-width: 550px) {
+    width: 320px;
+  }
   /* background-image: url(${(props) => props.src}); */
 `;
 const Second_Third = styled.img`
-  width: 150px;
-  height: 150px;
+  width: 280px;
+  height: 200px;
   border-radius: 20px;
+  @media (max-width: 1250px) {
+    width: 180px;
+  }
+  @media (max-width: 1000px) {
+    width: 280px;
+  }
+  @media (max-width: 750px) {
+    width: 200px;
+  }
+  @media (max-width: 750px) {
+    width: 150px;
+  }
 
   /* background-image: url(${(props) => props.src}); */
+`;
+const ItemCOntent = styled.div`
+  h3 {
+    font-size: 24px;
+    color: ${defaultTheme.colors.red};
+    margin-bottom: 6px;
+  }
+  p {
+    width: 550px;
+    font-size: 18px;
+    color: ${defaultTheme.colors.blue};
+    margin-bottom: 10px;
+    @media (max-width: 1250px) {
+      width: 500px;
+    }
+    @media (max-width: 750px) {
+      width: 350px;
+    }
+  }
 `;
