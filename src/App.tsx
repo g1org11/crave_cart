@@ -16,6 +16,7 @@ import Profile from "./pages/Profile";
 import { ProfileImageProvider } from "./pages/ProfileImageContext.";
 import AdminPanel from "./pages/AdminPanel";
 import ItemsCard from "./components/items-component/ItemsDetails";
+import Cart from "./pages/CartPage";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
               <Route path="/items" element={<Items />} />
               {/* <Route path="`/items/ItemsCard/${item.name}" element={<ItemsCard />} /> */}
               <Route path={`/items/:itemName/:id`} element={<ItemsCard />} />
+              <Route path={`/cart`} element={<Cart />} />
             </Routes>
             <Footer />
           </Router>
