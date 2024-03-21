@@ -3,6 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { defaultTheme } from "../../defaultTheme";
+import { Link } from "react-router-dom";
 
 interface Item {
   _id: string;
@@ -64,6 +65,9 @@ const ItemsDetails: React.FC = () => {
         <h3>Description of the Dish:</h3>
         {/* Description */}
         <p>{item.descriptions}</p>
+        <Link to={"/cart"}>
+          <button>Order Now</button>
+        </Link>
       </ItemCOntent>
     </Conatiner>
   );
@@ -127,6 +131,7 @@ const Second_Third = styled.img`
   /* background-image: url(${(props) => props.src}); */
 `;
 const ItemCOntent = styled.div`
+  margin-bottom: 20px;
   h3 {
     font-size: 24px;
     color: ${defaultTheme.colors.red};
@@ -143,5 +148,16 @@ const ItemCOntent = styled.div`
     @media (max-width: 750px) {
       width: 350px;
     }
+  }
+  button {
+    font-size: 35px;
+    font-weight: 700;
+    line-height: 41.02px;
+    margin-top: 50px;
+    padding: 8px 50px;
+    border: 0;
+    border-radius: 20px;
+    background-color: ${defaultTheme.colors.red};
+    color: ${defaultTheme.colors.floralwhite};
   }
 `;
