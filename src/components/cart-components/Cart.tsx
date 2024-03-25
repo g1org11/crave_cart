@@ -1,9 +1,22 @@
-import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
-import img from "../../../uploads/caprese-salad-3-1710610699202.jpg";
+import { useCart } from "./CartContext";
+import { useState } from "react";
 
-const Cart = () => {
+const Cart: React.FC = () => {
+  const { cartItems, addToCart, removeFromCart } = useCart();
+  const [quantity, setQuantity] = useState(1);
+
+  const increaseQuantity = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const decreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
   return (
     <Container>
       <div>
@@ -16,23 +29,29 @@ const Cart = () => {
           <li>Action</li>
         </UL>
       </div>
-      <Conetent>
-        <Image src={img} alt="" />
-        <Title>Belgium waffles with strawberries</Title>
-        <Price>$150</Price>
-        <FlexDiv>
-          <button>+</button>
-          <p>1</p>
-          <button>-</button>
-        </FlexDiv>
-        <Total>$150</Total>
-        <Action>X</Action>
-      </Conetent>
+      {cartItems.map((item) => (
+        <Content key={item.id}>
+          <Image src={`../../../uploads/${item.mainImage}`} alt="" />
+          <Title>{item.name}</Title>
+          <Price>${item.price}</Price>
+          <FlexDiv>
+            <button onClick={increaseQuantity}>+</button>
+            <p>{quantity}</p>
+            <button onClick={decreaseQuantity}>-</button>
+          </FlexDiv>
+          <Total>${(item.price * quantity).toFixed(2)}</Total>
+          <Action onClick={() => removeFromCart(item.id)}>X</Action>
+        </Content>
+      ))}
     </Container>
   );
 };
 
 export default Cart;
+
+// Styled components and theme definitions...
+
+// Styled components and theme definitions...
 
 const Container = styled.div`
   display: flex;
@@ -100,7 +119,7 @@ const UL = styled.ul`
   }
 `;
 
-const Conetent = styled.div`
+const Content = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -248,6 +267,7 @@ const Action = styled.button`
   color: ${defaultTheme.colors.red};
   text-align: center;
   transform: translateX(-20px);
+  cursor: pointer;
   @media (max-width: 1100px) {
     font-size: 16px;
     transform: translateX(0px);

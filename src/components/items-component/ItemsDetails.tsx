@@ -3,7 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { defaultTheme } from "../../defaultTheme";
-import { Link } from "react-router-dom";
+import { useCart } from "../cart-components/CartContext";
 
 interface Item {
   _id: string;
@@ -19,6 +19,7 @@ interface Item {
 const ItemsDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>(); // Accessing the item ID from the URL
   const [item, setItem] = useState<Item | null>(null);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchItemDetails = async () => {
@@ -39,6 +40,19 @@ const ItemsDetails: React.FC = () => {
   if (!item) {
     return <div>Loading...</div>; // Placeholder while loading item details
   }
+  const handleOrder = () => {
+    const cartItem = {
+      id: item._id, // Assuming _id is the unique identifier for the item
+      name: item.name,
+      ingredients: item.ingredients,
+      price: item.price,
+      descriptions: item.descriptions,
+      mainImage: item.mainImage,
+      secondaryImage: item.secondaryImage,
+      tertiaryImage: item.tertiaryImage,
+    };
+    addToCart(cartItem);
+  };
 
   return (
     <Conatiner>
@@ -65,9 +79,9 @@ const ItemsDetails: React.FC = () => {
         <h3>Description of the Dish:</h3>
         {/* Description */}
         <p>{item.descriptions}</p>
-        <Link to={"/cart"}>
+        <div onClick={handleOrder}>
           <button>Order Now</button>
-        </Link>
+        </div>
       </ItemCOntent>
     </Conatiner>
   );
@@ -159,5 +173,6 @@ const ItemCOntent = styled.div`
     border-radius: 20px;
     background-color: ${defaultTheme.colors.red};
     color: ${defaultTheme.colors.floralwhite};
+    cursor: pointer;
   }
 `;
