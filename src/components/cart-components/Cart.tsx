@@ -2,9 +2,11 @@ import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import { useCart } from "./CartContext";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Cart: React.FC = () => {
-  const { cartItems, addToCart, removeFromCart } = useCart();
+  const { cartItems, removeFromCart } = useCart();
   const [quantity, setQuantity] = useState(1);
 
   const increaseQuantity = () => {
