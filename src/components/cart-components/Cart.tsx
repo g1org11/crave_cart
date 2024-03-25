@@ -4,7 +4,7 @@ import { useCart } from "./CartContext";
 import { useState } from "react";
 
 const Cart: React.FC = () => {
-  const { cartItems } = useCart(); // Using useCart hook to access cartItems
+  const { cartItems, addToCart, removeFromCart } = useCart();
   const [quantity, setQuantity] = useState(1);
 
   const increaseQuantity = () => {
@@ -31,8 +31,6 @@ const Cart: React.FC = () => {
       </div>
       {cartItems.map((item) => (
         <Content key={item.id}>
-          {/* Render each cart item */}
-          {/* You can replace static data with item properties */}
           <Image src={`../../../uploads/${item.mainImage}`} alt="" />
           <Title>{item.name}</Title>
           <Price>${item.price}</Price>
@@ -42,7 +40,7 @@ const Cart: React.FC = () => {
             <button onClick={decreaseQuantity}>-</button>
           </FlexDiv>
           <Total>${(item.price * quantity).toFixed(2)}</Total>
-          <Action>X</Action>
+          <Action onClick={() => removeFromCart(item.id)}>X</Action>
         </Content>
       ))}
     </Container>
@@ -50,6 +48,8 @@ const Cart: React.FC = () => {
 };
 
 export default Cart;
+
+// Styled components and theme definitions...
 
 // Styled components and theme definitions...
 
@@ -267,6 +267,7 @@ const Action = styled.button`
   color: ${defaultTheme.colors.red};
   text-align: center;
   transform: translateX(-20px);
+  cursor: pointer;
   @media (max-width: 1100px) {
     font-size: 16px;
     transform: translateX(0px);
