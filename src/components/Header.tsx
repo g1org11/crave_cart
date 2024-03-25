@@ -21,6 +21,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "./login-signup-components/AuthContext";
 // Other imports...
 import { useProfileImage } from "../pages/ProfileImageContext.";
+import { useCart } from "./cart-components/CartContext";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -31,6 +32,8 @@ const Header = () => {
   const userId = userData?.id;
 
   const profileImage = isAuthenticated ? getProfileImage(userData?.id) : null;
+
+  const { cartItems } = useCart();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -107,10 +110,12 @@ const Header = () => {
             </li>
           </Ul>
           <CartPart>
-            <Cart>
-              <p>2</p>
+            <CartLink to={"/cart"}>
+              <p>
+                <p>{cartItems ? cartItems.length : 0}</p>
+              </p>
               <img src={cart} alt="cart" />
-            </Cart>
+            </CartLink>
             <CartInfos>
               <div>
                 <h3>Delivery Order</h3>
@@ -317,13 +322,14 @@ const CartInfos = styled(CartPart)`
   }
 `;
 
-const Cart = styled.div`
+const CartLink = styled(Link)`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 3px 13px;
   background-color: ${defaultTheme.colors.blue};
   cursor: pointer;
+  text-decoration: none;
   border-radius: 50%;
   margin-left: 40px;
   margin-right: 22px;
