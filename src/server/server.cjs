@@ -274,7 +274,7 @@ app.post(
         mainImage,
         secondaryImage,
         tertiaryImage,
-        courseType, // Save courseType field
+        courseType,
       });
 
       // Respond with success message

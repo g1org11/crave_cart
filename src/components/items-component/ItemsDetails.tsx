@@ -16,18 +16,20 @@ interface Item {
   secondaryImage: string;
   tertiaryImage: string;
   descriptions: string;
+  quantity: number;
 }
 
 const ItemsDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>(); // Accessing the item ID from the URL
   const [item, setItem] = useState<Item | null>(null);
   const { addToCart, cartItems } = useCart();
+  const [quantity] = useState(1);
 
   useEffect(() => {
     const fetchItemDetails = async () => {
       try {
         const response = await axios.get<Item>(`http://localhost:5000/get-item/${id}`);
-        setItem(response.data);
+        setItem({ ...response.data, quantity: quantity });
       } catch (error) {
         console.error("Error fetching item details:", error);
       }
@@ -57,8 +59,10 @@ const ItemsDetails: React.FC = () => {
         mainImage: item.mainImage,
         secondaryImage: item.secondaryImage,
         tertiaryImage: item.tertiaryImage,
+        quantity: item.quantity,
       };
       addToCart(cartItem);
+      toast.success("Item successfully added to cart");
     } else {
       // Optionally, you can display a message to the user indicating that the item is already in the cart
       toast.error("This item is already in your cart.");

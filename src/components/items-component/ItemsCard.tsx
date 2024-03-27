@@ -83,4 +83,5 @@ const ItemImage = styled.img`
   border-radius: 20px;
   margin-left: 5px;
   background-image: url(${(props) => props.src});
+  object-fit: contain;
 `;

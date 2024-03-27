@@ -1,23 +1,10 @@
+import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import { useCart } from "./CartContext";
-import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const Cart: React.FC = () => {
-  const { cartItems, removeFromCart } = useCart();
-  const [quantity, setQuantity] = useState(1);
-
-  const increaseQuantity = () => {
-    setQuantity(quantity + 1);
-  };
-
-  const decreaseQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
-  };
+  const { cartItems, removeFromCart, increaseQuantity, decreaseQuantity } = useCart();
 
   return (
     <Container>
@@ -37,11 +24,11 @@ const Cart: React.FC = () => {
           <Title>{item.name}</Title>
           <Price>${item.price}</Price>
           <FlexDiv>
-            <button onClick={increaseQuantity}>+</button>
-            <p>{quantity}</p>
-            <button onClick={decreaseQuantity}>-</button>
+            <button onClick={() => increaseQuantity(item.id)}>+</button> {/* Pass item ID */}
+            <p>{item.quantity}</p>
+            <button onClick={() => decreaseQuantity(item.id)}>-</button> {/* Pass item ID */}
           </FlexDiv>
-          <Total>${(item.price * quantity).toFixed(2)}</Total>
+          <Total>${(item.price * item.quantity).toFixed(2)}</Total>
           <Action onClick={() => removeFromCart(item.id)}>X</Action>
         </Content>
       ))}
@@ -50,10 +37,6 @@ const Cart: React.FC = () => {
 };
 
 export default Cart;
-
-// Styled components and theme definitions...
-
-// Styled components and theme definitions...
 
 const Container = styled.div`
   display: flex;
@@ -156,6 +139,7 @@ const Image = styled.img`
   width: 150px;
   height: 80px;
   transform: translateX(-30px);
+  object-fit: cover;
   @media (max-width: 1010px) {
     width: 100px;
     height: 50px;

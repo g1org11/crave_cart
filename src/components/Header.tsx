@@ -1,6 +1,6 @@
 // import React from "react";
 import styled from "styled-components";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { defaultTheme } from "../defaultTheme";
 import watch from "../assets/header/watch_icon.svg";
 import phone from "../assets/header/phone_icon.svg";
@@ -18,7 +18,8 @@ import { Link } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 
 // import { useAuth } from "./login-signup-components/AuthContext";
-import { AuthContext } from "./login-signup-components/AuthContext";
+// import { AuthContext } from "./login-signup-components/AuthContext";
+import { useAuth } from "./login-signup-components/AuthContext";
 // Other imports...
 import { useProfileImage } from "../pages/ProfileImageContext.";
 import { useCart } from "./cart-components/CartContext";
@@ -28,10 +29,10 @@ const Header = () => {
   const [showProfile, setShowProfile] = useState(false);
   // const { isAuthenticated, logout } = useAuth();
   const { updateProfileImage, getProfileImage } = useProfileImage();
-  const { isAuthenticated, logout, userData } = useContext(AuthContext);
-  const userId = userData?.id;
+  const { isAuthenticated, logout, userData } = useAuth();
+  const userId = userData?.id || ""; // Assign an empty string as default value
 
-  const profileImage = isAuthenticated ? getProfileImage(userData?.id) : null;
+  const profileImage = isAuthenticated ? getProfileImage(userId) : null;
 
   const { cartItems } = useCart();
 
@@ -48,7 +49,7 @@ const Header = () => {
     // Load profile image from local storage when component mounts
     const storedImage = localStorage.getItem("profileImage_${userId}");
     if (storedImage) {
-      updateProfileImage(storedImage);
+      updateProfileImage(userId, storedImage);
     }
   }, [userId]);
 

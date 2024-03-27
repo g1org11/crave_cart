@@ -65,6 +65,7 @@ const AdminPanel = () => {
     Data.append("ingredients", formData.ingredients || "");
     Data.append("descriptions", formData.descriptions || "");
     Data.append("courseType", formData.courseType || "");
+
     if (formData.mainImage) {
       Data.append("mainImage", formData.mainImage);
     }
