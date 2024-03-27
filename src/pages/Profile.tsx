@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, ChangeEvent } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 
 import styled from "styled-components";
 import { defaultTheme } from "../defaultTheme";
@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
-import { AuthContext, AuthContextProps } from "../components/login-signup-components/AuthContext";
 import { useAuth } from "../components/login-signup-components/AuthContext";
 interface IconProps {
   show: boolean;
@@ -31,9 +30,9 @@ const Profile = () => {
     fullAddress: "",
   });
   const [profileImage, setProfileImage] = useState<string | null>(null);
-  const { isAuthenticated } = useAuth();
-  const authContext = useContext(AuthContext) as AuthContextProps;
-  const userId = authContext.userData?.id;
+  const { isAuthenticated, userData } = useAuth();
+
+  const userId = userData?.id || "";
   const { updateProfileImage, getProfileImage } = useProfileImage();
   const [showMenu, setShowMenu] = useState(false);
 
@@ -45,21 +44,21 @@ const Profile = () => {
 
   useEffect(() => {
     if (userId) {
-      fetchProfileData(userId, authContext.userData?.id);
+      fetchProfileData(userId, userData?.id);
     }
     // Retrieve profile image from local storage
     const storedProfileImage = getProfileImage(userId);
     if (storedProfileImage) {
       setProfileImage(storedProfileImage);
     }
-  }, [userId, authContext.userData?.id, getProfileImage]);
+  }, [userId, userData?.id, getProfileImage]);
 
   const fetchProfileData = (userId: string | undefined, token: string | undefined) => {
     if (userId && token) {
       axios
         .get(`http://localhost:5000/get-profile-data/${userId}`, {
           headers: {
-            Authorization: `Bearer ${authContext.userData?.data}`, // Correct the token retrieval
+            Authorization: `Bearer ${userData?.data}`, // Correct the token retrieval
           },
         })
         .then((response) => {
@@ -86,7 +85,7 @@ const Profile = () => {
       reader.onload = () => {
         const image = reader.result as string;
         setProfileImage(image);
-        updateProfileImage(authContext.userData?.id, image); // Update profile image
+        updateProfileImage(userData?.id || "", image); // Update profile image
       };
       reader.readAsDataURL(file);
     }
@@ -107,7 +106,7 @@ const Profile = () => {
         formData,
         {
           headers: {
-            Authorization: `Bearer ${authContext.userData?.id}`,
+            Authorization: `Bearer ${userData?.id}`,
             "Content-Type": "multipart/form-data",
           },
         }
@@ -166,7 +165,7 @@ const Profile = () => {
               <li>
                 <a href="">Shop</a>
               </li>
-              {isAuthenticated && authContext.userData && authContext.userData.isAdmin && (
+              {isAuthenticated && userData && userData.isAdmin && (
                 <li>
                   <Link to="/Admin-Panel">Admin Panel</Link>
                 </li>
@@ -232,7 +231,7 @@ const Profile = () => {
                     <li>
                       <a href="">Shop</a>
                     </li>
-                    {isAuthenticated && authContext.userData && authContext.userData.isAdmin && (
+                    {isAuthenticated && userData && userData.isAdmin && (
                       <li>
                         <Link to="/Admin-Panel">Admin Panel</Link>
                       </li>

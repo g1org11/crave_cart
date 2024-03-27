@@ -9,7 +9,7 @@ import cart from "../assets/header/cart.svg";
 import moto from "../assets/header/moto.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { faUser, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons/faArrowRightFromBracket";
 import { faScrewdriverWrench } from "@fortawesome/free-solid-svg-icons";
@@ -167,13 +167,10 @@ const Header = () => {
                     <FontAwesomeIcon icon={faUser} size="xl" />
                     <Link to={"/profile"}>Profile</Link>
                   </div>
-                  <div>
-                    <FontAwesomeIcon icon={faHeart} size="xl" />
-                    <a href="#">Wishlist</a>
-                  </div>
+
                   <div>
                     <FontAwesomeIcon icon={faCartShopping} size="xl" />
-                    <a href="#">My Cart</a>
+                    <Link to="/cart">My Cart</Link>
                   </div>
                   {isAuthenticated && userData && userData.isAdmin && (
                     <div>
