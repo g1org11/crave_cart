@@ -59,6 +59,23 @@ const AdminPanel = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (
+      formData.name.trim() === "" ||
+      formData.price.trim() === "" ||
+      formData.ingredients.trim() === "" ||
+      formData.descriptions.trim() === "" ||
+      formData.courseType.trim() === ""
+    ) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    if (!formData.mainImage && !formData.secondaryImage && !formData.tertiaryImage) {
+      toast.error("Please upload all three image");
+      return;
+    }
+
     const Data = new FormData();
     Data.append("name", formData.name || "");
     Data.append("price", formData.price.toString()); // Convert number to string

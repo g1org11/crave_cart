@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-
 import { useAuth } from "../login-signup-components/AuthContext";
+
 interface CartItem {
   quantity: number;
   mainImage: string;
@@ -34,20 +34,26 @@ interface CartProviderProps {
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  console.log(cartItems);
   const { userData } = useAuth();
+
   useEffect(() => {
     // Retrieve cart items from localStorage on component mount
     const storedCartItems = localStorage.getItem(`cartItems_${userData?.id}`);
     if (storedCartItems) {
       setCartItems(JSON.parse(storedCartItems));
     }
-  }, [userData]); // Update cart items when user data changes
 
-  useEffect(() => {
-    // Store cart items in localStorage whenever cartItems change
-    localStorage.setItem(`cartItems_${userData?.id}`, JSON.stringify(cartItems));
-  }, [cartItems, userData]); // Update localStorage when cart items or user data change
+    // Add event listener for beforeunload to clear cart items on browser close
+    const handleBeforeUnload = () => {
+      localStorage.removeItem(`cartItems_${userData?.id}`);
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      // Cleanup event listener on component unmount
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [userData]);
 
   const addToCart = (item: CartItem) => {
     const existingItem = cartItems.find((cartItem) => cartItem.id === item.id);
@@ -60,8 +66,10 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
       setCartItems([...cartItems, { ...item, quantity: 1 }]);
     }
   };
+
   const resetCart = () => {
     setCartItems([]);
+    localStorage.removeItem(`cartItems_${userData?.id}`);
   };
 
   const removeFromCart = (itemId: string) => {
