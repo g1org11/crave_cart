@@ -4,6 +4,8 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { defaultTheme } from "../../defaultTheme";
 import { useCart } from "../cart-components/CartContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface Item {
   _id: string;
@@ -14,18 +16,20 @@ interface Item {
   secondaryImage: string;
   tertiaryImage: string;
   descriptions: string;
+  quantity: number;
 }
 
 const ItemsDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>(); // Accessing the item ID from the URL
   const [item, setItem] = useState<Item | null>(null);
-  const { addToCart } = useCart();
+  const { addToCart, cartItems } = useCart();
+  const [quantity] = useState(1);
 
   useEffect(() => {
     const fetchItemDetails = async () => {
       try {
         const response = await axios.get<Item>(`http://localhost:5000/get-item/${id}`);
-        setItem(response.data);
+        setItem({ ...response.data, quantity: quantity });
       } catch (error) {
         console.error("Error fetching item details:", error);
       }
@@ -41,49 +45,63 @@ const ItemsDetails: React.FC = () => {
     return <div>Loading...</div>; // Placeholder while loading item details
   }
   const handleOrder = () => {
-    const cartItem = {
-      id: item._id, // Assuming _id is the unique identifier for the item
-      name: item.name,
-      ingredients: item.ingredients,
-      price: item.price,
-      descriptions: item.descriptions,
-      mainImage: item.mainImage,
-      secondaryImage: item.secondaryImage,
-      tertiaryImage: item.tertiaryImage,
-    };
-    addToCart(cartItem);
+    // Check if the item is already in the cart
+    const isItemInCart = cartItems.some((cartItem) => cartItem.id === item._id);
+
+    // If the item is not in the cart, add it
+    if (!isItemInCart) {
+      const cartItem = {
+        id: item._id, // Assuming _id is the unique identifier for the item
+        name: item.name,
+        ingredients: item.ingredients,
+        price: item.price,
+        descriptions: item.descriptions,
+        mainImage: item.mainImage,
+        secondaryImage: item.secondaryImage,
+        tertiaryImage: item.tertiaryImage,
+        quantity: item.quantity,
+      };
+      addToCart(cartItem);
+      toast.success("Item successfully added to cart");
+    } else {
+      // Optionally, you can display a message to the user indicating that the item is already in the cart
+      toast.error("This item is already in your cart.");
+    }
   };
 
   return (
-    <Conatiner>
-      <div>
-        {/* Main image */}
-        <MainImage src={`../../../uploads/${item.mainImage}`} alt="Main" />
-        <ImagesDiv>
-          {/* Second image */}
-          <Second_Third src={`../../../uploads/${item.secondaryImage}`} alt="Secondary" />
-          {/* Third image */}
-          <Second_Third src={`../../../uploads/${item.tertiaryImage}`} alt="Tertiary" />
-        </ImagesDiv>
-      </div>
-      <ItemCOntent>
-        {/* Name */}
-        <h3> Name of the Dish:</h3>
-        <p>{item.name}</p>
-        {/* Ingredients */}
-        <h3> Ingredients of the Dish:</h3>
-        <p>{item.ingredients}</p>
-        {/* Price */}
-        <h3>Price of the Dish:</h3>
-        <p> From $ {item.price}</p>
-        <h3>Description of the Dish:</h3>
-        {/* Description */}
-        <p>{item.descriptions}</p>
-        <div onClick={handleOrder}>
-          <button>Order Now</button>
+    <div>
+      <ToastContainer />
+      <Conatiner>
+        <div>
+          {/* Main image */}
+          <MainImage src={`../../../uploads/${item.mainImage}`} alt="Main" />
+          <ImagesDiv>
+            {/* Second image */}
+            <Second_Third src={`../../../uploads/${item.secondaryImage}`} alt="Secondary" />
+            {/* Third image */}
+            <Second_Third src={`../../../uploads/${item.tertiaryImage}`} alt="Tertiary" />
+          </ImagesDiv>
         </div>
-      </ItemCOntent>
-    </Conatiner>
+        <ItemCOntent>
+          {/* Name */}
+          <h3> Name of the Dish:</h3>
+          <p>{item.name}</p>
+          {/* Ingredients */}
+          <h3> Ingredients of the Dish:</h3>
+          <p>{item.ingredients}</p>
+          {/* Price */}
+          <h3>Price of the Dish:</h3>
+          <p> From $ {item.price}</p>
+          <h3>Description of the Dish:</h3>
+          {/* Description */}
+          <p>{item.descriptions}</p>
+          <div onClick={handleOrder}>
+            <button>Order Now</button>
+          </div>
+        </ItemCOntent>
+      </Conatiner>
+    </div>
   );
 };
 

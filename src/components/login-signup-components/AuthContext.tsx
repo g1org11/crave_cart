@@ -1,4 +1,3 @@
-// AuthContext.tsx
 import React, {
   createContext,
   useContext,
@@ -6,12 +5,14 @@ import React, {
   useEffect,
   Dispatch,
   SetStateAction,
+  ReactNode,
 } from "react";
+// import { useCart } from "../cart-components/CartContext";
 
 interface UserData {
   id: string;
   email: string;
-  isAdmin: boolean; // Add isAdmin property
+  isAdmin: boolean;
 }
 
 interface AuthContextProps {
@@ -19,15 +20,19 @@ interface AuthContextProps {
   isAdmin: boolean;
   login: (userData: UserData) => void;
   logout: () => void;
-  userData?: UserData | null; // Making userData optional
+  userData?: UserData | null;
   setUserData: Dispatch<SetStateAction<UserData | null>>;
 }
 
-export const AuthContext = createContext<AuthContextProps | undefined>(undefined);
+// Define the type for AuthContext
+type AuthContextType = AuthContextProps | undefined;
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthContext = createContext<AuthContextType>(undefined);
+
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  // const { resetCart } = useCart();
 
   const [userData, setUserData] = useState<UserData | null>(() => {
     const storedUserData = localStorage.getItem("userData");
@@ -55,6 +60,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsAdmin(false);
     localStorage.removeItem("isAuthenticated");
     localStorage.removeItem("userData");
+
+    // Clear cart items
+    localStorage.removeItem(`cartItems`);
+    // resetCart(); // Clear cart items in the context
   };
 
   return (
