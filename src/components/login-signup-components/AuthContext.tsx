@@ -13,6 +13,7 @@ interface UserData {
   id: string;
   email: string;
   isAdmin: boolean;
+  data: string;
 }
 
 interface AuthContextProps {
