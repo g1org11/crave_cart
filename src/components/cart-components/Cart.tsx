@@ -1,76 +1,112 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { defaultTheme } from "../../defaultTheme";
 import { useCart } from "./CartContext";
 
 const Cart: React.FC = () => {
-  const { cartItems, removeFromCart, increaseQuantity, decreaseQuantity } = useCart();
-  const total = cartItems.reduce((accumulator, currentItem) => {
+  const { cartItems, removeFromCart, increaseQuantity, decreaseQuantity, clearCart } = useCart();
+  const [email, setEmail] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
+  const [district, setDistrict] = useState("");
+  const [street, setStreet] = useState("");
+
+  const resetForm = () => {
+    setEmail("");
+    setCardNumber("");
+    setDistrict("");
+    setStreet("");
+  };
+
+  let total = cartItems.reduce((accumulator, currentItem) => {
     return accumulator + currentItem.price * currentItem.quantity;
   }, 0);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !cardNumber || !district || !street) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+    toast.success("Order placed successfully!");
+    toast.success(`$${total.toFixed(2)} deducted from your card.`);
+
+    resetForm();
+    clearCart();
+    // Reset total
+    total = 0.0;
+  };
+
   return (
-    <Container>
-      <div>
+    <div>
+      <ToastContainer />
+      <Container>
         <div>
-          <UL>
-            <li>Product</li>
-            <li>Product Name</li>
-            <li>Unit Price</li>
-            <li>Quantity</li>
-            <li>Total</li>
-            <li>Action</li>
-          </UL>
+          <div>
+            <UL>
+              <li>Product</li>
+              <li>Product Name</li>
+              <li>Unit Price</li>
+              <li>Quantity</li>
+              <li>Total</li>
+              <li>Action</li>
+            </UL>
+          </div>
+          <CartWrapper>
+            {cartItems.map((item) => (
+              <Content key={item.id}>
+                <Image src={`../../../uploads/${item.mainImage}`} alt="" />
+                <Title>{item.name}</Title>
+                <Price>${item.price}</Price>
+                <FlexDiv>
+                  <button onClick={() => increaseQuantity(item.id)}>+</button> {/* Pass item ID */}
+                  <p>{item.quantity}</p>
+                  <button onClick={() => decreaseQuantity(item.id)}>-</button> {/* Pass item ID */}
+                </FlexDiv>
+                <Total>${(item.price * item.quantity).toFixed(2)}</Total>
+                <Action onClick={() => removeFromCart(item.id)}>X</Action>
+              </Content>
+            ))}
+          </CartWrapper>
         </div>
-        <CartWrapper>
-          {cartItems.map((item) => (
-            <Content key={item.id}>
-              <Image src={`../../../uploads/${item.mainImage}`} alt="" />
-              <Title>{item.name}</Title>
-              <Price>${item.price}</Price>
-              <FlexDiv>
-                <button onClick={() => increaseQuantity(item.id)}>+</button> {/* Pass item ID */}
-                <p>{item.quantity}</p>
-                <button onClick={() => decreaseQuantity(item.id)}>-</button> {/* Pass item ID */}
-              </FlexDiv>
-              <Total>${(item.price * item.quantity).toFixed(2)}</Total>
-              <Action onClick={() => removeFromCart(item.id)}>X</Action>
-            </Content>
-          ))}
-        </CartWrapper>
-      </div>
-      <PaymentConatiner>
-        <Wrapper>
-          <Parts>
-            <h1>Card Details</h1>
-            <div>
-              <p>Email</p>
-              <input type="email" />
-            </div>
-            <div>
-              <p> Card Number</p>
-              <input type="number" name="" id="" />
-            </div>
-          </Parts>
-          <Parts>
-            <h1>Address</h1>
-            <div>
-              <p>District</p>
-              <input type="text" />
-            </div>
-            <div>
-              <p>Street</p>
-              <input type="text" />
-            </div>
-            <TotalContent>
-              <p>Total:</p>
-              <h2>{total.toFixed(2)}</h2>
-            </TotalContent>
-            <div></div>
-          </Parts>
-        </Wrapper>
-        <Submit>Submit</Submit>
-      </PaymentConatiner>
-    </Container>
+        <PaymentConatiner onSubmit={handleSubmit}>
+          <Wrapper>
+            <Parts>
+              <h1>Card Details</h1>
+              <div>
+                <p>Email</p>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              </div>
+              <div>
+                <p> Card Number</p>
+                <input
+                  type="number"
+                  value={cardNumber}
+                  onChange={(e) => setCardNumber(e.target.value)}
+                />
+              </div>
+            </Parts>
+            <Parts>
+              <h1>Address</h1>
+              <div>
+                <p>District</p>
+                <input type="text" value={district} onChange={(e) => setDistrict(e.target.value)} />
+              </div>
+              <div>
+                <p>Street</p>
+                <input type="text" value={street} onChange={(e) => setStreet(e.target.value)} />
+              </div>
+              <TotalContent>
+                <p>Total:</p>
+                <h2>{total.toFixed(2)}</h2>
+              </TotalContent>
+              <div></div>
+            </Parts>
+          </Wrapper>
+          <Submit type="submit">Submit</Submit>
+        </PaymentConatiner>
+      </Container>
+    </div>
   );
 };
 
