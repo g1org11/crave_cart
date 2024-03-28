@@ -15,7 +15,8 @@ interface CartContextType {
   removeFromCart: (itemId: string) => void;
   increaseQuantity: (itemId: string) => void;
   decreaseQuantity: (itemId: string) => void;
-  resetCart: () => void;
+
+  clearCart: () => void; // New function to clear the cart
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -68,10 +69,8 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     }
   };
 
-  const resetCart = () => {
+  const clearCart = () => {
     setCartItems([]);
-    // Cart items are removed from localStorage only when the tab is closed
-    localStorage.removeItem(`cartItems_${userData?.id}`);
   };
 
   const removeFromCart = (itemId: string) => {
@@ -100,7 +99,8 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         removeFromCart,
         increaseQuantity,
         decreaseQuantity,
-        resetCart,
+
+        clearCart, // Provide clearCart function
       }}
     >
       {children}
