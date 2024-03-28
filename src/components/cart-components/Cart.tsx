@@ -18,20 +18,22 @@ const Cart: React.FC = () => {
           <li>Action</li>
         </UL>
       </div>
-      {cartItems.map((item) => (
-        <Content key={item.id}>
-          <Image src={`../../../uploads/${item.mainImage}`} alt="" />
-          <Title>{item.name}</Title>
-          <Price>${item.price}</Price>
-          <FlexDiv>
-            <button onClick={() => increaseQuantity(item.id)}>+</button> {/* Pass item ID */}
-            <p>{item.quantity}</p>
-            <button onClick={() => decreaseQuantity(item.id)}>-</button> {/* Pass item ID */}
-          </FlexDiv>
-          <Total>${(item.price * item.quantity).toFixed(2)}</Total>
-          <Action onClick={() => removeFromCart(item.id)}>X</Action>
-        </Content>
-      ))}
+      <CartWrapper>
+        {cartItems.map((item) => (
+          <Content key={item.id}>
+            <Image src={`../../../uploads/${item.mainImage}`} alt="" />
+            <Title>{item.name}</Title>
+            <Price>${item.price}</Price>
+            <FlexDiv>
+              <button onClick={() => increaseQuantity(item.id)}>+</button> {/* Pass item ID */}
+              <p>{item.quantity}</p>
+              <button onClick={() => decreaseQuantity(item.id)}>-</button> {/* Pass item ID */}
+            </FlexDiv>
+            <Total>${(item.price * item.quantity).toFixed(2)}</Total>
+            <Action onClick={() => removeFromCart(item.id)}>X</Action>
+          </Content>
+        ))}
+      </CartWrapper>
     </Container>
   );
 };
@@ -101,6 +103,15 @@ const UL = styled.ul`
     &:nth-child(6) {
       margin-left: 0px;
     } */
+  }
+`;
+const CartWrapper = styled.div`
+  /* overflow-x: scroll; */
+  @media (max-width: 600px) {
+    overflow-x: scroll;
+    display: flex;
+    padding: 10px;
+    row-gap: 35px;
   }
 `;
 
