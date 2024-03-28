@@ -37,14 +37,15 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   const { userData } = useAuth();
 
   useEffect(() => {
-    // Retrieve cart items from localStorage on component mount
     const storedCartItems = localStorage.getItem(`cartItems_${userData?.id}`);
     if (storedCartItems) {
       setCartItems(JSON.parse(storedCartItems));
     }
 
     // Add event listener for beforeunload to clear cart items on browser close
-    const handleBeforeUnload = () => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = "";
       localStorage.removeItem(`cartItems_${userData?.id}`);
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
@@ -69,6 +70,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
   const resetCart = () => {
     setCartItems([]);
+    // Cart items are removed from localStorage only when the tab is closed
     localStorage.removeItem(`cartItems_${userData?.id}`);
   };
 
