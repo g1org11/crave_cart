@@ -157,13 +157,11 @@ const Profile = () => {
                 <a href="">Profile</a>
               </li>
               <li>
-                <a href="">My Cart</a>
+                <Link to="/cart">My Cart</Link>
               </li>
+
               <li>
-                <a href="">Wishlist</a>
-              </li>
-              <li>
-                <a href="">Shop</a>
+                <Link to="/items">Shop</Link>
               </li>
               {isAuthenticated && userData && userData.isAdmin && (
                 <li>
@@ -511,6 +509,16 @@ const JobAge = styled.div`
     border-radius: 10px;
     background-color: ${defaultTheme.colors.floralwhite};
     color: ${defaultTheme.colors.blue};
+    /* Remove spinners for number inputs */
+    -moz-appearance: textfield;
+    appearance: textfield;
+
+    /* Webkit browsers like Chrome and Safari */
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
     &:focus {
       outline: none;
     }
@@ -581,6 +589,16 @@ const MainForm = styled.div`
     border-radius: 10px;
     background-color: ${defaultTheme.colors.floralwhite};
     color: ${defaultTheme.colors.blue};
+    /* Remove spinners for number inputs */
+    -moz-appearance: textfield;
+    appearance: textfield;
+
+    /* Webkit browsers like Chrome and Safari */
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
     &:focus {
       outline: none;
     }

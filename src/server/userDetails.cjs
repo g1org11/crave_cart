@@ -21,8 +21,8 @@ const UserDetailsSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
     },
-    resetToken: String,
-    resetTokenExpiration: Date,
+    // resetToken: String,
+    // resetTokenExpiration: Date,
 
     // New profile fields
     fullName: String,
