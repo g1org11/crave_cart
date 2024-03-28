@@ -5,35 +5,71 @@ import { useCart } from "./CartContext";
 
 const Cart: React.FC = () => {
   const { cartItems, removeFromCart, increaseQuantity, decreaseQuantity } = useCart();
-
+  const total = cartItems.reduce((accumulator, currentItem) => {
+    return accumulator + currentItem.price * currentItem.quantity;
+  }, 0);
   return (
     <Container>
       <div>
-        <UL>
-          <li>Product</li>
-          <li>Product Name</li>
-          <li>Unit Price</li>
-          <li>Quantity</li>
-          <li>Total</li>
-          <li>Action</li>
-        </UL>
+        <div>
+          <UL>
+            <li>Product</li>
+            <li>Product Name</li>
+            <li>Unit Price</li>
+            <li>Quantity</li>
+            <li>Total</li>
+            <li>Action</li>
+          </UL>
+        </div>
+        <CartWrapper>
+          {cartItems.map((item) => (
+            <Content key={item.id}>
+              <Image src={`../../../uploads/${item.mainImage}`} alt="" />
+              <Title>{item.name}</Title>
+              <Price>${item.price}</Price>
+              <FlexDiv>
+                <button onClick={() => increaseQuantity(item.id)}>+</button> {/* Pass item ID */}
+                <p>{item.quantity}</p>
+                <button onClick={() => decreaseQuantity(item.id)}>-</button> {/* Pass item ID */}
+              </FlexDiv>
+              <Total>${(item.price * item.quantity).toFixed(2)}</Total>
+              <Action onClick={() => removeFromCart(item.id)}>X</Action>
+            </Content>
+          ))}
+        </CartWrapper>
       </div>
-      <CartWrapper>
-        {cartItems.map((item) => (
-          <Content key={item.id}>
-            <Image src={`../../../uploads/${item.mainImage}`} alt="" />
-            <Title>{item.name}</Title>
-            <Price>${item.price}</Price>
-            <FlexDiv>
-              <button onClick={() => increaseQuantity(item.id)}>+</button> {/* Pass item ID */}
-              <p>{item.quantity}</p>
-              <button onClick={() => decreaseQuantity(item.id)}>-</button> {/* Pass item ID */}
-            </FlexDiv>
-            <Total>${(item.price * item.quantity).toFixed(2)}</Total>
-            <Action onClick={() => removeFromCart(item.id)}>X</Action>
-          </Content>
-        ))}
-      </CartWrapper>
+      <PaymentConatiner>
+        <Wrapper>
+          <Parts>
+            <h1>Card Details</h1>
+            <div>
+              <p>Email</p>
+              <input type="email" />
+            </div>
+            <div>
+              <p> Card Number</p>
+              <input type="number" name="" id="" />
+            </div>
+          </Parts>
+          <Parts>
+            <h1>Address</h1>
+            <div>
+              <p>District</p>
+              <input type="text" />
+            </div>
+            <div>
+              <p>Street</p>
+              <input type="text" />
+            </div>
+            <TotalContent>
+              <p>Total:</p>
+              <h2>{total.toFixed(2)}</h2>
+            </TotalContent>
+            <div></div>
+          </Parts>
+        </Wrapper>
+        <Submit>Submit</Submit>
+      </PaymentConatiner>
     </Container>
   );
 };
@@ -273,4 +309,84 @@ const Action = styled.button`
     /* transform: translateX(0px); */
     transform: translateY(-10px);
   }
+`;
+const PaymentConatiner = styled.form`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding: 0 50px;
+`;
+const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: top;
+  justify-content: space-around;
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
+`;
+const Parts = styled.div`
+  h1 {
+    font-size: 35px;
+    font-weight: 300px;
+    color: ${defaultTheme.colors.red};
+    margin-bottom: 7px;
+  }
+  p {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 23.44px;
+    color: ${defaultTheme.colors.blue};
+    margin-bottom: 5px;
+  }
+  h2 {
+    font-size: 20px;
+    font-weight: 300px;
+    color: ${defaultTheme.colors.red};
+    margin-bottom: 7px;
+  }
+
+  input {
+    width: 100%;
+    height: 50px;
+    font-size: 25px;
+    font-weight: 400;
+    line-height: 29px;
+    padding-left: 15px;
+    border: 2px solid ${defaultTheme.colors.red};
+    border-radius: 10px;
+    background-color: ${defaultTheme.colors.floralwhite};
+    color: ${defaultTheme.colors.blue};
+    margin-bottom: 5px;
+    /* Remove spinners for number inputs */
+    -moz-appearance: textfield;
+    appearance: textfield;
+
+    /* Webkit browsers like Chrome and Safari */
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+`;
+const Submit = styled.button`
+  font-size: 25px;
+  color: ${defaultTheme.colors.floralwhite};
+  padding: 10px 50px;
+  border: 0;
+  border-radius: 20px;
+  background-color: ${defaultTheme.colors.red};
+  margin-top: 20px;
+`;
+const TotalContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: left;
 `;

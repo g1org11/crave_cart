@@ -4,7 +4,7 @@ import { defaultTheme } from "../../defaultTheme";
 
 const Payment = () => {
   return (
-    <Conatiner>
+    <PaymentConatiner>
       <Wrapper>
         <Parts>
           <h1>Card Details</h1>
@@ -27,21 +27,21 @@ const Payment = () => {
             <p>Street</p>
             <input type="text" />
           </div>
-          <div>
-            <p>Total</p>
-            <input type="number" />
-          </div>
+          <TotalContent>
+            <p>Total:</p>
+            <h2>122222222</h2>
+          </TotalContent>
           <div></div>
         </Parts>
       </Wrapper>
       <Submit>Submit</Submit>
-    </Conatiner>
+    </PaymentConatiner>
   );
 };
 
 export default Payment;
 
-const Conatiner = styled.form`
+const PaymentConatiner = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -72,6 +72,12 @@ const Parts = styled.div`
     line-height: 23.44px;
     color: ${defaultTheme.colors.blue};
     margin-bottom: 5px;
+  }
+  h2 {
+    font-size: 20px;
+    font-weight: 300px;
+    color: ${defaultTheme.colors.red};
+    margin-bottom: 7px;
   }
 
   input {
@@ -109,4 +115,9 @@ const Submit = styled.button`
   border-radius: 20px;
   background-color: ${defaultTheme.colors.red};
   margin-top: 20px;
+`;
+const TotalContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: left;
 `;
