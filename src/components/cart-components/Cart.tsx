@@ -123,6 +123,13 @@ const Container = styled.div`
     padding: 0 10px;
     flex-direction: column;
   }
+  table {
+    @media (max-width: 720px) {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+  }
 `;
 
 const Headers = styled.tr`
@@ -144,10 +151,7 @@ const Headers = styled.tr`
       padding: 20px 20px;
     }
     @media (max-width: 720px) {
-      padding: 20px 10px;
-    }
-    @media (max-width: 600px) {
-      flex-direction: column;
+      display: none;
     }
   }
 `;
@@ -156,8 +160,17 @@ const Content = styled.tr`
   border-bottom: 2px solid ${defaultTheme.colors.red};
   text-align: center;
   vertical-align: middle;
+  @media (max-width: 720px) {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    margin-top: 15px;
+  }
 `;
 const Image = styled.td`
+  /* width: 100%; */
   img {
     width: 150px;
     height: 80px;
@@ -166,7 +179,13 @@ const Image = styled.td`
       width: 100px;
       height: 50px;
     }
-    @media (max-width: 600px) {
+    @media (max-width: 720px) {
+      width: 450px;
+      height: 200px;
+    }
+    @media (max-width: 490px) {
+      width: 300px;
+      height: 150px;
     }
   }
 
@@ -184,7 +203,12 @@ const Title = styled.td`
     width: 100px;
     font-size: 16px;
   }
-  @media (max-width: 600px) {
+  @media (max-width: 720px) {
+    width: 400px;
+    margin: 8px 0;
+  }
+  @media (max-width: 490px) {
+    width: 300px;
   }
 
   /* margin-left: -15px; */
@@ -206,17 +230,13 @@ const Price = styled.td`
 `;
 
 const FlexDiv = styled.td`
-  /* display: flex;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center; */
-  /* transform: translateY(-30px); */
-
-  @media (max-width: 1100px) {
-    font-size: 16px;
+  margin-top: 20px;
+  @media (max-width: 720px) {
+    margin: 8px 0;
   }
-  @media (max-width: 600px) {
-  }
-  /* margin-left: -10px; */
   span:first-child,
   :last-child {
     border: 0;
@@ -224,12 +244,15 @@ const FlexDiv = styled.td`
     margin: 0 30px;
     cursor: pointer;
     padding: 5px;
+    @media (max-width: 1050px) {
+      padding: 0 15px;
+    }
   }
   span {
     font-size: 20px;
     font-weight: 700;
     line-height: 23.44px;
-    text-align: center;
+
     color: ${defaultTheme.colors.blue};
     @media (max-width: 1100px) {
       font-size: 16px;
@@ -255,8 +278,7 @@ const Total = styled.td`
 `;
 const Action = styled.td`
   /* transform: translateY(-30px); */
-  @media (max-width: 600px) {
-  }
+
   button {
     border: 0;
     background-color: ${defaultTheme.colors.white};
@@ -270,6 +292,9 @@ const Action = styled.td`
     cursor: pointer;
     @media (max-width: 1100px) {
       font-size: 16px;
+    }
+    @media (max-width: 720px) {
+      margin: 8px 0;
     }
     @media (max-width: 600px) {
     }
