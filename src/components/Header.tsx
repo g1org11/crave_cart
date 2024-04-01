@@ -194,7 +194,7 @@ const MainHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 19px 100px 25px 100px;
-  box-shadow: 2px 5px 35px -5px rgba(0, 0, 0, 0.45) inset, 0px 25px 20px -20px rgba(0, 0, 0, 0.45);
+  box-shadow: 2px 24px 30px -27px rgba(0, 0, 0, 0.45) inset, 0px 25px 20px -20px rgba(0, 0, 0, 0.45);
 
   position: relative;
   @media (max-width: 795px) {
@@ -318,15 +318,16 @@ const Icons = styled.div`
 
 const BurgerIcon = styled(FontAwesomeIcon)<IconProps>`
   opacity: 0;
-
+  color: ${defaultTheme.colors.blue};
   @media (max-width: 1150px) {
     opacity: ${(props) => (props.show ? "1" : "0")};
   }
 `;
 
 const XmarkIcon = styled(FontAwesomeIcon)<IconProps>`
+  position: absolute;
   opacity: 0;
-
+  color: ${defaultTheme.colors.blue};
   @media (max-width: 1150px) {
     opacity: ${(props) => (props.show ? "1" : "0")};
   }
@@ -356,7 +357,7 @@ const ModalDiv = styled.div`
   padding: 20px;
   background-color: ${defaultTheme.colors.lightred};
   text-align: center;
-  animation: ${fadeIn} 0.5s ease; // Apply the animation
+  animation: ${fadeIn} 0.8s ease; // Apply the animation
   a {
     font-size: 20px;
     font-style: normal;

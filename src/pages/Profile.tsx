@@ -431,7 +431,7 @@ const WrapperModal = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  animation: ${fadeIn} 0.5s ease; // Apply the animation
+  animation: ${fadeIn} 0.8s ease; // Apply the animation
 `;
 const Icons = styled.div`
   width: 100%;
@@ -445,16 +445,19 @@ const Icons = styled.div`
 `;
 const BurgerIcon = styled(FontAwesomeIcon)<IconProps>`
   opacity: 0;
+  position: absolute;
+  color: ${defaultTheme.colors.blue};
 
-  @media (max-width: 1150px) {
+  @media (max-width: 950px) {
     opacity: ${(props) => (props.show ? "1" : "0")};
   }
 `;
 
 const XmarkIcon = styled(FontAwesomeIcon)<IconProps>`
   opacity: 0;
+  color: ${defaultTheme.colors.blue};
 
-  @media (max-width: 1150px) {
+  @media (max-width: 950px) {
     opacity: ${(props) => (props.show ? "1" : "0")};
   }
 `;
