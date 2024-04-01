@@ -1,9 +1,9 @@
 // import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useState, useEffect } from "react";
 import { defaultTheme } from "../defaultTheme";
-import watch from "../assets/header/watch_icon.svg";
-import phone from "../assets/header/phone_icon.svg";
+// import watch from "../assets/header/watch_icon.svg";
+// import phone from "../assets/header/phone_icon.svg";
 import logo from "../assets/header/logo.png";
 import cart from "../assets/header/cart.svg";
 import moto from "../assets/header/moto.png";
@@ -76,20 +76,6 @@ const Header = () => {
   };
   return (
     <div>
-      {/* <TopHader>
-        <Information>
-          <Parts>
-            <img src={watch} alt="watch" />
-            <p>7.30 AM - 9.30 PM</p>
-          </Parts>
-          <Parts>
-            <img src={phone} alt="phone" />
-            <a href="tel:+880 1630 225 015">+880 1630 225 015</a>
-          </Parts>
-        </Information>
-        <Link to="/Login-SignUp">REGISTER</Link>
-      </TopHader> */}
-
       <MainHeader>
         <a href="/">
           <Logo src={logo} alt="logo" />
@@ -202,62 +188,6 @@ const Header = () => {
   );
 };
 export default Header;
-
-// const TopHader = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   background-color: ${defaultTheme.colors.red};
-//   padding: 8px 100px;
-//   @media (max-width: 795px) {
-//     padding: 8px 50px;
-//   }
-//   @media (max-width: 480px) {
-//     flex-direction: column;
-//     text-align: center;
-//   }
-//   a {
-//     font-size: 12px;
-//     font-style: normal;
-//     font-weight: 400;
-//     line-height: normal;
-//     color: ${defaultTheme.colors.floralwhite};
-//     text-decoration: none;
-//     @media (max-width: 480px) {
-//       padding-top: 20px;
-//     }
-//   }
-// `;
-// const Information = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   gap: 67px;
-//   @media (max-width: 795px) {
-//     gap: 40px;
-//   }
-// `;
-// const Parts = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   p {
-//     font-size: 12px;
-//     font-style: normal;
-//     font-weight: 400;
-//     line-height: normal;
-//     color: ${defaultTheme.colors.floralwhite};
-//     margin-left: 10px;
-//   }
-//   a {
-//     font-size: 12px;
-//     font-style: normal;
-//     font-weight: 400;
-//     line-height: normal;
-//     color: ${defaultTheme.colors.floralwhite};
-//     margin-left: 10px;
-//   }
-// `;
 
 const MainHeader = styled.div`
   display: flex;
@@ -385,25 +315,34 @@ const Icons = styled.div`
   margin-right: 20px;
   z-index: 1;
 `;
+
 const BurgerIcon = styled(FontAwesomeIcon)<IconProps>`
-  display: none;
+  opacity: 0;
 
   @media (max-width: 1150px) {
-    display: ${(props) => (props.show ? "inline-block" : "none")};
+    opacity: ${(props) => (props.show ? "1" : "0")};
   }
 `;
 
 const XmarkIcon = styled(FontAwesomeIcon)<IconProps>`
-  display: none;
+  opacity: 0;
 
   @media (max-width: 1150px) {
-    display: ${(props) => (props.show ? "inline-block" : "none")};
+    opacity: ${(props) => (props.show ? "1" : "0")};
   }
 `;
 
 const ModalUl = styled.ul`
   list-style-type: none;
   margin-bottom: 10px;
+`;
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 `;
 
 const ModalDiv = styled.div`
@@ -417,6 +356,7 @@ const ModalDiv = styled.div`
   padding: 20px;
   background-color: ${defaultTheme.colors.lightred};
   text-align: center;
+  animation: ${fadeIn} 0.5s ease; // Apply the animation
   a {
     font-size: 20px;
     font-style: normal;
@@ -436,6 +376,16 @@ const User = styled.div`
 `;
 
 const LogOut = styled.div``;
+const fadeInProfileModal = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-20px); // Slide up animation
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0); // Slide down animation
+  }
+`;
 
 const ProfielModal = styled.div`
   width: 300px;
@@ -445,6 +395,7 @@ const ProfielModal = styled.div`
   right: 5%;
   z-index: 2;
   background-color: ${defaultTheme.colors.floralwhite};
+  animation: ${fadeInProfileModal} 0.5s ease forwards; // Apply the animation
 
   svg {
     color: ${defaultTheme.colors.red};
@@ -462,6 +413,7 @@ const ProfielModal = styled.div`
     }
   }
 `;
+
 const ProfileImage = styled.img`
   width: 70px;
   height: 70px;

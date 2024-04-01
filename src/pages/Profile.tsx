@@ -1,6 +1,6 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { defaultTheme } from "../defaultTheme";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
@@ -412,6 +412,14 @@ const ProfileImage = styled.img`
   height: 100px; /* Adjust as per your design */
   border-radius: 50%;
 `;
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
 const WrapperModal = styled.div`
   width: 100%;
 
@@ -423,6 +431,7 @@ const WrapperModal = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  animation: ${fadeIn} 0.5s ease; // Apply the animation
 `;
 const Icons = styled.div`
   width: 100%;
@@ -435,20 +444,21 @@ const Icons = styled.div`
   margin-right: 20px;
 `;
 const BurgerIcon = styled(FontAwesomeIcon)<IconProps>`
-  display: none;
+  opacity: 0;
 
-  @media (max-width: 950px) {
-    display: ${(props) => (props.show ? "inline-block" : "none")};
+  @media (max-width: 1150px) {
+    opacity: ${(props) => (props.show ? "1" : "0")};
   }
 `;
 
 const XmarkIcon = styled(FontAwesomeIcon)<IconProps>`
-  display: none;
+  opacity: 0;
 
-  @media (max-width: 950px) {
-    display: ${(props) => (props.show ? "inline-block" : "none")};
+  @media (max-width: 1150px) {
+    opacity: ${(props) => (props.show ? "1" : "0")};
   }
 `;
+
 const Form = styled.form`
   position: relative;
   width: 100%;
