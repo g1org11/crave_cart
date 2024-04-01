@@ -98,6 +98,12 @@ const Select = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   margin: 20px 0;
+  @media (max-width: 450px) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
   p {
     margin-left: 80px;
     margin-right: 10px;
@@ -105,6 +111,9 @@ const Select = styled.div`
     font-weight: 400;
     line-height: 21px;
     color: ${defaultTheme.colors.blue};
+    @media (max-width: 550px) {
+      margin: 0;
+    }
   }
   select {
     font-size: 16px;

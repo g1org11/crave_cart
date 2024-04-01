@@ -72,4 +72,10 @@ const ImageContainer = styled.div`
       width: 350px;
     }
   }
+  @media (max-width: 450px) {
+    flex-direction: column;
+    img {
+      width: 300px;
+    }
+  }
 `;

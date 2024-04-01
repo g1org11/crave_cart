@@ -223,9 +223,7 @@ const Profile = () => {
                     <li>
                       <a href="">My Cart</a>
                     </li>
-                    <li>
-                      <a href="">Wishlist</a>
-                    </li>
+
                     <li>
                       <a href="">Shop</a>
                     </li>
@@ -335,6 +333,8 @@ const Container = styled.div`
   padding: 0 100px;
   margin-top: 25px;
   overflow: hidden;
+  position: relative;
+  width: 100%;
   @media (max-width: 1150px) {
     padding: 0 50px;
   }
@@ -416,7 +416,7 @@ const WrapperModal = styled.div`
   width: 100%;
 
   position: absolute;
-  right: 0;
+  left: 0;
   top: 50px;
   background-color: ${defaultTheme.colors.lightred};
   padding: 30px;
@@ -450,6 +450,7 @@ const XmarkIcon = styled(FontAwesomeIcon)<IconProps>`
   }
 `;
 const Form = styled.form`
+  position: relative;
   width: 100%;
   h1 {
     font-size: 35px;
@@ -462,6 +463,7 @@ const Form = styled.form`
 `;
 
 const MainTitleDiv = styled.div`
+  width: 100%;
   position: relative;
 `;
 const Label = styled.p`

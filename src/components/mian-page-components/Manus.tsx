@@ -372,6 +372,12 @@ const Header = styled.div`
   @media (max-width: 680px) {
     flex-direction: row;
   }
+  @media (max-width: 500px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    place-items: center;
+    text-align: center;
+  }
 `;
 
 const HeaderItem = styled.p<HeaderItemProps>`
@@ -409,6 +415,10 @@ const HeaderItem = styled.p<HeaderItemProps>`
   }
   @media (max-width: 500px) {
     width: 120px;
+    font-size: 20px;
+  }
+  @media (max-width: 450px) {
+    width: 100px;
     font-size: 20px;
   }
 `;

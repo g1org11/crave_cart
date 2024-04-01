@@ -76,7 +76,7 @@ const Header = () => {
   };
   return (
     <div>
-      <TopHader>
+      {/* <TopHader>
         <Information>
           <Parts>
             <img src={watch} alt="watch" />
@@ -84,15 +84,15 @@ const Header = () => {
           </Parts>
           <Parts>
             <img src={phone} alt="phone" />
-            <p>+880 1630 225 015</p>
+            <a href="tel:+880 1630 225 015">+880 1630 225 015</a>
           </Parts>
         </Information>
-        <a href="">REGISTER</a>
-      </TopHader>
+        <Link to="/Login-SignUp">REGISTER</Link>
+      </TopHader> */}
 
       <MainHeader>
         <a href="/">
-          <img src={logo} alt="logo" />
+          <Logo src={logo} alt="logo" />
         </a>
 
         <NavAndInfo>
@@ -112,15 +112,13 @@ const Header = () => {
           </Ul>
           <CartPart>
             <CartLink to={"/cart"}>
-              <p>
-                <p>{cartItems ? cartItems.length : 0}</p>
-              </p>
+              <p>{cartItems ? cartItems.length : 0}</p>
               <img src={cart} alt="cart" />
             </CartLink>
             <CartInfos>
               <div>
                 <h3>Delivery Order</h3>
-                <p>+880 1630 225 015</p>
+                <a href="tel:+880 1630 225 015">+880 1630 225 015</a>
               </div>
               <img src={moto} alt="moto" />
             </CartInfos>
@@ -205,60 +203,69 @@ const Header = () => {
 };
 export default Header;
 
-const TopHader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: ${defaultTheme.colors.red};
-  padding: 8px 100px;
-  @media (max-width: 795px) {
-    padding: 8px 50px;
-  }
-  @media (max-width: 480px) {
-    flex-direction: column;
-    text-align: center;
-  }
-  a {
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    color: ${defaultTheme.colors.floralwhite};
-    text-decoration: none;
-    @media (max-width: 480px) {
-      padding-top: 20px;
-    }
-  }
-`;
-const Information = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 67px;
-  @media (max-width: 795px) {
-    gap: 40px;
-  }
-`;
-const Parts = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  p {
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    color: ${defaultTheme.colors.floralwhite};
-    margin-left: 10px;
-  }
-`;
+// const TopHader = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   background-color: ${defaultTheme.colors.red};
+//   padding: 8px 100px;
+//   @media (max-width: 795px) {
+//     padding: 8px 50px;
+//   }
+//   @media (max-width: 480px) {
+//     flex-direction: column;
+//     text-align: center;
+//   }
+//   a {
+//     font-size: 12px;
+//     font-style: normal;
+//     font-weight: 400;
+//     line-height: normal;
+//     color: ${defaultTheme.colors.floralwhite};
+//     text-decoration: none;
+//     @media (max-width: 480px) {
+//       padding-top: 20px;
+//     }
+//   }
+// `;
+// const Information = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   gap: 67px;
+//   @media (max-width: 795px) {
+//     gap: 40px;
+//   }
+// `;
+// const Parts = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   p {
+//     font-size: 12px;
+//     font-style: normal;
+//     font-weight: 400;
+//     line-height: normal;
+//     color: ${defaultTheme.colors.floralwhite};
+//     margin-left: 10px;
+//   }
+//   a {
+//     font-size: 12px;
+//     font-style: normal;
+//     font-weight: 400;
+//     line-height: normal;
+//     color: ${defaultTheme.colors.floralwhite};
+//     margin-left: 10px;
+//   }
+// `;
 
 const MainHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 19px 100px 25px 100px;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 2px 5px 35px -5px rgba(0, 0, 0, 0.45) inset, 0px 25px 20px -20px rgba(0, 0, 0, 0.45);
+
   position: relative;
   @media (max-width: 795px) {
     padding: 19px 50px 25px 50px;
@@ -268,6 +275,11 @@ const NavAndInfo = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+const Logo = styled.img`
+  @media (max-width: 500px) {
+    width: 80px;
+  }
 `;
 
 const Ul = styled.ul`
@@ -297,6 +309,14 @@ const CartPart = styled.div`
 `;
 const CartInfos = styled(CartPart)`
   margin-right: 44px;
+  a {
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: ${defaultTheme.colors.blue};
+    text-decoration: none;
+  }
   @media (max-width: 795px) {
     display: none;
   }
@@ -337,6 +357,11 @@ const CartLink = styled(Link)`
     font-weight: 800;
     line-height: normal;
     color: ${defaultTheme.colors.floralwhite};
+  }
+  img {
+    @media (max-width: 500px) {
+      width: 25px;
+    }
   }
 `;
 const Login = styled.div`
@@ -441,6 +466,11 @@ const ProfileImage = styled.img`
   width: 70px;
   height: 70px;
   border-radius: 50%;
+  object-fit: cover;
+  @media (max-width: 500px) {
+    width: 50px;
+    height: 50px;
+  }
 `;
 // const ModalLi = styled.li`
 //   font-size: 12px;

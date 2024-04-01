@@ -76,14 +76,11 @@ const Wrapper = styled.div`
     line-height: normal;
     cursor: pointer;
     border: 0;
-    background-color: ${defaultTheme.colors.floralwhite};
-    color: ${defaultTheme.colors.red};
+    background-color: ${defaultTheme.colors.red};
+    color: ${defaultTheme.colors.floralwhite};
+    border-radius: 10px;
     padding: 10px 20px;
-    &:hover {
-      background-color: ${defaultTheme.colors.red};
-      color: ${defaultTheme.colors.floralwhite};
-      border-radius: 10px;
-    }
+
     @media (max-width: 500px) {
       font-size: 18px;
     }
@@ -92,6 +89,9 @@ const Wrapper = styled.div`
 const MainImg = styled.img`
   @media (max-width: 500px) {
     max-width: 400px;
+  }
+  @media (max-width: 450px) {
+    max-width: 300px;
   }
 `;
 const MainTitle = styled.h1`
@@ -115,15 +115,16 @@ const InfoFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
+  @media (max-width: 500px) {
+    flex-direction: column;
+    gap: 20px;
+  }
 `;
 const CartInfos = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   margin-right: 44px;
-  @media (max-width: 795px) {
-    display: none;
-  }
 
   h3 {
     font-size: 20px;
@@ -132,12 +133,13 @@ const CartInfos = styled.div`
     line-height: normal;
     color: ${defaultTheme.colors.blue};
   }
-  p {
+  a {
     font-size: 15px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
     color: ${defaultTheme.colors.blue};
+    text-decoration: none;
   }
   img {
     margin-left: 10px;

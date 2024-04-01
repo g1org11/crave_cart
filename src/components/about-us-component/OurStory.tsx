@@ -8,12 +8,12 @@ const OurStory = () => {
       <h1>OUR STORY</h1>
       <Wrapper>
         <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-          been the industry's standard dummy text ever since the 1500s, when an unknown printer took
-          a galley of type and scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap into electronic typesetting, remaining essentially
-          unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-          Lorem Ipsum passage
+          In a coastal town lived Captain Finn, a seafarer with a passion for seafood. He opened
+          "The Ocean's Bounty," a restaurant showcasing the treasures of the sea. From Opaleye
+          Yellowtail Snapper to Moorish Idols, every dish told a story of adventure. Diners flocked
+          to taste Queen Danio, Bullhead Sharks, and more, enchanted by Captain Finn's tales of the
+          deep. "The Ocean's Bounty" became a sanctuary for those seeking culinary and maritime
+          escapades, leaving a legacy of oceanic wonder for generations to come.
         </p>
         <img src={story} alt="story" />
       </Wrapper>
@@ -62,6 +62,11 @@ const Wrapper = styled.div`
   @media (max-width: 550px) {
     img {
       width: 400px;
+    }
+  }
+  @media (max-width: 450px) {
+    img {
+      width: 300px;
     }
   }
 `;

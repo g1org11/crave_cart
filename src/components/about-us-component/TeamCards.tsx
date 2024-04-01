@@ -12,32 +12,30 @@ import {
 interface TeamCardsProps {
   img: string;
   title: string;
+  description: string;
 }
-const TeamCards: React.FC<TeamCardsProps> = ({ img, title }) => {
+const TeamCards: React.FC<TeamCardsProps> = ({ img, title, description }) => {
   return (
     <div>
       <Information>
         <div>
           <h2>{title}</h2>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna. Lorem ipsum dolor sit amet
-          </p>
+          <p>{description}</p>
           <img src={img} alt="" />
         </div>
       </Information>
       <Icons>
-        <a href="">
+        <a href="https://twitter.com/?lang=en">
           {" "}
           <FontAwesomeIcon icon={faXTwitter} size="xl" />
         </a>
-        <a href="">
+        <a href="https://www.facebook.com/">
           <FontAwesomeIcon icon={faSquareFacebook} size="xl" />
         </a>
-        <a href="">
+        <a href="https://www.instagram.com/">
           <FontAwesomeIcon icon={faInstagram} size="xl" />
         </a>
-        <a href="">
+        <a href="https://www.linkedin.com/feed/">
           <FontAwesomeIcon icon={faLinkedinIn} size="xl" />
         </a>
       </Icons>
@@ -49,9 +47,12 @@ export default TeamCards;
 const Information = styled.div`
   position: relative;
   margin-top: 113px;
-  padding: 163px 48px 25px 48px;
+  padding: 163px 70px 50px 55px;
   border-radius: 50%;
   border: 3px solid ${defaultTheme.colors.red};
+  @media (max-width: 450px) {
+    padding-bottom: 55px;
+  }
   h2 {
     text-align: center;
     font-size: 25px;
@@ -68,6 +69,9 @@ const Information = styled.div`
     font-weight: 400;
     line-height: normal;
     color: ${defaultTheme.colors.blue};
+    @media (max-width: 450px) {
+      width: 200px;
+    }
   }
   img {
     position: absolute;
