@@ -106,6 +106,10 @@ const RestorantInfo = styled.div`
     @media (max-width: 500px) {
       font-size: 30px;
     }
+    @media (max-width: 450px) {
+      width: 300px;
+      font-size: 26px;
+    }
   }
   p {
     max-width: 679px;
@@ -133,16 +137,30 @@ const ImagesDiv = styled.div`
       width: 200px;
     }
   }
+  @media (max-width: 450px) {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    img {
+      width: 300px;
+    }
+  }
 `;
 const MainImg = styled.img`
   @media (max-width: 500px) {
     width: 400px;
+  }
+  @media (max-width: 450px) {
+    width: 300px;
   }
 `;
 const RestorantContent = styled.div`
   display: flex;
   align-items: top;
   justify-content: left;
+  @media (max-width: 450px) {
+    flex-direction: column;
+  }
   h3 {
     font-size: 35px;
     font-style: normal;
@@ -157,6 +175,9 @@ const RestorantContent = styled.div`
   p {
     max-width: 563px;
     margin-bottom: 10px;
+    @media (max-width: 450px) {
+      max-width: 300px;
+    }
   }
 
   button {

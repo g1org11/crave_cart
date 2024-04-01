@@ -25,11 +25,13 @@ const ContactInformation = () => {
             </div>
             <div>
               <img src={phone} alt="phone" />
-              <span>+880 1630 225 015</span>
+
+              <a href="tel:+880 1630 225 015">+880 1630 225 015</a>
             </div>
             <div>
               <img src={email} alt="phone" />
-              <span>resturents@gmail.com</span>
+
+              <a href="mailto:webmaster@example.com">resturents@gmail.com</a>
             </div>
           </AddressInfo>
         </Addrees>
@@ -43,17 +45,17 @@ const ContactInformation = () => {
         <div>
           <h1>FOLLOW US</h1>
           <Icons>
-            <a href="">
+            <a href="https://twitter.com/?lang=en">
               {" "}
               <FontAwesomeIcon icon={faXTwitter} size="xl" />
             </a>
-            <a href="">
+            <a href="https://www.facebook.com/">
               <FontAwesomeIcon icon={faSquareFacebook} size="xl" />
             </a>
-            <a href="">
+            <a href="https://www.instagram.com/">
               <FontAwesomeIcon icon={faInstagram} size="xl" />
             </a>
-            <a href="">
+            <a href="https://www.linkedin.com/feed/">
               <FontAwesomeIcon icon={faLinkedinIn} size="xl" />
             </a>
           </Icons>
@@ -91,11 +93,13 @@ const Container = styled.div`
     line-height: normal;
     color: ${defaultTheme.colors.red};
   }
-  span {
+  a {
     font-size: 18px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    cursor: pointer;
+    text-decoration: none;
     color: ${defaultTheme.colors.blue};
     &:hover {
       color: ${defaultTheme.colors.red};
@@ -163,6 +167,9 @@ const IframeDiv = styled.div`
     }
     @media (max-width: 530px) {
       width: 400px;
+    }
+    @media (max-width: 450px) {
+      width: 300px;
     }
   }
 `;

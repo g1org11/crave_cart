@@ -76,6 +76,12 @@ const ImgDiv = styled.div`
       max-width: 400px; /* Adjust the max-width as needed */
     }
   }
+  @media (max-width: 450px) {
+    img {
+      width: 100%;
+      max-width: 300px; /* Adjust the max-width as needed */
+    }
+  }
 
   img {
     width: 560px;

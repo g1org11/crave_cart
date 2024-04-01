@@ -41,34 +41,36 @@ const Cart: React.FC = () => {
     <div>
       <ToastContainer />
       <Container>
-        <div>
-          <div>
-            <UL>
-              <li>Product</li>
-              <li>Product Name</li>
-              <li>Unit Price</li>
-              <li>Quantity</li>
-              <li>Total</li>
-              <li>Action</li>
-            </UL>
-          </div>
-          <CartWrapper>
-            {cartItems.map((item) => (
-              <Content key={item.id}>
-                <Image src={`../../../uploads/${item.mainImage}`} alt="" />
-                <Title>{item.name}</Title>
-                <Price>${item.price}</Price>
-                <FlexDiv>
-                  <button onClick={() => increaseQuantity(item.id)}>+</button> {/* Pass item ID */}
-                  <p>{item.quantity}</p>
-                  <button onClick={() => decreaseQuantity(item.id)}>-</button> {/* Pass item ID */}
-                </FlexDiv>
-                <Total>${(item.price * item.quantity).toFixed(2)}</Total>
-                <Action onClick={() => removeFromCart(item.id)}>X</Action>
-              </Content>
-            ))}
-          </CartWrapper>
-        </div>
+        <table>
+          <Headers>
+            <th>Product</th>
+            <th>Product Name</th>
+            <th>Unit Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Action</th>
+          </Headers>
+
+          {cartItems.map((item) => (
+            <Content key={item.id}>
+              <Image>
+                <img src={`../../../uploads/${item.mainImage}`} alt="" />
+              </Image>
+              <Title>{item.name}</Title>
+              <Price>${item.price}</Price>
+              <FlexDiv>
+                <span onClick={() => increaseQuantity(item.id)}>+</span> {/* Pass item ID */}
+                <span>{item.quantity}</span>
+                <span onClick={() => decreaseQuantity(item.id)}>-</span> {/* Pass item ID */}
+              </FlexDiv>
+              <Total>${(item.price * item.quantity).toFixed(2)}</Total>
+              <Action>
+                {" "}
+                <button onClick={() => removeFromCart(item.id)}>X</button>
+              </Action>
+            </Content>
+          ))}
+        </table>
         <PaymentConatiner onSubmit={handleSubmit}>
           <Wrapper>
             <Parts>
@@ -116,37 +118,32 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+
   @media (max-width: 600px) {
     padding: 0 10px;
-    flex-direction: row;
+    flex-direction: column;
+  }
+  table {
+    @media (max-width: 720px) {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
   }
 `;
 
-const UL = styled.ul`
-  display: flex;
-  align-items: center;
-  gap: 70px;
+const Headers = styled.tr`
   background-color: ${defaultTheme.colors.red};
-  @media (max-width: 1350px) {
-    gap: 30px;
-  }
-  @media (max-width: 1120px) {
-    gap: 10px;
-  }
-  @media (max-width: 900px) {
-    gap: 0px;
-  }
-  @media (max-width: 600px) {
-    flex-direction: column;
-  }
 
-  li {
+  th {
+    width: 250px;
     font-size: 25px;
     font-weight: 400;
     line-height: 29.3px;
     padding: 20px 30px;
     color: ${defaultTheme.colors.floralwhite};
-    list-style-type: none;
+    text-align: center;
+
     @media (max-width: 1100px) {
       font-size: 20px;
     }
@@ -154,196 +151,153 @@ const UL = styled.ul`
       padding: 20px 20px;
     }
     @media (max-width: 720px) {
-      padding: 20px 10px;
+      display: none;
     }
-
-    /* &:nth-child(1) {
-      margin-right: 50px;
-    }
-    &:nth-child(2) {
-      margin-left: 50px;
-    }
-    &:nth-child(3) {
-      margin-left: 50px;
-    }
-    &:nth-child(4) {
-      margin-left: 50px;
-    }
-    &:nth-child(5) {
-      margin-left: 50px;
-    }
-    &:nth-child(6) {
-      margin-left: 0px;
-    } */
-  }
-`;
-const CartWrapper = styled.div`
-  /* overflow-x: scroll; */
-  @media (max-width: 600px) {
-    overflow-x: scroll;
-    display: flex;
-    padding: 10px;
-    row-gap: 35px;
   }
 `;
 
-const Content = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 120px;
-
-  padding: 10px 30px;
-  @media (max-width: 1350px) {
-    gap: 80px;
-  }
-  @media (max-width: 1120px) {
-    gap: 60px;
-  }
-  @media (max-width: 900px) {
-    gap: 30px;
-  }
-  @media (max-width: 720px) {
-    /* transform: translateX(-25px); */
-    gap: 10px;
-  }
-  @media (max-width: 600px) {
-    flex-direction: column;
-    text-align: center;
-    padding: 10px;
-    row-gap: 35px;
-  }
-  /* margin-left: -50px; */
-
-  padding-bottom: 5px;
+const Content = styled.tr`
   border-bottom: 2px solid ${defaultTheme.colors.red};
-`;
-const Image = styled.img`
-  width: 150px;
-  height: 80px;
-  transform: translateX(-30px);
-  object-fit: cover;
-  @media (max-width: 1010px) {
-    width: 100px;
-    height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  @media (max-width: 720px) {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    margin-top: 15px;
   }
-  @media (max-width: 600px) {
-    transform: translateX(0px);
+`;
+const Image = styled.td`
+  /* width: 100%; */
+  img {
+    width: 150px;
+    height: 80px;
+    object-fit: cover;
+    @media (max-width: 1010px) {
+      width: 100px;
+      height: 50px;
+    }
+    @media (max-width: 720px) {
+      width: 450px;
+      height: 200px;
+    }
+    @media (max-width: 490px) {
+      width: 300px;
+      height: 150px;
+    }
   }
 
   /* margin-left: 0px; */
 `;
-const Title = styled.p`
+const Title = styled.td`
   width: 189px;
   text-align: center;
   font-size: 20px;
   font-weight: 700;
   line-height: 23.44px;
   color: ${defaultTheme.colors.blue};
-  transform: translateX(-70px);
+
   @media (max-width: 1100px) {
     width: 100px;
     font-size: 16px;
-    transform: translateX(-40px);
   }
-  @media (max-width: 600px) {
-    transform: translateX(0px);
-    transform: translateY(-20px);
+  @media (max-width: 720px) {
+    width: 400px;
+    margin: 8px 0;
+  }
+  @media (max-width: 490px) {
+    width: 300px;
   }
 
   /* margin-left: -15px; */
 `;
-const Price = styled.p`
+const Price = styled.td`
   font-size: 20px;
   font-weight: 700;
   line-height: 23.44px;
   text-align: center;
   color: ${defaultTheme.colors.blue};
   text-align: center;
-  transform: translateX(-40px);
+
   /* margin-left: 20px; */
   @media (max-width: 1100px) {
     font-size: 16px;
-    transform: translateX(10px);
   }
   @media (max-width: 600px) {
-    transform: translateX(0px);
-    transform: translateY(-38px);
   }
 `;
 
-const FlexDiv = styled.div`
+const FlexDiv = styled.td`
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  transform: translateX(-40px);
-  @media (max-width: 1100px) {
-    font-size: 16px;
-    transform: translateX(5px);
+  margin-top: 20px;
+  @media (max-width: 720px) {
+    margin: 8px 0;
   }
-  @media (max-width: 600px) {
-    transform: translateX(0px);
-    transform: translateY(-30px);
-  }
-  /* margin-left: -10px; */
-  button {
+  span:first-child,
+  :last-child {
     border: 0;
     border: 1px solid ${defaultTheme.colors.red};
     margin: 0 30px;
-
+    cursor: pointer;
     padding: 5px;
+    @media (max-width: 1050px) {
+      padding: 0 15px;
+    }
   }
-  p {
+  span {
     font-size: 20px;
     font-weight: 700;
     line-height: 23.44px;
-    text-align: center;
+
     color: ${defaultTheme.colors.blue};
     @media (max-width: 1100px) {
       font-size: 16px;
     }
   }
 `;
-const Total = styled.p`
+const Total = styled.td`
   font-size: 20px;
   font-weight: 700;
   line-height: 23.44px;
   text-align: center;
   color: ${defaultTheme.colors.blue};
   text-align: center;
-  transform: translateX(-60px);
+
   @media (max-width: 1100px) {
     font-size: 16px;
-    transform: translateX(-20px);
   }
   @media (max-width: 900px) {
-    transform: translateX(-25px);
   }
   @media (max-width: 600px) {
-    transform: translateX(0px);
-    transform: translateY(-20px);
   }
   /* margin-left: -90px; */
 `;
-const Action = styled.button`
-  border: 0;
-  background-color: ${defaultTheme.colors.white};
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 23.44px;
-  text-align: center;
-  color: ${defaultTheme.colors.red};
-  text-align: center;
-  transform: translateX(-20px);
-  cursor: pointer;
-  @media (max-width: 1100px) {
-    font-size: 16px;
-    transform: translateX(0px);
-  }
-  @media (max-width: 600px) {
-    /* transform: translateX(0px); */
-    transform: translateY(-10px);
+const Action = styled.td`
+  /* transform: translateY(-30px); */
+
+  button {
+    border: 0;
+    background-color: ${defaultTheme.colors.white};
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 23.44px;
+    text-align: center;
+    color: ${defaultTheme.colors.red};
+    text-align: center;
+
+    cursor: pointer;
+    @media (max-width: 1100px) {
+      font-size: 16px;
+    }
+    @media (max-width: 720px) {
+      margin: 8px 0;
+    }
+    @media (max-width: 600px) {
+    }
   }
 `;
 const PaymentConatiner = styled.form`

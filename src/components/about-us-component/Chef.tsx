@@ -10,10 +10,12 @@ const Chef = () => {
         <h2>TASTY AND CRUNCHY</h2>
         <h1>Our Chef</h1>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidition
-          ullamco laboris nisi ut aliquip ex ea commodo condor consectetur adipiscing elit, sed do
-          eiusmod tempor incidition ullam.
+          Welcome to our culinary haven, where flavors dance and aromas enchant. Our Chef pours
+          heart and soul into every dish, crafting experiences that tantalize the taste buds and
+          ignite the senses. Explore a world of culinary delights, where each bite tells a story of
+          passion and creativity.
         </p>
+
         <LinkDiv>
           <Link to="/items">VIEW OUR ALL MANU</Link>
         </LinkDiv>

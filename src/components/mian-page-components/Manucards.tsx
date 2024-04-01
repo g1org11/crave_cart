@@ -42,6 +42,9 @@ const Information = styled.div`
   @media (max-width: 500px) {
     width: 380px;
   }
+  @media (max-width: 450px) {
+    width: 300px;
+  }
   h3 {
     font-size: 25px;
     font-style: normal;

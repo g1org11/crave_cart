@@ -32,6 +32,9 @@ const CardText = styled.p`
   line-height: normal;
   color: ${defaultTheme.colors.blue};
   margin-bottom: 51px;
+  @media (max-width: 450px) {
+    width: 300px;
+  }
 `;
 const ImageDiv = styled.div`
   position: relative;
@@ -81,6 +84,9 @@ const CardsContainer = styled.div`
     color: ${defaultTheme.colors.floralwhite};
     background-color: ${defaultTheme.colors.red};
     transform: translateX(100px);
+    @media (max-width: 450px) {
+      transform: translateX(50px);
+    }
   }
   &:hover {
     background-color: ${defaultTheme.colors.red};

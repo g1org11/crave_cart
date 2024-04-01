@@ -10,15 +10,23 @@ const AboutBlog = () => {
         <img src={Blog} alt="blog" />
         <Info>
           <h2>
-            Opaleye yellowtail snapper, velvet catfish, graveldiver banded killifish, Old World
-            rivuline catalufa eagle ray Moorish idol. Herring smelt barbeled dragonfish, tommy ruff.
+            Welcome to our restaurant, where the ocean's bounty awaits you! Dive into our exquisite
+            selection of Opaleye Yellowtail Snapper, Velvet Catfish, Graveldiver Banded Killifish,
+            Old World Rivuline, Catalufa Eagle Ray, and Moorish Idol. Savor the delicate flavors of
+            Herring, Smelt, Barbeled Dragonfish, and Tommy Ruff.
           </h2>
           <p>
-            Queen danio velvet catfish Sacramento blackfish, bullhead shark, Colorado squawfish
-            Russian sturgeon clown triggerfish swamp-eel paradise fish. Hake cookie-cutter shark
-            silver carp hawkfish snipe eel armorhead catfish, moray eel silverside! Bluegill
-            toadfish, orangespine unicorn fish. Manta Ray Moorish idol
+            Indulge in the royalty of seafood with Queen Danio, Velvet Catfish, Sacramento
+            Blackfish, Bullhead Shark, Colorado Squawfish, Russian Sturgeon, Clown Triggerfish,
+            Swamp-Eel, and Paradise Fish. Experience the richness of Hake, Cookie-Cutter Shark,
+            Silver Carp, Hawkfish, Snipe Eel, Armorhead Catfish, Moray Eel, and Silverside.
           </p>
+          <p>
+            For those seeking unique tastes, we offer Bluegill, Toadfish, and Orangespine Unicorn
+            Fish. And don't forget to try our signature dish, Manta Ray, paired perfectly with
+            Moorish Idol.
+          </p>
+          <p>Come join us and embark on a culinary journey through the depths of the sea!</p>
         </Info>
       </Wrapper>
     </Container>
@@ -49,6 +57,7 @@ const Container = styled.div`
     line-height: normal;
     color: ${defaultTheme.colors.blue};
     text-align: justify;
+    margin-bottom: 10px;
   }
   img {
     @media (max-width: 650px) {
@@ -56,6 +65,9 @@ const Container = styled.div`
     }
     @media (max-width: 500px) {
       width: 300px;
+    }
+    @media (max-width: 450px) {
+      width: 200px;
     }
   }
 

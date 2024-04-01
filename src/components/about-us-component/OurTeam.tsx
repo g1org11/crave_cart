@@ -10,9 +10,27 @@ const OurTeam = () => {
       <h1>OUR TEAM</h1>
       <p>The Hardworking Team behind the restaurant</p>
       <CardsWrapper>
-        <TeamCards img={team1} title={"Brain Adams"} />
-        <TeamCards img={team2} title={"Jhon Khan"} />
-        <TeamCards img={team3} title={"Jessica biel"} />
+        <TeamCards
+          img={team1}
+          title={"Brain Adams"}
+          description={
+            "  Meet Chef Brian Adams, our culinary maestro. With over two decades of experience, he crafts unforgettable dishes that blend innovation and tradition."
+          }
+        />
+        <TeamCards
+          img={team2}
+          title={"Jhon Khan"}
+          description={
+            " Meet John Khan, our culinary virtuoso. With a passion for culinary arts and a flair for creativity, John brings unique flavors to every dish he creates."
+          }
+        />
+        <TeamCards
+          img={team3}
+          title={"Jessica biel"}
+          description={
+            "Introducing Jessica Biel, our culinary artist extraordinaire. With her dedication to perfection and a keen eye for detail, Jessica crafts dishes that are as beautiful as they are delicious."
+          }
+        />
       </CardsWrapper>
     </Container>
   );

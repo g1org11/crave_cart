@@ -40,6 +40,12 @@ const ItemContainer = styled.div`
   box-shadow: 0px 1px 4px 3px #00000040;
   border-radius: 20px;
   padding: 10px;
+  @media (max-width: 550px) {
+    width: 400px;
+  }
+  @media (max-width: 450px) {
+    width: 330px;
+  }
 `;
 
 const Title = styled.h1`

@@ -8,10 +8,7 @@ const ContactHero = () => {
     <Container>
       <div>
         <h1>CONTACT US</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eius mod tempor incididunt
-          ut labore et dolore magna.
-        </p>
+        <p>Connect with us today to discover more about our offerings.</p>
       </div>
     </Container>
   );

@@ -39,13 +39,24 @@ const HeroWrapper = styled.div`
     flex-direction: column;
     img {
       position: absolute;
-      top: 40%;
+      top: 37%;
     }
   }
   @media (max-width: 550px) {
     img {
+      width: 350px;
       position: absolute;
-      top: 37%;
+      top: 35%;
+    }
+    @media (max-width: 450px) {
+      img {
+        top: 38%;
+      }
+      @media (max-width: 390px) {
+        img {
+          top: 41%;
+        }
+      }
     }
   }
 `;
@@ -86,8 +97,16 @@ const RightParts = styled.div`
 const OrderPart = styled.div`
   margin-top: 60px;
   transform: translateX(150px);
+
   @media (max-width: 1500px) {
     transform: translateX(0);
+  }
+  @media (max-width: 450px) {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 25px;
+    transform: translateY(-50px);
   }
   button {
     border: 0;
@@ -103,6 +122,9 @@ const OrderPart = styled.div`
     @media (max-width: 550px) {
       font-size: 26px;
     }
+    @media (max-width: 450px) {
+      font-size: 24px;
+    }
   }
   span {
     font-size: 25px;
@@ -112,6 +134,9 @@ const OrderPart = styled.div`
     color: ${defaultTheme.colors.blue};
     @media (max-width: 550px) {
       font-size: 22px;
+    }
+    @media (max-width: 450px) {
+      margin-left: -40px;
     }
   }
   @media (max-width: 1500px) {

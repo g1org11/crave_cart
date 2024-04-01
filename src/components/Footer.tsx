@@ -18,7 +18,7 @@ const Footer = () => {
             </div>
             <div>
               <img src={phone} alt="phone" />
-              <span>+880 1630-225015</span>
+              <a href="tel:+880 1630 225 015">+880 1630 225 015</a>
             </div>
           </Contact>
           <a href="#">Click to View Google Map</a>
@@ -33,7 +33,7 @@ const Footer = () => {
             </div>
             <div>
               <img src={phone} alt="phone" />
-              <span>+880 1630-225015</span>
+              <a href="tel:+880 1630 225 015">+880 1630 225 015</a>
             </div>
           </Contact>
           <a href="#">Click to View Google Map</a>
@@ -48,7 +48,7 @@ const Footer = () => {
             </div>
             <div>
               <img src={phone} alt="phone" />
-              <span>+880 1630-225015</span>
+              <a href="tel:+880 1630 225 015">+880 1630 225 015</a>
             </div>
           </Contact>
           <a href="#">Click to View Google Map</a>
