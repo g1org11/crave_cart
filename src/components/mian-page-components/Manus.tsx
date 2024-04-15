@@ -365,6 +365,7 @@ const Header = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   width: 100%;
+
   @media (max-width: 1400px) {
     flex-direction: column;
     margin-right: 25px;
@@ -383,6 +384,7 @@ const Header = styled.div`
 const HeaderItem = styled.p<HeaderItemProps>`
   width: 300px;
   height: 88px;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -418,7 +420,8 @@ const HeaderItem = styled.p<HeaderItemProps>`
     font-size: 20px;
   }
   @media (max-width: 450px) {
-    width: 100px;
+    width: 115px;
     font-size: 20px;
+    padding: 0 10px;
   }
 `;

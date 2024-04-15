@@ -62,11 +62,15 @@ const ImageContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  row-gap: 25px;
   flex-wrap: wrap;
+  row-gap: 25px;
   margin-top: 25px;
-  @media (max-width: 580px) {
+  @media (max-width: 1400px) {
+    justify-content: center;
+    column-gap: 30px;
+    row-gap: 25px;
+  }
+  @media (max-width: 600px) {
     flex-direction: column;
     img {
       width: 350px;

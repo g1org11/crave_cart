@@ -5,7 +5,7 @@ import axios from "axios";
 import ItemsCard from "../components/items-component/ItemsCard";
 import ItemsHero from "../components/items-component/ItemsHero";
 import { useLocation, Link } from "react-router-dom";
-
+import Spinner from "../components/spinner/Spinner";
 import { defaultTheme } from "../defaultTheme";
 
 interface Item {
@@ -45,43 +45,62 @@ const Items: React.FC = () => {
   const filteredItems =
     filter === "All" ? items : items.filter((item) => item.courseType === filter);
 
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    // Simulate loading for demonstration purposes
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 500);
+
+    // Clear timeout when unmounting to avoid memory leaks
+    return () => clearTimeout(timeout);
+  }, []); // Empty dependency array ensures that this effect runs only once, equivalent to componentDidMount
+
   return (
     <div>
-      <ItemsHero />
-      <div>
-        <Select>
-          <p>Filter by Course Type:</p>
-          <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-            <option value="All">All</option>
-            <option value="Main Course">Main Course</option>
-            <option value="Starter Course">Starter Course</option>
-            <option value="Dessert">Dessert</option>
-            <option value="Cocktail">Cocktail</option>
-          </select>
-        </Select>{" "}
-        <ItemsContainer>
-          {filteredItems.map((item, index) => (
-            <Link
-              key={index}
-              to={`/items/${encodeURIComponent(item.name)}/${item._id}`}
-              style={{ textDecoration: "none" }}
-            >
-              <ItemsCard
-                title={item.name}
-                ingredients={item.ingredients}
-                price={item.price}
-                mainimage={item.mainImage || "/default-image.jpg"}
-                courseType={item.courseType}
-              />
-            </Link>
-          ))}
-        </ItemsContainer>
-      </div>
+      <Spinner loading={loading} />
+      <MainContent loading={loading}>
+        <ItemsHero />
+        <div>
+          <Select>
+            <p>Filter by Course Type:</p>
+            <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+              <option value="All">All</option>
+              <option value="Main Course">Main Course</option>
+              <option value="Starter Course">Starter Course</option>
+              <option value="Dessert">Dessert</option>
+              <option value="Cocktail">Cocktail</option>
+            </select>
+          </Select>{" "}
+          <ItemsContainer>
+            {filteredItems.map((item, index) => (
+              <Link
+                key={index}
+                to={`/items/${encodeURIComponent(item.name)}/${item._id}`}
+                style={{ textDecoration: "none" }}
+              >
+                <ItemsCard
+                  title={item.name}
+                  ingredients={item.ingredients}
+                  price={item.price}
+                  mainimage={item.mainImage || "/default-image.jpg"}
+                  courseType={item.courseType}
+                />
+              </Link>
+            ))}
+          </ItemsContainer>
+        </div>
+      </MainContent>
     </div>
   );
 };
 
 export default Items;
+
+const MainContent = styled.div<{ loading: boolean }>`
+  display: ${(props) => (props.loading ? "none" : "block")};
+`;
 
 const ItemsContainer = styled.div`
   display: flex;

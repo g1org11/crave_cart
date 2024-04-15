@@ -1,22 +1,41 @@
 import styled from "styled-components";
 import LoginHero from "../components/login-signup-components/Loginhero";
-
 import Login from "../components/login-signup-components/Login";
 import SignUp from "../components/login-signup-components/SignUp";
+import { useState, useEffect } from "react";
+import Spinner from "../components/spinner/Spinner";
 // import Login from "../components/login-signup-components/Login";
 
 const LoginSignUp = () => {
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    // Simulate loading for demonstration purposes
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 500);
+
+    // Clear timeout when unmounting to avoid memory leaks
+    return () => clearTimeout(timeout);
+  }, []);
   return (
     <div>
-      <LoginHero />
-      <Container>
-        <Login />
-        <SignUp />
-      </Container>
+      <Spinner loading={loading} />
+      <MainContent loading={loading}>
+        <LoginHero />
+        <Container>
+          <Login />
+          <SignUp />
+        </Container>
+      </MainContent>
     </div>
   );
 };
 export default LoginSignUp;
+const MainContent = styled.div<{ loading: boolean }>`
+  display: ${(props) => (props.loading ? "none" : "block")};
+`;
+
 const Container = styled.div`
   display: flex;
   align-items: top;
