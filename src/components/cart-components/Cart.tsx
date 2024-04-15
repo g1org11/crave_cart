@@ -374,6 +374,7 @@ const Submit = styled.button`
   border-radius: 20px;
   background-color: ${defaultTheme.colors.red};
   margin-top: 20px;
+  cursor: pointer;
 `;
 const TotalContent = styled.div`
   display: flex;

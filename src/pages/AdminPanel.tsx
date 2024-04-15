@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../defaultTheme";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Spinner from "../components/spinner/Spinner";
 
 const AdminPanel = () => {
   const [formData, setFormData] = useState({
@@ -108,82 +109,103 @@ const AdminPanel = () => {
       toast.error(`There is some problem`);
     }
   };
+  const [loading, setLoading] = useState<boolean>(true);
 
+  useEffect(() => {
+    // Simulate loading for demonstration purposes
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 500);
+
+    // Clear timeout when unmounting to avoid memory leaks
+    return () => clearTimeout(timeout);
+  }, []); // Empty dependency array ensures that this effect runs only once, equivalent to componentDidMount
   return (
     <div>
       <ToastContainer />
-      <Container>
-        <Form ref={formRef} onSubmit={handleSubmit} encType="multipart/form-data">
-          <h1>Add Items</h1>
-          <div>
-            <NamePrice>
-              <WidthDiv>
-                <p>Item Name</p>
-                <Input type="text" name="name" value={formData.name} onChange={handleInputChange} />
-              </WidthDiv>
-              <WidthDiv>
-                <p>Item Price</p>
-                <Input
-                  type="number"
-                  name="price"
-                  value={formData.price}
-                  onChange={handleInputChange}
-                />
-              </WidthDiv>
-            </NamePrice>
-            <Descriptions>
-              <WidthDiv>
-                <p>Item Ingredients</p>
-                <Input
-                  type="text"
-                  name="ingredients"
-                  value={formData.ingredients}
-                  onChange={handleInputChange}
-                />
-              </WidthDiv>
-              <WidthDiv>
-                <p>Description</p>
-                <textarea
-                  name="descriptions"
-                  value={formData.descriptions}
-                  onChange={handleTextareaChange}
-                ></textarea>
-              </WidthDiv>
-            </Descriptions>
-            <Select>
-              <p>Choose Type of Course</p>
-              <select name="courseType" value={formData.courseType} onChange={handleInputChange}>
-                <option value="Main Course">Main Course</option>
-                <option value="Starter Course">Starter Course</option>
-                <option value="Dessert">Dessert</option>
-                <option value="Cocktail">Cocktail</option>
-              </select>
-            </Select>
-            <ImagesDiv>
-              <div>
-                <p>Add Main Image</p>
-                <input type="file" name="mainImage" onChange={handleFileChange} />
-              </div>
-              <div>
-                <p>Add Secondary Image</p>
-                <input type="file" name="secondaryImage" onChange={handleFileChange} />
-              </div>
-              <div>
-                <p>Add Tertiary Image</p>
-                <input type="file" name="tertiaryImage" onChange={handleFileChange} />
-              </div>
-            </ImagesDiv>
-          </div>
-          <ButtonDiv>
-            <button>Submit</button>
-          </ButtonDiv>
-        </Form>
-      </Container>
+      <Spinner loading={loading} />
+      <MainContent loading={loading}>
+        <Container>
+          <Form ref={formRef} onSubmit={handleSubmit} encType="multipart/form-data">
+            <h1>Add Items</h1>
+            <div>
+              <NamePrice>
+                <WidthDiv>
+                  <p>Item Name</p>
+                  <Input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                  />
+                </WidthDiv>
+                <WidthDiv>
+                  <p>Item Price</p>
+                  <Input
+                    type="number"
+                    name="price"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                  />
+                </WidthDiv>
+              </NamePrice>
+              <Descriptions>
+                <WidthDiv>
+                  <p>Item Ingredients</p>
+                  <Input
+                    type="text"
+                    name="ingredients"
+                    value={formData.ingredients}
+                    onChange={handleInputChange}
+                  />
+                </WidthDiv>
+                <WidthDiv>
+                  <p>Description</p>
+                  <textarea
+                    name="descriptions"
+                    value={formData.descriptions}
+                    onChange={handleTextareaChange}
+                  ></textarea>
+                </WidthDiv>
+              </Descriptions>
+              <Select>
+                <p>Choose Type of Course</p>
+                <select name="courseType" value={formData.courseType} onChange={handleInputChange}>
+                  <option value="Main Course">Main Course</option>
+                  <option value="Starter Course">Starter Course</option>
+                  <option value="Dessert">Dessert</option>
+                  <option value="Cocktail">Cocktail</option>
+                </select>
+              </Select>
+              <ImagesDiv>
+                <div>
+                  <p>Add Main Image</p>
+                  <input type="file" name="mainImage" onChange={handleFileChange} />
+                </div>
+                <div>
+                  <p>Add Secondary Image</p>
+                  <input type="file" name="secondaryImage" onChange={handleFileChange} />
+                </div>
+                <div>
+                  <p>Add Tertiary Image</p>
+                  <input type="file" name="tertiaryImage" onChange={handleFileChange} />
+                </div>
+              </ImagesDiv>
+            </div>
+            <ButtonDiv>
+              <button>Submit</button>
+            </ButtonDiv>
+          </Form>
+        </Container>
+      </MainContent>
     </div>
   );
 };
 
 export default AdminPanel;
+const MainContent = styled.div<{ loading: boolean }>`
+  display: ${(props) => (props.loading ? "none" : "block")};
+`;
 
 const Container = styled.div`
   width: 100%;

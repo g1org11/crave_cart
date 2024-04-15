@@ -110,6 +110,7 @@ const Container = styled.div`
   }
   @media (max-width: 1150px) {
     flex-direction: column;
+    text-align: center;
   }
   @media (max-width: 950px) {
     text-align: center;
@@ -128,7 +129,7 @@ const AddressInfo = styled.div`
   gap: 17px;
   margin-top: 11px;
   margin-left: 17px;
-  @media (max-width: 950px) {
+  @media (max-width: 1150px) {
     align-items: center;
   }
 `;
@@ -149,17 +150,14 @@ const Icons = styled.div`
   svg {
     color: ${defaultTheme.colors.red};
   }
-  @media (max-width: 950px) {
+  @media (max-width: 1150px) {
     align-items: center;
     justify-content: center;
   }
 `;
 const IframeDiv = styled.div`
   iframe {
-    @media (max-width: 1150px) {
-      width: 400px;
-    }
-    @media (max-width: 950px) {
+    @media (max-width: 1100px) {
       width: 600px;
     }
     @media (max-width: 650px) {

@@ -39,23 +39,20 @@ const HeroWrapper = styled.div`
     flex-direction: column;
     img {
       position: absolute;
-      top: 37%;
+      top: 35%;
     }
   }
   @media (max-width: 550px) {
     img {
       width: 350px;
       position: absolute;
-      top: 35%;
+      top: 32%;
     }
     @media (max-width: 450px) {
       img {
-        top: 38%;
+        top: 32%;
       }
       @media (max-width: 390px) {
-        img {
-          top: 41%;
-        }
       }
     }
   }
