@@ -206,4 +206,4 @@ const InfoImg = styled.img`
   border-radius: 50%;
   margin-right: 20px;
 `;
-const Button = styled.a``;
+// const Button = styled.a``;
