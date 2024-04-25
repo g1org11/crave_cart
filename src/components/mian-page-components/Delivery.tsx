@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import moto from "../../assets/header/moto.png";
 import delivery from "../../assets/mainpage/delivery-main.png";
+import { Link } from "react-router-dom";
 
 const Delivery = () => {
   return (
@@ -27,7 +28,7 @@ const Delivery = () => {
               </div>
               <img src={moto} alt="moto" />
             </CartInfos>
-            <button>Order Now</button>
+            <Link to="/items">Order Now</Link>
           </InfoFooter>
         </div>
         <MainImg src={delivery} alt="delivery" />
@@ -69,7 +70,7 @@ const Wrapper = styled.div`
       font-size: 30px;
     }
   }
-  button {
+  a {
     font-size: 25px;
     font-style: normal;
     font-weight: 400;
@@ -80,6 +81,7 @@ const Wrapper = styled.div`
     color: ${defaultTheme.colors.floralwhite};
     border-radius: 10px;
     padding: 10px 20px;
+    text-decoration: none;
 
     @media (max-width: 500px) {
       font-size: 18px;

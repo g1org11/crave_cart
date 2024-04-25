@@ -6,6 +6,7 @@ import restorantIcon1 from "../../assets/mainpage/OurrestorantIcon1.png";
 import restorantIcon2 from "../../assets/mainpage/OurrestorantIcon-2.png";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
+import { Link } from "react-router-dom";
 
 const OurRestorant = () => {
   return (
@@ -37,7 +38,7 @@ const OurRestorant = () => {
                   Certain circumstances and owing to the claims of duty obligations of business it
                   will frequently.
                 </p>
-                <Button>Read More</Button>
+                <Link to="/about">Read More</Link>
               </div>
             </RestorantContent>
 
@@ -52,7 +53,7 @@ const OurRestorant = () => {
                   Duty or the obligations of business it frequently occur pleasures have to be
                   repudiated.
                 </p>
-                <Button>Read More</Button>
+                <Link to="/about">Read More</Link>
               </div>
             </RestorantContent>
           </Information>
@@ -180,16 +181,20 @@ const RestorantContent = styled.div`
     }
   }
 
-  button {
-    /* text-align: center; */
-    padding: 6px 12px;
+  a {
     font-size: 20px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+    padding: 6px 12px;
+    border-radius: 25px;
     color: ${defaultTheme.colors.red};
-    @media (max-width: 500px) {
-      font-size: 18px;
+    text-align: center;
+    margin-top: 8px;
+    text-decoration: none;
+    &:hover {
+      background-color: ${defaultTheme.colors.red};
+      color: ${defaultTheme.colors.floralwhite};
     }
   }
 `;
@@ -201,19 +206,4 @@ const InfoImg = styled.img`
   border-radius: 50%;
   margin-right: 20px;
 `;
-const Button = styled.button`
-  all: unset;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  padding: 6px 12px;
-  border-radius: 25px;
-  color: ${defaultTheme.colors.red};
-  text-align: center;
-  margin-left: 50px;
-  &:hover {
-    background-color: ${defaultTheme.colors.red};
-    color: ${defaultTheme.colors.floralwhite};
-  }
-`;
+const Button = styled.a``;

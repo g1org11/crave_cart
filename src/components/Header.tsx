@@ -357,7 +357,7 @@ const ModalDiv = styled.div`
   padding: 20px;
   background-color: ${defaultTheme.colors.lightred};
   text-align: center;
-  animation: ${fadeIn} 0.8s ease; // Apply the animation
+  animation: ${fadeIn} 0.5s ease-out; // Apply the animation
   a {
     font-size: 20px;
     font-style: normal;

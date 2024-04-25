@@ -2,6 +2,7 @@ import watch from "../assets/footer/watch.svg";
 import phone from "../assets/footer/phone.svg";
 import styled from "styled-components";
 import { defaultTheme } from "../defaultTheme";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -21,7 +22,7 @@ const Footer = () => {
               <a href="tel:+880 1630 225 015">+880 1630 225 015</a>
             </div>
           </Contact>
-          <a href="#">Click to View Google Map</a>
+          <Link to="/contact">Click to View Google Map</Link>
         </Cards>
         <Cards>
           <h2>Mark A. Reed Food</h2>
@@ -36,7 +37,7 @@ const Footer = () => {
               <a href="tel:+880 1630 225 015">+880 1630 225 015</a>
             </div>
           </Contact>
-          <a href="#">Click to View Google Map</a>
+          <Link to="/contact">Click to View Google Map</Link>
         </Cards>
         <Cards>
           <h2>Mark A. Reed Food</h2>
@@ -51,7 +52,7 @@ const Footer = () => {
               <a href="tel:+880 1630 225 015">+880 1630 225 015</a>
             </div>
           </Contact>
-          <a href="#">Click to View Google Map</a>
+          <Link to="/contact">Click to View Google Map</Link>
         </Cards>
       </Information>
       <CopyDiv>

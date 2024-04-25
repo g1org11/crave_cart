@@ -3,6 +3,7 @@ import { defaultTheme } from "../../defaultTheme";
 import blogimg1 from "../../assets/mainpage/mainpage blog1.png";
 import blogimg2 from "../../assets/mainpage/mainpageblog2.png";
 import star from "../../assets/mainpage/mainpage star.svg";
+import { Link } from "react-router-dom";
 const MainPageBlog = () => {
   return (
     <BlogContainer>
@@ -32,7 +33,7 @@ const MainPageBlog = () => {
             </ul>
           </div>
           <ButtonDiv>
-            <button>Reade More</button>
+            <Link to="/about">Reade More</Link>
           </ButtonDiv>
         </Infos>
         <BlogImgTwo src={blogimg2} alt="blog img 2" />
@@ -109,7 +110,13 @@ const Infos = styled.div`
     margin-bottom: 30px;
     list-style-type: none;
   }
-  button {
+`;
+const ButtonDiv = styled.div`
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  margin-top: 100px;
+  a {
     font-size: 35px;
     font-style: normal;
     font-weight: 700;
@@ -119,16 +126,12 @@ const Infos = styled.div`
     border-radius: 20px;
     color: ${defaultTheme.colors.floralwhite};
     background-color: ${defaultTheme.colors.red};
-    margin-top: 109px;
+
+    text-decoration: none;
     @media (max-width: 1110px) {
       font-size: 28px;
     }
   }
-`;
-const ButtonDiv = styled.div`
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
 `;
 const BlogImgOne = styled.img`
   width: 361px;

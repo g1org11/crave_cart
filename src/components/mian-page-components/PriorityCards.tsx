@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
+import { Link } from "react-router-dom";
 interface PriorityCardsprops {
   img: string;
   title: string;
@@ -19,7 +20,7 @@ const PriorityCards: React.FC<PriorityCardsprops> = ({ img, number, title }) => 
         Beguiled and demoralized by all get charms pleasure the moments ever so blinded by desire.
       </CardText>
 
-      <button>Read More</button>
+      <Link to="/about">Read More</Link>
     </CardsContainer>
   );
 };
@@ -73,11 +74,12 @@ const CardsContainer = styled.div`
     margin-top: 40px;
     margin-bottom: 20px;
   }
-  button {
+  a {
     font-size: 25px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    text-decoration: none;
     border: 0;
     border-radius: 10px;
     padding: 11px 19px;
@@ -93,7 +95,7 @@ const CardsContainer = styled.div`
     h2 {
       color: ${defaultTheme.colors.floralwhite};
     }
-    button {
+    a {
       color: ${defaultTheme.colors.red};
       background-color: ${defaultTheme.colors.floralwhite};
     }
