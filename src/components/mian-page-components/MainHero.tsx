@@ -2,6 +2,7 @@
 import styled from "styled-components";
 import { defaultTheme } from "../../defaultTheme";
 import heroimg from "../../assets/mainpage/MainHero.png";
+import { Link } from "react-router-dom";
 
 const MainHero = () => {
   return (
@@ -13,7 +14,7 @@ const MainHero = () => {
             ENJOY OUR CHICKEN <span>BURGER</span> FAST FOOD
           </h2>
           <OrderPart>
-            <button>Order Now</button>
+            <Link to="/items">Order Now</Link>
             <span>Price : $10.50</span>
           </OrderPart>
         </RightParts>
@@ -105,7 +106,7 @@ const OrderPart = styled.div`
     gap: 25px;
     transform: translateY(-50px);
   }
-  button {
+  a {
     border: 0;
     font-size: 35px;
     font-style: normal;
@@ -116,6 +117,7 @@ const OrderPart = styled.div`
     background-color: ${defaultTheme.colors.red};
     border-radius: 10px;
     margin-right: 30px;
+    text-decoration: none;
     @media (max-width: 550px) {
       font-size: 26px;
     }

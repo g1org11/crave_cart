@@ -12,6 +12,8 @@ import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import Spinner from "../components/spinner/Spinner";
 import { useAuth } from "../components/login-signup-components/AuthContext";
+import { Helmet } from "react-helmet";
+
 interface IconProps {
   show: boolean;
 }
@@ -133,6 +135,17 @@ const Profile = () => {
   return (
     <div>
       <ToastContainer />
+      {/* Helmet for SEO */}
+      <Helmet>
+        <title>Profile Page</title>
+        <meta name="description" content="Your meta description goes here." />
+        <link rel="canonical" href="https://www.yourwebsite.com/main" />
+        <meta property="og:title" content="Your Page Title" />
+        <meta property="og:description" content="Your meta description goes here." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.yourwebsite.com/main" />
+        <meta property="og:image" content="https://www.yourwebsite.com/og-image.jpg" />
+      </Helmet>
       <Spinner loading={loading} />
       <MainContent loading={loading}>
         <Container>
@@ -176,7 +189,7 @@ const Profile = () => {
                 </li>
 
                 <li>
-                  <Link to="/items">Shop</Link>
+                  <Link to="/items">Items</Link>
                 </li>
                 {isAuthenticated && userData && userData.isAdmin && (
                   <li>
@@ -240,7 +253,7 @@ const Profile = () => {
                       </li>
 
                       <li>
-                        <a href="">Shop</a>
+                        <a href="">Items</a>
                       </li>
                       {isAuthenticated && userData && userData.isAdmin && (
                         <li>

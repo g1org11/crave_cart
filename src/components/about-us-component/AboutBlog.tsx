@@ -10,10 +10,10 @@ const AboutBlog = () => {
         <img src={Blog} alt="blog" />
         <Info>
           <h2>
-            Welcome to our restaurant, where the ocean's bounty awaits you! Dive into our exquisite
-            selection of Opaleye Yellowtail Snapper, Velvet Catfish, Graveldiver Banded Killifish,
-            Old World Rivuline, Catalufa Eagle Ray, and Moorish Idol. Savor the delicate flavors of
-            Herring, Smelt, Barbeled Dragonfish, and Tommy Ruff.
+            Welcome to our restaurant, where the "ocean's bounty" awaits you! Dive into our
+            exquisite selection of Opaleye Yellowtail Snapper, Velvet Catfish, Graveldiver Banded
+            Killifish, Old World Rivuline, Catalufa Eagle Ray, and Moorish Idol. Savor the delicate
+            flavors of Herring, Smelt, Barbeled Dragonfish, and Tommy Ruff.
           </h2>
           <p>
             Indulge in the royalty of seafood with Queen Danio, Velvet Catfish, Sacramento
