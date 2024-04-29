@@ -4,13 +4,16 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { defaultTheme } from "../../defaultTheme";
 import { useCart } from "./CartContext";
-
+import { useAuth } from "../login-signup-components/AuthContext";
+import { useNavigate } from "react-router-dom";
 const Cart: React.FC = () => {
   const { cartItems, removeFromCart, increaseQuantity, decreaseQuantity, clearCart } = useCart();
   const [email, setEmail] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [district, setDistrict] = useState("");
   const [street, setStreet] = useState("");
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const resetForm = () => {
     setEmail("");
@@ -26,6 +29,11 @@ const Cart: React.FC = () => {
     e.preventDefault();
     if (!email || !cardNumber || !district || !street) {
       toast.error("Please fill in all fields.");
+      return;
+    }
+    if (isAuthenticated == false) {
+      toast.error("Please Login First");
+      navigate("/Login-SignUp");
       return;
     }
     toast.success("Order placed successfully!");
