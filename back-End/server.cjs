@@ -154,25 +154,33 @@ app.get("/get-profile-data/:userId", async (req, res) => {
     // Check if Authorization header exists
     const token = req.headers.authorization;
     if (!token) {
-      return res.status(401).json({ status: "error", message: "Authorization token is missing" });
+      return res
+        .status(401)
+        .json({ status: "error", message: "Authorization token is missing" });
     }
 
     // Verify the JWT token
     jwt.verify(token.split(" ")[1], JWT_SECRET, async (err, decoded) => {
       if (err || decoded.userId !== userId) {
-        return res.status(401).json({ status: "error", message: "Unauthorized" });
+        return res
+          .status(401)
+          .json({ status: "error", message: "Unauthorized" });
       }
 
       // Query the database using the user ID
       try {
         const userProfile = await user.findById(userId, "-password");
         if (!userProfile) {
-          return res.status(404).json({ status: "error", message: "User profile not found" });
+          return res
+            .status(404)
+            .json({ status: "error", message: "User profile not found" });
         }
         res.json(userProfile);
       } catch (error) {
         console.error("Error fetching profile data:", error);
-        res.status(500).json({ status: "error", message: "Internal server error" });
+        res
+          .status(500)
+          .json({ status: "error", message: "Internal server error" });
       }
     });
   } catch (error) {
@@ -180,15 +188,6 @@ app.get("/get-profile-data/:userId", async (req, res) => {
     res.status(500).json({ status: "error", message: "Internal server error" });
   }
 });
-// Route to update user profile data
-// Inside server.js
-// Multer configuration
-//
-
-// Route to update user profile data
-// Route to update user profile data
-// Inside /update-profile/:userId endpoint
-// Route to update user profile data
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -205,29 +204,35 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
-app.post("/update-profile/:userId", upload.single("profileImage"), async (req, res) => {
-  try {
-    const userId = req.params.userId;
+app.post(
+  "/update-profile/:userId",
+  upload.single("profileImage"),
+  async (req, res) => {
+    try {
+      const userId = req.params.userId;
 
-    let userProfile = await user.findById(userId);
-    if (!userProfile) {
-      return res.status(404).json({ status: "error", message: "User profile not found" });
+      let userProfile = await user.findById(userId);
+      if (!userProfile) {
+        return res
+          .status(404)
+          .json({ status: "error", message: "User profile not found" });
+      }
+
+      userProfile.set(req.body);
+
+      if (req.file) {
+        userProfile.profileImage = req.file.buffer;
+      }
+
+      await userProfile.save();
+      console.log(req.file);
+      res.json({ status: "ok", message: "Profile updated successfully" });
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      res.status(500).json({ status: "error", error: "Internal server error" });
     }
-
-    userProfile.set(req.body);
-
-    if (req.file) {
-      userProfile.profileImage = req.file.buffer;
-    }
-
-    await userProfile.save();
-    console.log(req.file);
-    res.json({ status: "ok", message: "Profile updated successfully" });
-  } catch (error) {
-    console.error("Error updating profile:", error);
-    res.status(500).json({ status: "error", error: "Internal server error" });
   }
-});
+);
 
 /////////////////////////////////////////////////////
 const storage1 = multer.diskStorage({
